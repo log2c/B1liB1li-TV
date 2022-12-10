@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="form_item_type_text" type="id" />
+    <item name="form_item_type_spinner" type="id" />
+    <item name="form_item_type_spinner_paired" type="id" />
+    <item name="form_item_type_edit_text" type="id" />
+    <item name="form_item_type_edit_text_paired" type="id" />
+    <item name="form_item_type_right_btn_view_stub" type="id" />
+    <item name="title_bar" type="id" />
+</resources>

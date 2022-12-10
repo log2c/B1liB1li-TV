@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quality_registration_sp_entry">
+        <item> </item>
+        <item>是</item>
+        <item>否</item>
+    </string-array>
+</resources>

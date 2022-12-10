@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.github.log2c.base'
+    compileSdk rootProject.ext.android.compileSdk
+
+    defaultConfig {
+        minSdk rootProject.ext.android.minSdk
+        targetSdk rootProject.ext.android.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api rootProject.ext.androidxs
+    api rootProject.ext.network
+    api rootProject.ext.test
+
+    api rootProject.ext.dependencies.MVVMLin
+
+    api rootProject.ext.dependencies.glide
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+
+    api rootProject.ext.dependencies.utilcodex
+    api rootProject.ext.dependencies.logger
+    api rootProject.ext.dependencies.XUI
+    api rootProject.ext.dependencies.rxJava
+    api rootProject.ext.dependencies.rxAndroid
+    api rootProject.ext.dependencies.SuperTextView
+    api rootProject.ext.dependencies.BRVAH
+}

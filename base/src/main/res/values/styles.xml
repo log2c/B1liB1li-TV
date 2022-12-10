@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.NoActionBar" parent="XUITheme.Phone">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.XUI" parent="XUIBaseTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="TitleBar.NoLeftIcon">
+        <item name="android:id">@id/title_bar</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:theme">@style/XUITheme.Phone</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="tb_barHeight">?attr/xui_actionbar_height</item>
+        <item name="tb_immersive">false</item>
+        <item name="tb_useThemeColor">false</item>
+        <item name="tb_centerGravity">center</item>
+        <item name="tb_leftImageResource">@null</item>
+    </style>
+
+    <style name="TitleBar.Main" parent="TitleBar.NoLeftIcon">
+        <item name="tb_leftImageResource">@drawable/ic_baseline_arrow_white</item>
+        <item name="tb_titleTextColor">@color/white</item>
+    </style>
+
+    <style name="Button.Common">
+        <item name="sUseSelector">true</item>
+        <item name="sCornersRadius">4dp</item>
+        <item name="sSelectorNormalColor">@color/colorPrimary</item>
+        <item name="sSelectorPressedColor">@color/colorPrimaryDark</item>
+        <item name="sSolidColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+</resources>
