@@ -34,7 +34,7 @@ dependencies {
     api rootProject.ext.dependencies.MVVMLin
 
     api rootProject.ext.dependencies.glide
-    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    api rootProject.ext.dependencies["okhttp3-integration"]
 
     api rootProject.ext.dependencies.utilcodex
     api rootProject.ext.dependencies.logger
@@ -43,4 +43,9 @@ dependencies {
     api rootProject.ext.dependencies.rxAndroid
     api rootProject.ext.dependencies.SuperTextView
     api rootProject.ext.dependencies.BRVAH
+    api rootProject.ext.dependencies.QRGen
+
+    api files('libs/httpclient-4.3.6.jar')
+    api files('libs/httpcore-4.3.3.jar')
+    api files('libs/httpmime-4.3.6.jar')
 }

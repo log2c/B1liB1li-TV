@@ -49,34 +49,36 @@ ext {
             "rxjava2-adapter"    : "com.squareup.retrofit2:adapter-rxjava2:2.9.0",
             "logging-interceptor": "com.squareup.okhttp3:logging-interceptor:4.10.0",
             'stetho'             : "com.facebook.stetho:stetho:1.6.0",
-            'stetho-okhttp'      : "com.facebook.stetho:stetho-okhttp:1.6.0",
+            'stetho-okhttp': "com.facebook.stetho:stetho-okhttp:1.6.0"
     ]
 
     //依赖第三方配置
     dependencies = [
-            MVVMLin           : 'com.github.AleynP:MVVMLin:2.0.0',
+            MVVMLin              : 'com.github.AleynP:MVVMLin:2.0.0',
             //glide图片加载
-            glide             : "com.github.bumptech.glide:glide:4.11.0",
-            "glide-compiler"  : "com.github.bumptech.glide:compiler:4.11.0",
+            glide                : "com.github.bumptech.glide:glide:4.11.0",
+            "glide-compiler"     : "com.github.bumptech.glide:compiler:4.11.0",
+            'okhttp3-integration': "com.github.bumptech.glide:okhttp3-integration:4.11.0",
             //Utils https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
-            utilcodex         : 'com.blankj:utilcodex:1.29.0',
-            banner            : 'com.github.xiaohaibin:XBanner:androidx_v1.0.2',
-            'bottom-tab'      : 'me.majiajie:pager-bottom-tab-strip:2.3.0X',
-            BRVAH             : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2',
-            bdclta            : 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.1.1',
-            'bdclta-rv'       : 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.1.1',
+            utilcodex            : 'com.blankj:utilcodex:1.29.0',
+            banner               : 'com.github.xiaohaibin:XBanner:androidx_v1.0.2',
+            'bottom-tab'         : 'me.majiajie:pager-bottom-tab-strip:2.3.0X',
+            BRVAH                : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2',
+            bdclta               : 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.1.1',
+            'bdclta-rv'          : 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.1.1',
             // XUI  https://github.com/xuexiangjys/XUI/wiki
-            XUI               : 'com.github.xuexiangjys:XUI:1.2.0',
-            SuperTextView     : 'com.github.lygttpod:SuperTextView:2.4.5',
+            XUI                  : 'com.github.xuexiangjys:XUI:1.2.0',
+            SuperTextView        : 'com.github.lygttpod:SuperTextView:2.4.5',
             // Logger   https://github.com/orhanobut/logger
-            logger            : 'com.orhanobut:logger:2.2.0',
+            logger               : 'com.orhanobut:logger:2.2.0',
             // RxJava
-            rxJava            : 'io.reactivex.rxjava2:rxjava:2.2.21',
-            rxAndroid         : 'io.reactivex.rxjava2:rxandroid:2.1.1',
-            'android-saripaar': 'com.mobsandgeeks:android-saripaar:2.0.3',   // EditText 验证
-            arouter           : 'com.alibaba:arouter-api:1.5.0',
-            'arouter-compiler': 'com.alibaba:arouter-compiler:1.2.2',
-            xxpermissions     : 'com.hjq:xxpermissions:16.2'
+            rxJava               : 'io.reactivex.rxjava2:rxjava:2.2.21',
+            rxAndroid            : 'io.reactivex.rxjava2:rxandroid:2.1.1',
+            'android-saripaar'   : 'com.mobsandgeeks:android-saripaar:2.0.3',   // EditText 验证
+            arouter              : 'com.alibaba:arouter-api:1.5.0',
+            'arouter-compiler'   : 'com.alibaba:arouter-compiler:1.2.2',
+            xxpermissions        : 'com.hjq:xxpermissions:16.2',
+            QRGen                : "com.github.kenglxn.QRGen:android:3.0.1"
     ]
 
     dkplayer_lib = [
