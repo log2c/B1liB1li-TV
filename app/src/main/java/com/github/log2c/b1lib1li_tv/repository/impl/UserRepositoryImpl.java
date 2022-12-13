@@ -1,5 +1,6 @@
 package com.github.log2c.b1lib1li_tv.repository.impl;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.network.NetKit;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
@@ -24,10 +25,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<String> getFeed(String type, int page, String offset) {
         Map<String, String> params = new HashMap<>();
-        params.put("timezone_offset", "-1");
+        params.put("timezone_offset", "-480");
         params.put("type", type);
         params.put("page", "" + page);
-        params.put("offset", "" + offset);
+        if (!StringUtils.isTrimEmpty(offset)) {
+            params.put("offset", "" + offset);
+        }
         return NetKit.getInstance().doGetRx(Urls.FEED_ALL, null, params);
     }
 

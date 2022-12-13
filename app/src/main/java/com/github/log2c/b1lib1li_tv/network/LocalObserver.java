@@ -28,6 +28,10 @@ public abstract class LocalObserver<T> implements Observer<String> {
         return code != Constants.RESPONSE_CODE_OK;
     }
 
+    public void onFinish() {
+
+    }
+
     @Override
     public void onNext(String json) {
         TypeToken<?> typeToken = getCompactTypeDynamic();
@@ -41,6 +45,7 @@ public abstract class LocalObserver<T> implements Observer<String> {
         } else {
             onException(new BilibiliThrowable("TypeToken exception."));
         }
+        onFinish();
     }
 
 //    @SuppressWarnings("unchecked")
@@ -59,6 +64,7 @@ public abstract class LocalObserver<T> implements Observer<String> {
         if (!(e instanceof BilibiliThrowable)) {
             onException(e);
         }
+        onFinish();
     }
 
     @Override
