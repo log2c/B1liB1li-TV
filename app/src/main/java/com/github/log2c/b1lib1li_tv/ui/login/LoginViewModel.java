@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import androidx.lifecycle.MutableLiveData;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.GenerateModel;
@@ -98,5 +99,6 @@ public class LoginViewModel extends BaseCoreViewModel {
 
     private void onLoginSuccess(LoginModel response) {
         showSuccessToast(R.string.tip_login_success);
+        ActivityUtils.getTopActivity().finish();
     }
 }

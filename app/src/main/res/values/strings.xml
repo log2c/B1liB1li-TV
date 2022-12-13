@@ -2,4 +2,5 @@
     <string name="app_name">B1lib1li-TV</string>
     <string name="tip_login_success">登录成功！</string>
     <string name="refresh">刷新</string>
+    <string name="un_login">未登录</string>
 </resources>

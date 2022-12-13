@@ -28,7 +28,7 @@ public class LoginActivity extends BaseCoreActivity<LoginViewModel, ActivityLogi
 
     @Override
     public void initData() {
-
+        viewModel.genQrcode();
     }
 
     @Override
