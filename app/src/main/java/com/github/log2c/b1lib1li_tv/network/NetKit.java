@@ -1,16 +1,16 @@
 package com.github.log2c.b1lib1li_tv.network;
 
+import android.net.Uri;
+
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,18 +106,13 @@ public class NetKit {
     }
 
     private URI addUrlParams(String originUrl, Map<String, String> queryParams) {
-        try {
-            final URIBuilder builder = new URIBuilder(originUrl);
-            if (queryParams != null) {
-                for (String key : queryParams.keySet()) {
-                    builder.addParameter(key, queryParams.get(key));
-                }
+        final Uri.Builder builder = Uri.parse(originUrl).buildUpon();
+        if (queryParams != null) {
+            for (String key : queryParams.keySet()) {
+                builder.appendQueryParameter(key, queryParams.get(key));
             }
-            return builder.build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return null;
         }
+        return URI.create((builder.build().toString()));
     }
 
     private void addHeadersByMap(HttpMessage httpMessage, Map<String, String> headers) {
