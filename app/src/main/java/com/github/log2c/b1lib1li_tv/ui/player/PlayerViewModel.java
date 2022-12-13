@@ -12,6 +12,7 @@ import com.github.log2c.b1lib1li_tv.network.LocalObserver;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
+import com.github.log2c.base.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,8 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
     public void parsePlayUrl() {
         String qn = "120";
-//        String fnval = "16";
-        String fnval = "1";
+        String fnval = "16";
+//        String fnval = "1";
         String fnver = "0";
         String fourk = "1";
         videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval, fnver, fourk).subscribe(new LocalObserver<PlayUrlModel>() {
@@ -58,7 +59,9 @@ public class PlayerViewModel extends BaseCoreViewModel {
         }
         final int selectRes = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DEFAULT_RESOLUTION, Constants.DEFAULT_RESOLUTION);
         if (model.getAccept_quality().contains(selectRes)) {
-            return partitions.get(model.getAccept_quality().indexOf(selectRes)).get(0).getBaseUrl();//TODO 根据不同解码器返回对应url
+            final PlayUrlModel.DashModel.VideoModel videoModel = partitions.get(model.getAccept_quality().indexOf(selectRes)).get(0);
+            Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));
+            return videoModel.getBaseUrl();//TODO 根据不同解码器返回对应url
         }
         final ArrayList<Integer> list = new ArrayList<>(model.getAccept_quality());
         CollectionUtils.filter(list, item -> item < selectRes);
@@ -66,10 +69,13 @@ public class PlayerViewModel extends BaseCoreViewModel {
             final int fallbackId = list.get(0);
             for (PlayUrlModel.DashModel.VideoModel videoModel : model.getDash().getVideo()) {
                 if (videoModel.getId() == fallbackId) {
+                    Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));
                     return videoModel.getBaseUrl();
                 }
             }
         }
-        return model.getDash().getVideo().get(model.getDash().getVideo().size() - 1).getBaseUrl();
+        final PlayUrlModel.DashModel.VideoModel videoModel = model.getDash().getVideo().get(model.getDash().getVideo().size() - 1);
+        Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));
+        return videoModel.getBaseUrl();
     }
 }

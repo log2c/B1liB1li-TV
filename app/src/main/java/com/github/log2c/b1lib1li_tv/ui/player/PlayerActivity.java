@@ -32,7 +32,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
-    private VideoView videoView;
+    private ExoVideoView videoView;
     private XUISimplePopup mMenuPopup;
     private boolean dashMode;
 
@@ -61,8 +61,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
     }
 
@@ -112,24 +111,25 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         videoView.startFullScreen();
         videoView.setMute(false);
         viewModel.playUrlModelEvent.observe(this, playUrlModel -> {
-            final String url = viewModel.getDefaultResolution(playUrlModel);
-            playVideo(url);
+            final String videoUrl = viewModel.getDefaultResolution(playUrlModel);
+            if (playUrlModel.getDash() != null && playUrlModel.getDash().getAudio() != null && !playUrlModel.getDash().getAudio().isEmpty()) {
+                playVideo(videoUrl, playUrlModel.getDash().getAudio().get(0).getBaseUrl());
+            } else playVideo(videoUrl, null);
         });
     }
 
-    private void playVideo(String url) {
+    private void playVideo(String videoUrl, @Nullable String audioUrl) {
         StandardVideoController controller = new StandardVideoController(this);
         controller.addDefaultControlComponent("标题", false);
         videoView.setVideoController(controller); //设置控制器
-        videoView.setUrl(url, Constants.PLAYER_HEADERS);
+        videoView.setUrl(videoUrl, audioUrl, Constants.PLAYER_HEADERS);
         videoView.start();
     }
 
     private void showMenuPopup() {
         final String[] menu = new String[]{"设置"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("选择")
-                .setItems(menu, (dialog, which) -> showResolutionSetting());
+        builder.setTitle("选择").setItems(menu, (dialog, which) -> showResolutionSetting());
         builder.create().show();
     }
 
@@ -174,15 +174,21 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("请选择分辨率")
-                .setItems(menus, (dialog, which) -> {
-                    storeResolution(model.getAccept_quality().get(which));
-                    if (dashMode) {
-                        playVideo(partitions.get(which).get(0).getBaseUrl());
-                    } else {
-                        playVideo(model.getDurl().get(which).getUrl());
-                    }
-                });
+        builder.setTitle("请选择分辨率").setItems(menus, (dialog, which) -> {
+            storeResolution(model.getAccept_quality().get(which));
+            if (dashMode) {
+                if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
+                    playVideo(partitions.get(which).get(0).getBaseUrl(), model.getDash().getAudio().get(0).getBaseUrl());
+                } else
+                    playVideo(partitions.get(which).get(0).getBaseUrl(), null);
+            } else {
+
+                if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
+                    playVideo(model.getDurl().get(which).getUrl(), model.getDash().getAudio().get(0).getBaseUrl());
+                } else
+                    playVideo(model.getDurl().get(which).getUrl(), null);
+            }
+        });
         builder.create().show();
     }
 
