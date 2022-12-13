@@ -1,5 +1,7 @@
 package com.github.log2c.b1lib1li_tv.network;
 
+import static com.github.log2c.b1lib1li_tv.common.Constants.DEFAULT_USER_AGENT;
+
 import android.net.Uri;
 
 import org.apache.http.HttpMessage;
@@ -23,10 +25,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NetKit {
     private static final String TAG = NetKit.class.getSimpleName();
-    private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Safari/605.1.15";
     private static HttpClient mHttpClient;
     private static NetKit mInstance;
-    private static final Map<String, String> COMMON_HEADERS = new HashMap<>();
+    public static final Map<String, String> COMMON_HEADERS = new HashMap<>();
 
     static {
         COMMON_HEADERS.put("User-Agent", DEFAULT_USER_AGENT);

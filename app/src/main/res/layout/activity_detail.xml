@@ -180,7 +180,7 @@
     <TextView
         android:id="@+id/tv_desc"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:minHeight="100dp"
         android:padding="@dimen/dp_4"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"

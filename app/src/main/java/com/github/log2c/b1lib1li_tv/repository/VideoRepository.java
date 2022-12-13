@@ -9,4 +9,5 @@ public interface VideoRepository {
     Observable<String> getPlayUrl(String aid, String bvid, String cid, String qn, String fnval, String fnver, String fourk);
 
     Observable<String> videoView(String aid, String bvid);
+
 }

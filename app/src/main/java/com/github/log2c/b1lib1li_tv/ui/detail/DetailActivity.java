@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDetailBinding;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
+import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
 import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
 
@@ -49,8 +50,9 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
     public void initView(@Nullable Bundle bundle) {
         viewModel.viewModelLiveEvent.observe(this, this::fillData);
         mBinding.flowPlay.setOnTagClickListener((parent, view, position) -> {
-            //TODO 打开播放页
-            final VideoViewModel.PagesModel model = viewModel.viewModelLiveEvent.getValue().getPages().get(position);
+            final VideoViewModel viewModel = this.viewModel.viewModelLiveEvent.getValue();
+            final VideoViewModel.PagesModel model = viewModel.getPages().get(position);
+            PlayerActivity.showActivity(this, viewModel.getBvid(), viewModel.getAid() + "", model.getCid() + "");
         });
     }
 

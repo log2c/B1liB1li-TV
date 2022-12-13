@@ -24,12 +24,29 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+        exclude("license/*")
+        exclude("mozilla/*")
+        exclude 'org/apache/http/version.properties'
+        exclude 'org/apache/http/client/version.properties'
+        exclude 'org/apache/http/entity/mime/version.properties'
+    }
 }
 
 dependencies {
     api rootProject.ext.androidxs
     api rootProject.ext.network
     api rootProject.ext.test
+    api rootProject.ext.dkplayer
 
     api rootProject.ext.dependencies.MVVMLin
 
@@ -44,6 +61,7 @@ dependencies {
     api rootProject.ext.dependencies.SuperTextView
     api rootProject.ext.dependencies.BRVAH
     api rootProject.ext.dependencies.QRGen
+    api rootProject.ext.dependencies.xpopup
 
     api files('libs/httpclient-4.3.6.jar')
     api files('libs/httpcore-4.3.3.jar')
