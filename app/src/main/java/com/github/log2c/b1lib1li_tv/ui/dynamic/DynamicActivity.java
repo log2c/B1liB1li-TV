@@ -37,8 +37,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
         mBinding.recyclerview.setLayoutManager(new GridLayoutManager(this, 3));
         mBinding.recyclerview.setAdapter(mAdapter);
         mAdapter.setNewInstance(new ArrayList<>());
-
-        mAdapter.getLoadMoreModule().setAutoLoadMore(false);
+        mAdapter.getLoadMoreModule().setAutoLoadMore(true);
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> viewModel.loadFeedInfo());
         mAdapter.setOnItemClickListener(this);
         viewModel.feedModelEvent.observe(this, feedModel -> {
@@ -46,7 +45,10 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
             mAdapter.getLoadMoreModule().loadMoreComplete();
             mAdapter.getLoadMoreModule().setEnableLoadMore(feedModel.isHas_more());
         });
-        viewModel.refreshEvent.observe(this, s -> mAdapter.setNewInstance(new ArrayList<>()));
+        viewModel.refreshEvent.observe(this, s -> {
+            mAdapter.setNewInstance(new ArrayList<>());
+            viewModel.data.clear();
+        });
 
         viewModel.loadFeedInfo();
     }

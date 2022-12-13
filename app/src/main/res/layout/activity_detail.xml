@@ -189,13 +189,16 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:text="test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test." />
 
-    <com.xuexiang.xui.widget.flowlayout.FlowTagLayout
-        android:id="@+id/flow_play"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="85dp"
         android:layout_margin="@dimen/dp_10"
+        android:clipToPadding="false"
+        android:focusable="true"
+        android:overScrollMode="never"
+        android:padding="@dimen/dp_10"
         app:ftl_check_mode="single"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
         app:layout_constraintStart_toStartOf="@id/tv_desc"
         app:layout_constraintTop_toBottomOf="@id/tv_desc" />

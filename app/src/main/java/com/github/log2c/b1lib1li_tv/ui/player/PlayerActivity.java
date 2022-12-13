@@ -1,5 +1,6 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
+import static com.dueeeke.videoplayer.player.VideoView.STATE_PLAYBACK_COMPLETED;
 import static com.github.log2c.b1lib1li_tv.common.Constants.SP_NAME_CONFIG;
 import static com.github.log2c.b1lib1li_tv.common.Constants.VIDEO_PARTITION_SIZE;
 
@@ -33,6 +34,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_CID = "cid";
     private VideoView videoView;
     private XUISimplePopup mMenuPopup;
+    private boolean dashMode;
 
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid, @Nullable String cid) {
@@ -94,7 +96,21 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     public void initView(@Nullable Bundle bundle) {
         videoView = mBinding.player;
+        videoView.addOnStateChangeListener(new VideoView.OnStateChangeListener() {
+            @Override
+            public void onPlayerStateChanged(int playerState) {
+
+            }
+
+            @Override
+            public void onPlayStateChanged(int playState) {
+                if (playState == STATE_PLAYBACK_COMPLETED) {
+                    finish();
+                }
+            }
+        });
         videoView.startFullScreen();
+        videoView.setMute(false);
         viewModel.playUrlModelEvent.observe(this, playUrlModel -> {
             final String url = viewModel.getDefaultResolution(playUrlModel);
             playVideo(url);
@@ -142,21 +158,30 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         String[] menus = new String[items.size()];
         items.toArray(menus);
 
-        int partitionSize = VIDEO_PARTITION_SIZE;
+        dashMode = false;
         List<List<PlayUrlModel.DashModel.VideoModel>> partitions = new ArrayList<>();
-        final List<PlayUrlModel.DashModel.VideoModel> videoModelList = model.getDash().getVideo();
-        for (int i = 0; i < videoModelList.size(); i += partitionSize) {
-            partitions.add(videoModelList.subList(i, Math.min(i + partitionSize, videoModelList.size())));
+
+        if (model.getDash() != null && model.getDash().getVideo() != null && model.getDash().getVideo().size() > 0) {
+            dashMode = true;
+            int partitionSize = VIDEO_PARTITION_SIZE;
+            final List<PlayUrlModel.DashModel.VideoModel> videoModelList = model.getDash().getVideo();
+            for (int i = 0; i < videoModelList.size(); i += partitionSize) {
+                partitions.add(videoModelList.subList(i, Math.min(i + partitionSize, videoModelList.size())));
+            }
+            if (partitions.size() != menus.length) {
+                throw new RuntimeException("showResolutionSetting: ");
+            }
         }
 
-        if (partitions.size() != menus.length) {
-            throw new RuntimeException("showResolutionSetting: ");
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("请选择分辨率")
                 .setItems(menus, (dialog, which) -> {
                     storeResolution(model.getAccept_quality().get(which));
-                    playVideo(partitions.get(which).get(0).getBaseUrl());
+                    if (dashMode) {
+                        playVideo(partitions.get(which).get(0).getBaseUrl());
+                    } else {
+                        playVideo(model.getDurl().get(which).getUrl());
+                    }
                 });
         builder.create().show();
     }

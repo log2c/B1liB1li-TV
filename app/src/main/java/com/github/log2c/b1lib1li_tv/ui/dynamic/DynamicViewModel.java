@@ -7,6 +7,9 @@ import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DynamicViewModel extends BaseCoreViewModel {
     private final UserRepository userRepository;
     private static final String FEED_TYPE = "video";
@@ -14,6 +17,7 @@ public class DynamicViewModel extends BaseCoreViewModel {
     private String offset = "";
     final public SingleLiveEvent<FeedModel> feedModelEvent = new SingleLiveEvent<>();
     final public SingleLiveEvent<String> refreshEvent = new SingleLiveEvent<>();
+    public List<FeedModel.ItemsModel> data = new ArrayList<>();
 
     public DynamicViewModel() {
         userRepository = new UserRepositoryImpl();
@@ -24,6 +28,7 @@ public class DynamicViewModel extends BaseCoreViewModel {
         userRepository.getFeed(FEED_TYPE, page, offset).subscribe(new LocalObserver<FeedModel>() {
             @Override
             public void onSuccess(FeedModel model) {
+                data.addAll(model.getItems());
                 page++;
                 offset = model.getOffset();
                 feedModelEvent.postValue(model);

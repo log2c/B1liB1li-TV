@@ -5,26 +5,31 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDetailBinding;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
-import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDetailBinding> {
     public static final String TAG = DetailActivity.class.getSimpleName();
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
+    private BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder> adapter;
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid) {
         final Intent intent = new Intent(context, DetailActivity.class);
@@ -48,11 +53,30 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
 
     @Override
     public void initView(@Nullable Bundle bundle) {
+        adapter = new BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder>(R.layout.item_tag_flow_adapter) {
+            @Override
+            protected void convert(@NonNull BaseViewHolder baseViewHolder, VideoViewModel.PagesModel page) {
+                CardView view = baseViewHolder.getView(R.id.cv_root);
+                view.setOnFocusChangeListener((v, hasFocus) -> {
+                    if (hasFocus) {
+                        view.setCardElevation(ConvertUtils.dp2px(30));
+                    } else {
+                        view.setCardElevation(ConvertUtils.dp2px(2));
+                    }
+                });
+
+                final String s = String.format(Locale.getDefault(), "%1$s  %2$s", page.getPart(), formatSeconds(page.getDuration()));
+                baseViewHolder.setText(R.id.tv_tag_item, s);
+            }
+        };
         viewModel.viewModelLiveEvent.observe(this, this::fillData);
-        mBinding.flowPlay.setOnTagClickListener((parent, view, position) -> {
-            final VideoViewModel viewModel = this.viewModel.viewModelLiveEvent.getValue();
+
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        mBinding.recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            final VideoViewModel viewModel = DetailActivity.this.viewModel.viewModelLiveEvent.getValue();
             final VideoViewModel.PagesModel model = viewModel.getPages().get(position);
-            PlayerActivity.showActivity(this, viewModel.getBvid(), viewModel.getAid() + "", model.getCid() + "");
+            PlayerActivity.showActivity(DetailActivity.this, viewModel.getBvid(), viewModel.getAid() + "", model.getCid() + "");
         });
     }
 
@@ -72,13 +96,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         mBinding.tvPubTime.setText(TimeUtils.millis2String(videoViewModel.getPubdate() * 1000L, "yyyy-MM-dd"));
 
         mBinding.tvDesc.setText(videoViewModel.getDesc());
-
-        List<String> tags = new ArrayList<>();
-        for (VideoViewModel.PagesModel page : videoViewModel.getPages()) {
-            tags.add(String.format(Locale.getDefault(), "%1$s  %2$s", page.getPart(), formatSeconds(page.getDuration())));
-        }
-        mBinding.flowPlay.setItems(tags);
-        mBinding.flowPlay.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_NONE);
+        adapter.setNewInstance(videoViewModel.getPages());
     }
 
     public static String formatSeconds(long seconds) {

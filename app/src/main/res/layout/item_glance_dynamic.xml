@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_root"
+    android:id="@+id/cv_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp_4">
+    android:focusable="true"
+    app:cardMaxElevation="30dp"
+    tools:elevation="30dp"
+    app:contentPadding="@dimen/dp_10">
 
-    <ImageView
-        android:id="@+id/iv_cover"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/dp_4"
-        app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_cover" />
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/dp_4"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_4"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-        tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题" />
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_cover" />
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_4"
-        android:maxLines="1"
-        android:paddingStart="@dimen/dp_4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        tools:ignore="RtlSymmetry"
-        tools:text="24小时前 03-20" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
+            tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题" />
 
-    <TextView
-        android:id="@+id/tv_sub_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_4"
-        android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintEnd_toStartOf="@id/tv_time"
-        app:layout_constraintStart_toStartOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:maxLines="1"
+            android:paddingStart="@dimen/dp_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:ignore="RtlSymmetry"
+            tools:text="24小时前 03-20" />
+
+        <TextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

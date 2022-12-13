@@ -29,7 +29,8 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
     public void parsePlayUrl() {
         String qn = "120";
-        String fnval = "16";
+//        String fnval = "16";
+        String fnval = "1";
         String fnver = "0";
         String fourk = "1";
         videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval, fnver, fourk).subscribe(new LocalObserver<PlayUrlModel>() {
@@ -46,6 +47,9 @@ public class PlayerViewModel extends BaseCoreViewModel {
     }
 
     public String getDefaultResolution(PlayUrlModel model) {
+        if (model.getDurl() != null && model.getDurl().size() > 0) {  // MP4模式, 非dash
+            return model.getDurl().get(0).getUrl();
+        }
         int partitionSize = VIDEO_PARTITION_SIZE;
         final List<List<PlayUrlModel.DashModel.VideoModel>> partitions = new ArrayList<>();
         final List<PlayUrlModel.DashModel.VideoModel> videoModelList = model.getDash().getVideo();

@@ -1,5 +1,6 @@
 package com.github.log2c.b1lib1li_tv.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class PlayUrlModel {
@@ -14,6 +15,7 @@ public class PlayUrlModel {
     private int video_codecid;
     private String seek_param;
     private String seek_type;
+    private List<DUrlModel> durl;
     private DashModel dash;
     private Object high_format;
     private int last_play_time;
@@ -21,6 +23,14 @@ public class PlayUrlModel {
     private List<String> accept_description;
     private List<Integer> accept_quality;
     private List<SupportFormatsModel> support_formats;
+
+    public List<DUrlModel> getDurl() {
+        return durl;
+    }
+
+    public void setDurl(List<DUrlModel> durl) {
+        this.durl = durl;
+    }
 
     public String getFrom() {
         return from;
@@ -674,6 +684,72 @@ public class PlayUrlModel {
                     this.index_range = index_range;
                 }
             }
+        }
+    }
+
+    public static class DUrlModel implements Serializable {
+        private int order;
+        private int length;
+        private int size;
+        private String ahead;
+        private String vhead;
+        private String url;
+        private List<String> backup_url;
+
+        public int getOrder() {
+            return order;
+        }
+
+        public void setOrder(int order) {
+            this.order = order;
+        }
+
+        public int getLength() {
+            return length;
+        }
+
+        public void setLength(int length) {
+            this.length = length;
+        }
+
+        public int getSize() {
+            return size;
+        }
+
+        public void setSize(int size) {
+            this.size = size;
+        }
+
+        public String getAhead() {
+            return ahead;
+        }
+
+        public void setAhead(String ahead) {
+            this.ahead = ahead;
+        }
+
+        public String getVhead() {
+            return vhead;
+        }
+
+        public void setVhead(String vhead) {
+            this.vhead = vhead;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public List<String> getBackup_url() {
+            return backup_url;
+        }
+
+        public void setBackup_url(List<String> backup_url) {
+            this.backup_url = backup_url;
         }
     }
 

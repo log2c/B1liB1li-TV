@@ -5,7 +5,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -25,6 +27,15 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
 
     @Override
     protected void convert(@NonNull BaseViewHolder baseViewHolder, FeedModel.ItemsModel itemsModel) {
+        CardView view = baseViewHolder.getView(R.id.cv_root);
+        view.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                view.setCardElevation(ConvertUtils.dp2px(30));
+            } else {
+                view.setCardElevation(ConvertUtils.dp2px(2));
+            }
+        });
+
         View rootView = baseViewHolder.getView(R.id.item_root);
         ImageView avatar = baseViewHolder.getView(R.id.iv_avatar);
         ImageView cover = baseViewHolder.getView(R.id.iv_cover);
