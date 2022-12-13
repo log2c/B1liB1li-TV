@@ -12,6 +12,8 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.FeedAdapter;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDynamicBinding;
+import com.github.log2c.b1lib1li_tv.model.FeedModel;
+import com.github.log2c.b1lib1li_tv.ui.detail.DetailActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
 
     @Override
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-        //TODO 进入详情页
+        final FeedModel.ItemsModel model = mAdapter.getData().get(position);
+        DetailActivity.showActivity(this, model.getModules().getModule_dynamic().getMajor().getArchive().getBvid(), model.getModules().getModule_dynamic().getMajor().getArchive().getAid());
     }
 }

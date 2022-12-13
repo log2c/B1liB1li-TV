@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp_10"
+    tools:context=".ui.detail.DetailActivity">
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="iv_cover" />
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="标题标题标题标题标题标题标题标题标题" />
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="25dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar">
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_10"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textSize="12sp"
+            tools:text="UP主名称" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@drawable/ic_like" />
+
+        <TextView
+            android:id="@+id/tv_like"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            tools:text="99999亿粉丝" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@drawable/ic_coin" />
+
+        <TextView
+            android:id="@+id/tv_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            tools:text="99999亿粉丝" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@drawable/ic_favor" />
+
+        <TextView
+            android:id="@+id/tv_favor"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            tools:text="99999亿粉丝" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/dp_10"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@id/iv_avatar">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_play_count" />
+
+        <TextView
+            android:id="@+id/tv_play_count"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            tools:text="293949234" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@drawable/ic_danmu" />
+
+        <TextView
+            android:id="@+id/tv_danmuku"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            tools:text="弹幕数量" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@drawable/ic_time" />
+
+        <TextView
+            android:id="@+id/tv_pub_time"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            tools:text="发布时间" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:padding="@dimen/dp_4"
+        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        app:layout_constraintHeight_max="350dp"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:text="test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test." />
+
+    <com.xuexiang.xui.widget.flowlayout.FlowTagLayout
+        android:id="@+id/flow_play"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dp_10"
+        app:ftl_check_mode="single"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        app:layout_constraintStart_toStartOf="@id/tv_desc"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc" />
+</androidx.constraintlayout.widget.ConstraintLayout>

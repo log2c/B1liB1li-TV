@@ -29,4 +29,12 @@ public class VideoRepositoryImpl implements VideoRepository {
         form.put("fourk", fourk);
         return NetKit.getInstance().doGetWithFormBodyRx(Urls.GET_PLAY_URL, form, null, null);
     }
+
+    @Override
+    public Observable<String> videoView(String aid, String bvid) {
+        final HashMap<String, String> form = new HashMap<>();
+        form.put("aid", aid);
+        form.put("bvid", bvid);
+        return NetKit.getInstance().doGetWithFormBodyRx(Urls.VIDEO_VIEW, form, null, null);
+    }
 }
