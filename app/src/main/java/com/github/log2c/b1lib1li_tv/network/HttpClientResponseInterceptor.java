@@ -1,8 +1,7 @@
 package com.github.log2c.b1lib1li_tv.network;
 
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.utils.Logging;
 
 import org.apache.http.Header;
@@ -18,15 +17,9 @@ import java.util.List;
 public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
     private static final String SESSDATA_REGEX = "(?<=SESSDATA\\=)[^;]+";
     private static final String DEDE_USER_ID_REGEX = "(?<=DedeUserID\\=)\\d+";
-    private static SPUtils spUtils;
     private static HttpClientResponseInterceptor instance;
-    private String mSessdata;
-    private String mDedeUserId;
 
     private HttpClientResponseInterceptor() {
-        spUtils = SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API);
-        mSessdata = spUtils.getString(Constants.SP_BILIBILI_API_SESSDATA, "");
-        mDedeUserId = spUtils.getString(Constants.SP_BILIBILI_API_DEDEUSERID, "");
     }
 
     public static HttpClientResponseInterceptor create() {
@@ -63,20 +56,18 @@ public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
     }
 
     private void storeDedeUserId(String userId) {
-        spUtils.put(Constants.SP_BILIBILI_API_DEDEUSERID, userId);
-        mDedeUserId = userId;
+        AppConfigRepository.getInstance().storeDedeUserId(userId);
     }
 
     private void storeSessdata(String data) {
-        spUtils.put(Constants.SP_BILIBILI_API_SESSDATA, data);
-        mSessdata = data;
+        AppConfigRepository.getInstance().storeSessdata(data);
     }
 
     public String getSessdata() {
-        return mSessdata;
+        return AppConfigRepository.getInstance().fetchSessdata();
     }
 
     public String getDedeUserId() {
-        return mDedeUserId;
+        return AppConfigRepository.getInstance().fetchDedeUserId();
     }
 }

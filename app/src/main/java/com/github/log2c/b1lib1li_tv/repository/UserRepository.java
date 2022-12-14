@@ -15,8 +15,4 @@ public interface UserRepository {
     Observable<String> toView();
 
     Observable<String> history();
-
-    void storeUserMid(String mid);
-
-    String fetchUserMid();
 }

@@ -7,14 +7,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
@@ -56,15 +55,6 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         adapter = new BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder>(R.layout.item_tag_flow_adapter) {
             @Override
             protected void convert(@NonNull BaseViewHolder baseViewHolder, VideoViewModel.PagesModel page) {
-                CardView view = baseViewHolder.getView(R.id.cv_root);
-                view.setOnFocusChangeListener((v, hasFocus) -> {
-                    if (hasFocus) {
-                        view.setCardElevation(ConvertUtils.dp2px(30));
-                    } else {
-                        view.setCardElevation(ConvertUtils.dp2px(2));
-                    }
-                });
-
                 final String s = String.format(Locale.getDefault(), "%1$s  %2$s", page.getPart(), formatSeconds(page.getDuration()));
                 baseViewHolder.setText(R.id.tv_tag_item, s);
             }
@@ -84,7 +74,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
     private void fillData(VideoViewModel videoViewModel) {
         mBinding.tvTitle.setText(videoViewModel.getTitle());
         Glide.with(this).load(videoViewModel.getOwner().getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);
-        Glide.with(this).load(videoViewModel.getPic()).into(mBinding.ivCover);
+        Glide.with(this).load(videoViewModel.getPic()).transform(new RoundedCorners(12)).into(mBinding.ivCover);
 
         mBinding.tvAuthor.setText(videoViewModel.getOwner().getName());
         mBinding.tvLike.setText(videoViewModel.getStat().getLike() + "");

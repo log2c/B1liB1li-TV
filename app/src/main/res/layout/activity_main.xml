@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_image"
     tools:context=".ui.main.MainActivity">
 
     <LinearLayout
@@ -29,6 +30,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_10"
             android:minWidth="80dp"
+            android:nextFocusRight="@id/cv_dynamic"
+            android:nextFocusDown="@id/cv_dynamic"
             android:text="@string/un_login"
             android:textStyle="bold" />
     </LinearLayout>
@@ -52,9 +55,9 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/bilibili0"
-            app:cardElevation="6dp"
             app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/dp_10">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -72,9 +75,9 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/bilibili1"
-            app:cardElevation="6dp"
             app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/dp_10">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -92,9 +95,9 @@
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/bilibili2"
-            app:cardElevation="6dp"
             app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/dp_10">
 
             <ImageView
                 android:layout_width="match_parent"

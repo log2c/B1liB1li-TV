@@ -1,14 +1,13 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
-import static com.github.log2c.b1lib1li_tv.common.Constants.SP_NAME_CONFIG;
 import static com.github.log2c.b1lib1li_tv.common.Constants.VIDEO_PARTITION_SIZE;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.LocalObserver;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
@@ -57,7 +56,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
         for (int i = 0; i < videoModelList.size(); i += partitionSize) {
             partitions.add(videoModelList.subList(i, Math.min(i + partitionSize, videoModelList.size())));
         }
-        final int selectRes = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DEFAULT_RESOLUTION, Constants.DEFAULT_RESOLUTION);
+        final int selectRes = AppConfigRepository.getInstance().fetchDefaultResolution();
         if (model.getAccept_quality().contains(selectRes)) {
             final PlayUrlModel.DashModel.VideoModel videoModel = partitions.get(model.getAccept_quality().indexOf(selectRes)).get(0);
             Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));

@@ -23,17 +23,16 @@ public class DetailViewModel extends BaseCoreViewModel {
             showErrorToast("Aid 与 Bvid 不能同时为空！");
             return;
         }
-        videoRepository.videoView(aid, bvid)
-                .subscribe(new LocalObserver<VideoViewModel>() {
-                    @Override
-                    public void onSuccess(VideoViewModel model) {
-                        viewModelLiveEvent.postValue(model);
-                    }
+        videoRepository.videoView(aid, bvid).subscribe(new LocalObserver<VideoViewModel>() {
+            @Override
+            public void onSuccess(VideoViewModel model) {
+                viewModelLiveEvent.postValue(model);
+            }
 
-                    @Override
-                    public void onException(Throwable e) {
+            @Override
+            public void onException(Throwable e) {
 
-                    }
-                });
+            }
+        });
     }
 }

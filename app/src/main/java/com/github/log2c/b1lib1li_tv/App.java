@@ -5,6 +5,7 @@ import android.app.Application;
 import com.dueeeke.videoplayer.exo.ExoMediaPlayerFactory;
 import com.dueeeke.videoplayer.player.VideoViewConfig;
 import com.dueeeke.videoplayer.player.VideoViewManager;
+import com.github.log2c.b1lib1li_tv.common.CrashHandler;
 import com.github.log2c.base.base.BaseCoreApplication;
 
 public class App extends Application {
@@ -13,6 +14,8 @@ public class App extends Application {
         super.onCreate();
         BaseCoreApplication.init(this, BuildConfig.DEBUG);
         initCore();
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());
     }
 
     private void initCore() {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_image"
     android:padding="@dimen/dp_10"
     tools:context=".ui.detail.DetailActivity">
 
@@ -16,7 +17,7 @@
 
     <ImageView
         android:id="@+id/iv_cover"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +27,8 @@
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:maxLines="2"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +62,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="UP主名称" />
 
         <ImageView
@@ -77,7 +79,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="99999亿粉丝" />
 
         <ImageView
@@ -94,7 +96,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="99999亿粉丝" />
 
         <ImageView
@@ -111,7 +113,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="99999亿粉丝" />
     </LinearLayout>
 
@@ -138,7 +140,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="293949234" />
 
         <ImageView
@@ -155,7 +157,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="弹幕数量" />
 
         <ImageView
@@ -172,7 +174,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:textSize="16sp"
             tools:text="发布时间" />
 
     </LinearLayout>
@@ -183,8 +185,9 @@
         android:layout_height="100dp"
         android:minHeight="100dp"
         android:padding="@dimen/dp_4"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
-        app:layout_constraintHeight_max="350dp"
+        app:layout_constraintHeight_max="300dp"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:text="test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test." />
@@ -197,8 +200,6 @@
         android:clipToPadding="false"
         android:focusable="true"
         android:overScrollMode="never"
-        android:padding="@dimen/dp_10"
-        app:ftl_check_mode="single"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
         app:layout_constraintStart_toStartOf="@id/tv_desc"
         app:layout_constraintTop_toBottomOf="@id/tv_desc" />

@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -27,12 +28,18 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
 
     @Override
     protected void convert(@NonNull BaseViewHolder baseViewHolder, FeedModel.ItemsModel itemsModel) {
-        CardView view = baseViewHolder.getView(R.id.cv_root);
-        view.setOnFocusChangeListener((v, hasFocus) -> {
+        CardView cv = baseViewHolder.getView(R.id.cv_root);
+        cv.setCardElevation(0f);
+        cv.setOnFocusChangeListener((v, hasFocus) -> {
+            CardView card = (CardView) v;
             if (hasFocus) {
-                view.setCardElevation(ConvertUtils.dp2px(30));
+                card.setScaleX(1.1f);
+                card.setScaleY(1.1f);
+                card.setCardElevation(ConvertUtils.dp2px(15));
             } else {
-                view.setCardElevation(ConvertUtils.dp2px(2));
+                card.setCardElevation(0f);
+                card.setScaleX(1f);
+                card.setScaleY(1f);
             }
         });
 
@@ -45,7 +52,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
 
         try {
             Glide.with(avatar).load(itemsModel.getModules().getModule_author().getFace()).transform(new CircleCrop()).into(avatar);
-            Glide.with(avatar).load(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getCover()).into(cover);
+            Glide.with(avatar).load(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getCover()).transform(new RoundedCorners(12)).into(cover);
 
             title.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getTitle());
             subTitle.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getDesc());

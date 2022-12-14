@@ -3,8 +3,7 @@ package com.github.log2c.b1lib1li_tv.network;
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.utils.Logging;
 
 import java.util.ArrayList;
@@ -19,12 +18,8 @@ public class BiliBiliCookie implements CookieJar {
     private static final String TAG = BiliBiliCookie.class.getSimpleName();
     private static BiliBiliCookie instance;
     private static final String REGEX = "(?<=SESSDATA\\=)[^;]+";
-    private static SPUtils spUtils;
-    private String mSessdata;
 
     private BiliBiliCookie() {
-        spUtils = SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API);
-        mSessdata = spUtils.getString(Constants.SP_BILIBILI_API_SESSDATA, "");
     }
 
     public static BiliBiliCookie create() {
@@ -41,7 +36,7 @@ public class BiliBiliCookie implements CookieJar {
             final Cookie sessdata = new Cookie.Builder()
                     .domain("bilibili.com")
                     .name("SESSDATA")
-                    .value(mSessdata)
+                    .value(AppConfigRepository.getInstance().fetchSessdata())
                     .build();
             return Collections.singletonList(sessdata);
         }
@@ -66,7 +61,6 @@ public class BiliBiliCookie implements CookieJar {
     }
 
     private void storeSessdata(String data) {
-        spUtils.put(Constants.SP_BILIBILI_API_SESSDATA, data);
-        mSessdata = data;
+        AppConfigRepository.getInstance().storeSessdata(data);
     }
 }

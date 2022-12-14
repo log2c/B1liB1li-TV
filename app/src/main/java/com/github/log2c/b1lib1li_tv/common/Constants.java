@@ -12,11 +12,13 @@ public class Constants {
     public static final String SP_BILIBILI_API_DEDEUSERID = "DedeUserID";
     public static final String SP_DEFAULT_RESOLUTION = "default_resolution";
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清
+    public static final int DEFAULT_DYNAMIC_SPAN_COUNT = 3;
     public static final String REFERER = "https://www.bilibili.com";
     public static final Map<String, String> PLAYER_HEADERS = new HashMap<>();
     public static final int VIDEO_PARTITION_SIZE = 2;  // 每2个一组
     public static final int RESPONSE_CODE_OK = 0;
     public static final int RESPONSE_CODE_UN_LOGIN = -101;  // 账号未登录
+    public static final String SP_DYNAMIC_SPAN_COUNT = "dynamic_span_count";
 
     static {
         PLAYER_HEADERS.put("referer", REFERER);

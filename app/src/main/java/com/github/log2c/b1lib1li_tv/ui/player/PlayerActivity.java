@@ -1,7 +1,6 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
 import static com.dueeeke.videoplayer.player.VideoView.STATE_PLAYBACK_COMPLETED;
-import static com.github.log2c.b1lib1li_tv.common.Constants.SP_NAME_CONFIG;
 import static com.github.log2c.b1lib1li_tv.common.Constants.VIDEO_PARTITION_SIZE;
 
 import android.app.Activity;
@@ -14,13 +13,13 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.dueeeke.videocontroller.StandardVideoController;
 import com.dueeeke.videoplayer.player.VideoView;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
 import com.xuexiang.xui.widget.popupwindow.popup.XUISimplePopup;
 
@@ -175,7 +174,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("请选择分辨率").setItems(menus, (dialog, which) -> {
-            storeResolution(model.getAccept_quality().get(which));
+            AppConfigRepository.getInstance().storeResolution(model.getAccept_quality().get(which));
             if (dashMode) {
                 if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
                     playVideo(partitions.get(which).get(0).getBaseUrl(), model.getDash().getAudio().get(0).getBaseUrl());
@@ -190,9 +189,5 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             }
         });
         builder.create().show();
-    }
-
-    private void storeResolution(int quality) {
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DEFAULT_RESOLUTION, quality);
     }
 }

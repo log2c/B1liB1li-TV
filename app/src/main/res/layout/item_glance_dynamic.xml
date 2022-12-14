@@ -6,9 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
-    app:cardMaxElevation="30dp"
-    tools:elevation="30dp"
-    app:contentPadding="@dimen/dp_10">
+    app:cardBackgroundColor="@android:color/transparent"
+    app:contentPadding="30dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_root"

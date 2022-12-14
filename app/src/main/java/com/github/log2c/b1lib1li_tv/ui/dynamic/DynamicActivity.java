@@ -13,6 +13,7 @@ import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.FeedAdapter;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDynamicBinding;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.detail.DetailActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
 
@@ -34,7 +35,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
     @Override
     public void initView(@Nullable Bundle bundle) {
         mAdapter = new FeedAdapter();
-        mBinding.recyclerview.setLayoutManager(new GridLayoutManager(this, 3));
+        mBinding.recyclerview.setLayoutManager(new GridLayoutManager(this, AppConfigRepository.getInstance().getDynamicSpanCount()));
         mBinding.recyclerview.setAdapter(mAdapter);
         mAdapter.setNewInstance(new ArrayList<>());
         mAdapter.getLoadMoreModule().setAutoLoadMore(true);
@@ -47,7 +48,6 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
         });
         viewModel.refreshEvent.observe(this, s -> {
             mAdapter.setNewInstance(new ArrayList<>());
-            viewModel.data.clear();
         });
 
         viewModel.loadFeedInfo();

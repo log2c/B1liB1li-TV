@@ -8,8 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="fontColorPrimary">#FFFFFF</color>
+    <color name="bilibiliBg0">#fb7299</color>
     <color name="bilibili0">#ff8ba3</color>
     <color name="bilibili1">#62c0eb</color>
     <color name="bilibili2">#6aecc8</color>
     <color name="bilibili3">#ffce3a</color>
+    <color name="bilibili4">#fb7299</color>
 </resources>
