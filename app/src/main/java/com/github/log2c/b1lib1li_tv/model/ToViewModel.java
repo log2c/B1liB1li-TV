@@ -42,7 +42,7 @@ public class ToViewModel {
         @SerializedName("title")
         private String title;
         @SerializedName("pubdate")
-        private int pubdate;
+        private long pubdate;
         @SerializedName("ctime")
         private int ctime;
         @SerializedName("desc")
@@ -146,11 +146,11 @@ public class ToViewModel {
             this.title = title;
         }
 
-        public int getPubdate() {
+        public long getPubdate() {
             return pubdate;
         }
 
-        public void setPubdate(int pubdate) {
+        public void setPubdate(long pubdate) {
             this.pubdate = pubdate;
         }
 

@@ -15,7 +15,7 @@ import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityMainBinding;
 import com.github.log2c.b1lib1li_tv.ui.dynamic.DynamicActivity;
 import com.github.log2c.b1lib1li_tv.ui.login.LoginActivity;
-import com.github.log2c.base.toast.ToastUtils;
+import com.github.log2c.b1lib1li_tv.ui.toview.ToviewActivity;
 
 public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBinding> implements View.OnFocusChangeListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -41,21 +41,15 @@ public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBind
         Glide.with(this).load(R.drawable.ic_avatar_bilibili).transform(new CircleCrop()).into(mBinding.ivAvatar);
 
         mBinding.btLogin.setOnClickListener(v -> startActivity(new Intent(this, LoginActivity.class)));
-
-        mBinding.cvDynamic.setOnClickListener(v -> {
-            try {
-                startActivity(new Intent(this, DynamicActivity.class));
-            } catch (Exception e) {
-                ToastUtils.showLong(e.getMessage());
-            }
-        });
+        mBinding.cvDynamic.setOnClickListener(v -> startActivity(new Intent(this, DynamicActivity.class)));
+        mBinding.cvToview.setOnClickListener(v -> startActivity(new Intent(this, ToviewActivity.class)));
 
         viewModel.navUserInfoEvent.observe(this, model -> {
             Glide.with(this).load(model.getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);
             mBinding.btLogin.setText(model.getUname());
         });
 
-        mBinding.cvFavor.setOnFocusChangeListener(this);
+        mBinding.cvToview.setOnFocusChangeListener(this);
         mBinding.cvDynamic.setOnFocusChangeListener(this);
         mBinding.cvHistory.setOnFocusChangeListener(this);
     }
