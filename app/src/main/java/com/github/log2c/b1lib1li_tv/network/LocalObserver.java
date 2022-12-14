@@ -16,6 +16,14 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public abstract class LocalObserver<T> implements Observer<String> {
+    private boolean ignoreCodeError = false;
+
+    public LocalObserver() {
+    }
+
+    public LocalObserver(boolean ignoreCodeError) {
+        this.ignoreCodeError = ignoreCodeError;
+    }
 
     public abstract void onSuccess(T model);
 
@@ -41,7 +49,7 @@ public abstract class LocalObserver<T> implements Observer<String> {
             BaseModel<T> model = GsonUtils.fromJson(json, typeToken.getType());
             if (!isCodeError(model.code())) {
                 onSuccess(model.data());
-            } else {
+            } else if (!ignoreCodeError) {
                 onCodeError(model.getCode(), model.getMessage());
             }
         } else {

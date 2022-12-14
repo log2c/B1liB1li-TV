@@ -6,6 +6,8 @@ public interface UserRepository {
 
     Observable<String> getUserStat();
 
+    Observable<String> getNavUserInfo();
+
     Observable<String> getCoin();
 
     Observable<String> getFeed(String type, int page, String offset);
@@ -13,4 +15,8 @@ public interface UserRepository {
     Observable<String> toView();
 
     Observable<String> history();
+
+    void storeUserMid(String mid);
+
+    String fetchUserMid();
 }

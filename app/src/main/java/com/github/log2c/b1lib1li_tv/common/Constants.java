@@ -8,6 +8,7 @@ public class Constants {
     public static final String SP_NAME_BILIBILI_API = "bilibili_api_data";
     public static final String SP_NAME_CONFIG = "app_config";
     public static final String SP_BILIBILI_API_SESSDATA = "sessdata";
+    public static final String SP_BILIBILI_MID = "mid";
     public static final String SP_BILIBILI_API_DEDEUSERID = "DedeUserID";
     public static final String SP_DEFAULT_RESOLUTION = "default_resolution";
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清

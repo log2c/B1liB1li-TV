@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.aleyn.mvvm.base.BaseVMActivity;
-import com.aleyn.mvvm.base.NoViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.github.log2c.b1lib1li_tv.R;
@@ -14,7 +13,7 @@ import com.github.log2c.b1lib1li_tv.databinding.ActivityMainBinding;
 import com.github.log2c.b1lib1li_tv.ui.dynamic.DynamicActivity;
 import com.github.log2c.b1lib1li_tv.ui.login.LoginActivity;
 
-public class MainActivity extends BaseVMActivity<NoViewModel, ActivityMainBinding> {
+public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBinding> {
     private static final String TAG = MainActivity.class.getSimpleName();
 
 
@@ -25,7 +24,12 @@ public class MainActivity extends BaseVMActivity<NoViewModel, ActivityMainBindin
 
     @Override
     public void initData() {
+        viewModel.fetchUserInfo();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -36,6 +40,9 @@ public class MainActivity extends BaseVMActivity<NoViewModel, ActivityMainBindin
 
         mBinding.cvDynamic.setOnClickListener(v -> startActivity(new Intent(this, DynamicActivity.class)));
 
-//        mBinding.cvFavor.setOnClickListener(v -> startActivity(new Intent(this, DynamicActivity.class)));
+        viewModel.navUserInfoEvent.observe(this, model -> {
+            Glide.with(this).load(model.getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);
+            mBinding.btLogin.setText(model.getUname());
+        });
     }
 }

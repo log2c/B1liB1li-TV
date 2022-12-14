@@ -1,6 +1,8 @@
 package com.github.log2c.b1lib1li_tv.repository.impl;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.network.NetKit;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
@@ -15,6 +17,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<String> getUserStat() {
         return NetKit.getInstance().doGetRx(Urls.NAV_STAT, null, null);
+    }
+
+    @Override
+    public Observable<String> getNavUserInfo() {
+        return NetKit.getInstance().doGetRx(Urls.NAV_USER_INFO, null, null);
     }
 
     @Override
@@ -42,5 +49,15 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<String> history() {
         return NetKit.getInstance().doGetRx(Urls.HISTORY, null, null);
+    }
+
+    @Override
+    public void storeUserMid(String mid) {
+        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_BILIBILI_MID, mid);
+    }
+
+    @Override
+    public String fetchUserMid() {
+        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_MID, "");
     }
 }
