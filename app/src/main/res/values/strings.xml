@@ -3,4 +3,5 @@
     <string name="tip_login_success">登录成功！</string>
     <string name="refresh">刷新</string>
     <string name="un_login">未登录</string>
+    <string name="tip_un_login">账号未登录或登录已失效!</string>
 </resources>

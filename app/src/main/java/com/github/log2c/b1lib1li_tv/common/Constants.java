@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
-
     public static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Safari/605.1.15";
     public static final String SP_NAME_BILIBILI_API = "bilibili_api_data";
     public static final String SP_NAME_CONFIG = "app_config";
@@ -12,10 +11,11 @@ public class Constants {
     public static final String SP_BILIBILI_API_DEDEUSERID = "DedeUserID";
     public static final String SP_DEFAULT_RESOLUTION = "default_resolution";
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清
-    public static final int RESPONSE_CODE_OK = 0;
     public static final String REFERER = "https://www.bilibili.com";
     public static final Map<String, String> PLAYER_HEADERS = new HashMap<>();
     public static final int VIDEO_PARTITION_SIZE = 2;  // 每2个一组
+    public static final int RESPONSE_CODE_OK = 0;
+    public static final int RESPONSE_CODE_UN_LOGIN = -101;  // 账号未登录
 
     static {
         PLAYER_HEADERS.put("referer", REFERER);

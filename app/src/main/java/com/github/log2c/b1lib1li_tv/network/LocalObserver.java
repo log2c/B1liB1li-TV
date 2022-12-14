@@ -1,8 +1,11 @@
 package com.github.log2c.b1lib1li_tv.network;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.GsonUtils;
+import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.BaseModel;
+import com.github.log2c.base.toast.ToastUtils;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.ParameterizedType;
@@ -12,7 +15,6 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-//public abstract class LocalObserver<M, T extends BaseModel<M>> implements Observer<T> {
 public abstract class LocalObserver<T> implements Observer<String> {
 
     public abstract void onSuccess(T model);
@@ -40,7 +42,7 @@ public abstract class LocalObserver<T> implements Observer<String> {
             if (!isCodeError(model.code())) {
                 onSuccess(model.data());
             } else {
-                onException(new BilibiliThrowable(model.getMessage()));
+                onCodeError(model.getCode(), model.getMessage());
             }
         } else {
             onException(new BilibiliThrowable("TypeToken exception."));
@@ -48,15 +50,20 @@ public abstract class LocalObserver<T> implements Observer<String> {
         onFinish();
     }
 
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    public void onNext(BaseModel res) {
-//        if (!isCodeError(res.code())) {
-//            onSuccess((T) res.data());
-//        } else {
-//            onException(new BilibiliThrowable(res.getMessage()));
-//        }
-//    }
+    private void onCodeError(int code, String msg) {
+        if (code == Constants.RESPONSE_CODE_UN_LOGIN) {
+            ToastUtils.warning(R.string.tip_un_login);
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                AppUtils.relaunchApp(true);
+            }).start();
+        } else
+            onException(new BilibiliThrowable(msg));
+    }
 
     @Override
     public void onError(Throwable e) {
@@ -72,6 +79,7 @@ public abstract class LocalObserver<T> implements Observer<String> {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     private TypeToken<?> getCompactTypeDynamic() {
         ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
         Type[] types = parameterizedType.getActualTypeArguments();

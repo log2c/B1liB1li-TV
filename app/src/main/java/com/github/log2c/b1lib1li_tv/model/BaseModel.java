@@ -3,6 +3,7 @@ package com.github.log2c.b1lib1li_tv.model;
 import androidx.annotation.NonNull;
 
 import com.aleyn.mvvm.base.IBaseResponse;
+import com.github.log2c.b1lib1li_tv.common.Constants;
 
 public class BaseModel<T> extends com.aleyn.mvvm.base.BaseModel implements IBaseResponse<T> {
     private int code;
@@ -12,7 +13,7 @@ public class BaseModel<T> extends com.aleyn.mvvm.base.BaseModel implements IBase
 
     @Override
     public int code() {
-        return 0;
+        return code;
     }
 
     @Override
@@ -22,7 +23,7 @@ public class BaseModel<T> extends com.aleyn.mvvm.base.BaseModel implements IBase
 
     @Override
     public boolean isSuccess() {
-        return true;
+        return code == Constants.RESPONSE_CODE_OK;
     }
 
     @NonNull

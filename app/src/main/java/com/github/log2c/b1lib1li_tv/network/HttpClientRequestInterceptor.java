@@ -2,6 +2,7 @@ package com.github.log2c.b1lib1li_tv.network;
 
 import android.net.Uri;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 
 import org.apache.http.HttpException;
@@ -16,6 +17,9 @@ public class HttpClientRequestInterceptor implements HttpRequestInterceptor {
     @Override
     public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
         try {
+            if (StringUtils.isTrimEmpty(HttpClientResponseInterceptor.create().getSessdata())) {
+                return;
+            }
             final String url = ((HttpHost) context.getAttribute("http.target_host")).getHostName();
             for (String allowDomain : Constants.COOKIE_ALLOWED_LIST) {
                 if (Uri.parse(url).toString().equals(allowDomain)) {
