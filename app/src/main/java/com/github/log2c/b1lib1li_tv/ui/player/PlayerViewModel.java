@@ -82,7 +82,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     }
 
     public void fetchDanmuku() {
-        if (StringUtils.isTrimEmpty(cid)) {
+        if (StringUtils.isTrimEmpty(cid) || !AppConfigRepository.getInstance().fetchDanmakuToggle()) {
             return;
         }
         videoRepository.fetchDanmukuLocalFilePath(cid)

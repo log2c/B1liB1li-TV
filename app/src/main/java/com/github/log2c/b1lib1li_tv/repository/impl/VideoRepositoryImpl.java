@@ -49,16 +49,14 @@ public class VideoRepositoryImpl implements VideoRepository {
         final String xmlFileName = cid + ".xml";
         final String xmlFullPath = PathUtils.join(AppConfigRepository.getInstance().getDanmukuCacheDir(), xmlFileName);
         if (FileUtils.isFileExists(xmlFullPath)) {
-            return Observable.just(xmlFullPath).observeOn(AndroidSchedulers.mainThread());
+//            return Observable.just(xmlFullPath).observeOn(AndroidSchedulers.mainThread());
+            FileUtils.delete(xmlFullPath);
         }
         final HashMap<String, String> form = new HashMap<>();
         form.put("oid", cid);
-        return NetKit.getInstance().doGetWithFormBodyRx(Urls.DANMUKU, form, null, null)
-                .map(s -> {
-                    FileIOUtils.writeFileFromString(xmlFullPath, s);
-                    return xmlFullPath;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return NetKit.getInstance().doGetWithFormBodyRx(Urls.DANMUKU, form, null, null).map(s -> {
+            FileIOUtils.writeFileFromString(xmlFullPath, s);
+            return xmlFullPath;
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -26,6 +26,7 @@ import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
+import com.github.log2c.base.toast.ToastUtils;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -241,6 +242,9 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         spannableString.setSpan(new AbsoluteSizeSpan(ConvertUtils.sp2px(28)), spannableString.length() - 1, spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 
         builder.setTitle("弹幕开关").setMessage(spannableString).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setNegativeButton(btnStr, (dialog, which) -> {
+            if (!mBinding.player.isShowDanmaku()) {
+                ToastUtils.showLong("下次打开播放页时生效!");
+            }
             AppConfigRepository.getInstance().storeDanmakuToggle(!mBinding.player.isShowDanmaku());
             mBinding.player.setDanmakuShow(!mBinding.player.isShowDanmaku());
         }).create().show();
