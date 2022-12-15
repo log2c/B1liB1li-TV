@@ -69,17 +69,17 @@ ext {
             XUI                  : 'com.github.xuexiangjys:XUI:1.2.0',
             SuperTextView        : 'com.github.lygttpod:SuperTextView:2.4.6',
             // Logger   https://github.com/orhanobut/logger
-            logger               : 'com.orhanobut:logger:2.2.0',
+            logger            : 'com.orhanobut:logger:2.2.0',
             // RxJava
-            rxJava               : 'io.reactivex.rxjava2:rxjava:2.2.21',
-            rxAndroid            : 'io.reactivex.rxjava2:rxandroid:2.1.1',
-            'android-saripaar'   : 'com.mobsandgeeks:android-saripaar:2.0.3',   // EditText 验证
-            arouter              : 'com.alibaba:arouter-api:1.5.0',
-            'arouter-compiler'   : 'com.alibaba:arouter-compiler:1.2.2',
-            xxpermissions        : 'com.hjq:xxpermissions:16.2',
-            QRGen                : "com.github.kenglxn.QRGen:android:3.0.1",
-            xpopup               : 'com.github.li-xiaojun:XPopup:2.9.16',
-            GSYVideoPlayer       : "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack"
+            rxJava            : 'io.reactivex.rxjava2:rxjava:2.2.21',
+            rxAndroid         : 'io.reactivex.rxjava2:rxandroid:2.1.1',
+            'android-saripaar': 'com.mobsandgeeks:android-saripaar:2.0.3',   // EditText 验证
+            arouter           : 'com.alibaba:arouter-api:1.5.0',
+            'arouter-compiler': 'com.alibaba:arouter-compiler:1.2.2',
+            xxpermissions     : 'com.hjq:xxpermissions:16.2',
+            QRGen             : "com.github.kenglxn.QRGen:android:3.0.1",
+            xpopup            : 'com.github.li-xiaojun:XPopup:2.9.16',
+            GSYVideoPlayer    : "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack"
     ]
 
     dkplayer_lib = [
@@ -90,8 +90,14 @@ ext {
             'videocache'   : 'com.github.dueeeke.dkplayer:videocache:3.2.6'
     ]
 
+    danmuku = [
+            DanmakuFlameMaster: 'com.github.ctiao:DanmakuFlameMaster:0.9.25',
+            ndkbitmap         : 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
+    ]
+
     androidxs = androidx.values()
     network = retrofit.values()
     test = retrofit.values()
     dkplayer = dkplayer_lib.values()
+    danmukus = danmuku.values()
 }

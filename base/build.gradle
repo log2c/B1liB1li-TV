@@ -46,6 +46,7 @@ dependencies {
     api rootProject.ext.androidxs
     api rootProject.ext.network
     api rootProject.ext.test
+    api rootProject.ext.danmukus
 //    api rootProject.ext.dkplayer
 
     api rootProject.ext.dependencies.MVVMLin
