@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.player.PlayerActivity">
 
-    <com.github.log2c.b1lib1li_tv.ui.player.ExoVideoView
+    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
         android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

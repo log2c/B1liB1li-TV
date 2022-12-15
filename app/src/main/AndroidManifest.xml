@@ -27,6 +27,7 @@
         <activity
             android:name=".ui.player.PlayerActivity"
             android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.app.lib_name"

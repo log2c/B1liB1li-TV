@@ -2,11 +2,11 @@ package com.github.log2c.b1lib1li_tv;
 
 import android.app.Application;
 
-import com.dueeeke.videoplayer.exo.ExoMediaPlayerFactory;
-import com.dueeeke.videoplayer.player.VideoViewConfig;
-import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.github.log2c.b1lib1li_tv.common.CrashHandler;
 import com.github.log2c.base.base.BaseCoreApplication;
+import com.shuyu.gsyvideoplayer.player.PlayerFactory;
+
+import tv.danmaku.ijk.media.exo2.Exo2PlayerManager;
 
 public class App extends Application {
     @Override
@@ -19,14 +19,6 @@ public class App extends Application {
     }
 
     private void initCore() {
-        VideoViewManager.setConfig(VideoViewConfig.newBuilder()
-                .setLogEnabled(true)
-//                //使用使用IjkPlayer解码
-//                .setPlayerFactory(IjkPlayerFactory.create())
-//                //使用ExoPlayer解码
-                .setPlayerFactory(ExoMediaPlayerFactory.create())
-                //使用MediaPlayer解码
-//                .setPlayerFactory(AndroidMediaPlayerFactory.create())
-                .build());
+        PlayerFactory.setPlayManager(Exo2PlayerManager.class);
     }
 }

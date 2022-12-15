@@ -1,11 +1,12 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
-import static com.dueeeke.videoplayer.player.VideoView.STATE_PLAYBACK_COMPLETED;
 import static com.github.log2c.b1lib1li_tv.common.Constants.VIDEO_PARTITION_SIZE;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,26 +14,40 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.dueeeke.videocontroller.StandardVideoController;
-import com.dueeeke.videoplayer.player.VideoView;
+import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
-import com.xuexiang.xui.widget.popupwindow.popup.XUISimplePopup;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.TransferListener;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoView;
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener;
+import tv.danmaku.ijk.media.exo2.ExoSourceManager;
 
 public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> {
     private static final String TAG = PlayerActivity.class.getSimpleName();
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
-    private ExoVideoView videoView;
-    private XUISimplePopup mMenuPopup;
+    private StandardGSYVideoPlayer videoView;
     private boolean dashMode;
 
 
@@ -65,21 +80,65 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MENU:
+                showMenuPopup();
+                break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                doForward();
+                break;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                doPauseOrStart();
+                break;
+            default:
+                return super.dispatchKeyEvent(event);
+        }
+        return true;
+    }
+
+    private void doPauseOrStart() {
+        if (isPlaying()) {
+            mBinding.player.getCurrentPlayer().onVideoPause();
+        } else {
+            mBinding.player.getCurrentPlayer().onVideoResume();
+        }
+    }
+
+    public boolean isPlaying() {
+        return mBinding.player.getCurrentState() == GSYVideoView.CURRENT_STATE_PLAYING;
+    }
+
+    /**
+     * 快进
+     */
+    private void doForward() {
+        if (isPlaying()) {
+            final GSYVideoViewBridge manager = mBinding.player.getCurrentPlayer().getGSYVideoManager();
+            final long seek = 5 * 1000;
+            Log.d(TAG, "doForward: current " + manager.getCurrentPosition());
+            manager.seekTo(manager.getCurrentPosition() + seek);
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        videoView.pause();
+        GSYVideoManager.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        videoView.resume();
+        GSYVideoManager.onResume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        videoView.release();
+        GSYVideoManager.releaseAllVideos();
     }
 
 
@@ -87,42 +146,61 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-//        if (!videoView.onBackPressed()) {
-//        }
     }
 
     @Override
     public void initView(@Nullable Bundle bundle) {
         videoView = mBinding.player;
-        videoView.addOnStateChangeListener(new VideoView.OnStateChangeListener() {
-            @Override
-            public void onPlayerStateChanged(int playerState) {
 
-            }
-
-            @Override
-            public void onPlayStateChanged(int playState) {
-                if (playState == STATE_PLAYBACK_COMPLETED) {
-                    finish();
-                }
-            }
-        });
-        videoView.startFullScreen();
-        videoView.setMute(false);
         viewModel.playUrlModelEvent.observe(this, playUrlModel -> {
             final String videoUrl = viewModel.getDefaultResolution(playUrlModel);
             if (playUrlModel.getDash() != null && playUrlModel.getDash().getAudio() != null && !playUrlModel.getDash().getAudio().isEmpty()) {
                 playVideo(videoUrl, playUrlModel.getDash().getAudio().get(0).getBaseUrl());
             } else playVideo(videoUrl, null);
         });
+
+        videoView.setGSYStateUiListener(state -> {
+            Log.i(TAG, "GSYStateUiListener: " + state);
+        });
     }
 
     private void playVideo(String videoUrl, @Nullable String audioUrl) {
-        StandardVideoController controller = new StandardVideoController(this);
-        controller.addDefaultControlComponent("标题", false);
-        videoView.setVideoController(controller); //设置控制器
-        videoView.setUrl(videoUrl, audioUrl, Constants.PLAYER_HEADERS);
-        videoView.start();
+        if (StringUtils.isTrimEmpty(audioUrl)) {
+            return;
+        }
+        final DataSource.Factory factory = () -> {
+            HttpDataSource dataSource = new DefaultHttpDataSource.Factory().setUserAgent(Constants.DEFAULT_USER_AGENT).createDataSource();
+            for (String key : Constants.PLAYER_HEADERS.keySet()) {
+                dataSource.setRequestProperty(key, Constants.PLAYER_HEADERS.get(key));
+            }
+            return dataSource;
+        };
+        final MediaSource videoSource = new ProgressiveMediaSource.Factory(factory).createMediaSource(MediaItem.fromUri(Uri.parse(videoUrl)));
+        final MediaSource audioSource = new ProgressiveMediaSource.Factory(factory).createMediaSource(MediaItem.fromUri(Uri.parse(audioUrl)));
+        final MediaSource mediaSource = new MergingMediaSource(videoSource, audioSource);
+
+        ExoSourceManager.setExoMediaSourceInterceptListener(new ExoMediaSourceInterceptListener() {
+            /**
+             * @param dataSource  链接
+             * @param preview     是否带上header，默认有header自动设置为true
+             * @param cacheEnable 是否需要缓存
+             * @param isLooping   是否循环
+             * @param cacheDir    自定义缓存目录
+             * @return 返回不为空时，使用返回的自定义mediaSource
+             */
+            @Override
+            public MediaSource getMediaSource(String dataSource, boolean preview, boolean cacheEnable, boolean isLooping, File cacheDir) {
+                return mediaSource;
+            }
+
+            @Override
+            public DataSource.Factory getHttpDataSourceFactory(String s, @Nullable TransferListener transferListener, int i, int i1, Map<String, String> map, boolean b) {
+                return factory;
+            }
+        });
+
+        mBinding.player.setUp(videoUrl, true, "");
+        videoView.startPlayLogic();
     }
 
     private void showMenuPopup() {
@@ -130,15 +208,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("选择").setItems(menu, (dialog, which) -> showResolutionSetting());
         builder.create().show();
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
-            showMenuPopup();
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
     }
 
     private void showResolutionSetting() {
