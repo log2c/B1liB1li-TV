@@ -67,7 +67,7 @@ ext {
             'bdclta-rv'          : 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.1.1',
             // XUI  https://github.com/xuexiangjys/XUI/wiki
             XUI                  : 'com.github.xuexiangjys:XUI:1.2.0',
-            SuperTextView        : 'com.github.lygttpod:SuperTextView:2.4.5',
+            SuperTextView        : 'com.github.lygttpod:SuperTextView:2.4.6',
             // Logger   https://github.com/orhanobut/logger
             logger               : 'com.orhanobut:logger:2.2.0',
             // RxJava

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_image"
     android:padding="@dimen/dp_40"
     tools:context=".ui.login.LoginActivity">
 
@@ -20,11 +21,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.allen.library.SuperButton
         android:id="@+id/bt_refresh"
+        style="@style/AppTheme.Button.Blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp_40"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_40"
+        android:paddingBottom="@dimen/dp_10"
         android:text="@string/refresh"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

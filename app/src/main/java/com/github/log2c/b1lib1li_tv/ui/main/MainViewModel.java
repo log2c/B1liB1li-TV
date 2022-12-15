@@ -1,6 +1,7 @@
 package com.github.log2c.b1lib1li_tv.ui.main;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
+import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
 import com.github.log2c.b1lib1li_tv.network.LocalObserver;
@@ -13,6 +14,7 @@ import com.github.log2c.base.toast.ToastUtils;
 public class MainViewModel extends BaseCoreViewModel {
     private final UserRepository userRepository;
     public final SingleLiveEvent<NavUserInfoModel> navUserInfoEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<Void> unLoginEvent = new SingleLiveEvent<>();
 
     public MainViewModel() {
         userRepository = new UserRepositoryImpl();
@@ -45,5 +47,11 @@ public class MainViewModel extends BaseCoreViewModel {
 
     private void storeUserInfo(NavUserInfoModel model) {
         AppConfigRepository.getInstance().storeUserMid(model.getMid() + "");
+    }
+
+    public void checkIsLogin() {
+        if (StringUtils.isTrimEmpty(AppConfigRepository.getInstance().fetchSessdata())) {
+            unLoginEvent.call();
+        }
     }
 }

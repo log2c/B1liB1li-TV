@@ -27,20 +27,21 @@ public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBind
     }
 
     @Override
-    public void initData() {
+    protected void onResume() {
+        super.onResume();
         viewModel.fetchUserInfo();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void initData() {
+        viewModel.checkIsLogin();
     }
 
     @Override
     public void initView(@Nullable Bundle bundle) {
         Glide.with(this).load(R.drawable.ic_avatar_bilibili).transform(new CircleCrop()).into(mBinding.ivAvatar);
 
-        mBinding.btLogin.setOnClickListener(v -> startActivity(new Intent(this, LoginActivity.class)));
+        mBinding.btLogin.setOnClickListener(v -> navLogin());
         mBinding.cvDynamic.setOnClickListener(v -> startActivity(new Intent(this, DynamicActivity.class)));
         mBinding.cvToview.setOnClickListener(v -> startActivity(new Intent(this, ToviewActivity.class)));
 
@@ -52,6 +53,12 @@ public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBind
         mBinding.cvToview.setOnFocusChangeListener(this);
         mBinding.cvDynamic.setOnFocusChangeListener(this);
         mBinding.cvHistory.setOnFocusChangeListener(this);
+
+        viewModel.unLoginEvent.observe(this, unused -> navLogin());
+    }
+
+    private void navLogin() {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override

@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="AppTheme.Button.Blue" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="sCornersRadius">6dp</item>
+        <item name="sGradientCenterColor">@android:color/white</item>
+        <item name="sSelectorNormalColor">@color/btn_blue_dark</item>
+        <item name="sSelectorPressedColor">@color/btn_blue_light</item>
+        <item name="sShapeCornersRadius">10dp</item>
+        <item name="sUseSelector">true</item>
+        <item name="sUseShape">true</item>
+        <item name="sCenterTextGravity">center</item>
+    </style>
 </resources>

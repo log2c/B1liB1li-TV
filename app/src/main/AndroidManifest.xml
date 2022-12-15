@@ -56,6 +56,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.app.lib_name"

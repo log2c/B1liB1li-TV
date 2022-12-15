@@ -15,4 +15,7 @@
     <color name="bilibili2">#6aecc8</color>
     <color name="bilibili3">#ffce3a</color>
     <color name="bilibili4">#fb7299</color>
+
+    <color name="btn_blue_dark">#3aa3d3</color>
+    <color name="btn_blue_light">#42b6e2</color>
 </resources>

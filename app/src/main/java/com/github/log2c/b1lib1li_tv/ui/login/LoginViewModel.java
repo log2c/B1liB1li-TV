@@ -27,6 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class LoginViewModel extends BaseCoreViewModel {
+    private static final long POLL_PERIOD_SECONDS = 5;  // 轮询登陆状态间隔
     private final LoginRepository mLoginRepository;
     public MutableLiveData<GenerateModel> qrcodeRefreshEvent = new SingleLiveEvent<>();
     public MutableLiveData<Integer> qrcodeCodeEvent = new SingleLiveEvent<>();
@@ -35,6 +36,12 @@ public class LoginViewModel extends BaseCoreViewModel {
 
     public LoginViewModel() {
         mLoginRepository = new LoginRepositoryImpl();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        stopLoginPoll();
     }
 
     public void genQrcode() {
@@ -67,7 +74,7 @@ public class LoginViewModel extends BaseCoreViewModel {
     private void startLoginPoll() {
         Logging.i("检查扫码状态 开始轮询");
         stopLoginPoll();
-        pollSubscribe = Observable.interval(3, TimeUnit.SECONDS, Schedulers.newThread())
+        pollSubscribe = Observable.interval(POLL_PERIOD_SECONDS, TimeUnit.SECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> loginPoll());
     }

@@ -39,6 +39,7 @@ public class ToviewActivity extends BaseCoreActivity<ToviewViewModel, ActivityTo
         mBinding.recyclerview.setAdapter(mAdapter);
         mAdapter.setNewInstance(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setEmptyView(R.layout.layout_empty);
         viewModel.dataEvent.observe(this, listModels -> mAdapter.setNewInstance(listModels));
     }
 

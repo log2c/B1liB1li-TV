@@ -23,8 +23,9 @@
             android:layout_gravity="center_vertical"
             tools:src="@drawable/ic_avatar_bilibili" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.allen.library.SuperButton
             android:id="@+id/bt_login"
+            style="@style/AppTheme.Button.Blue"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"

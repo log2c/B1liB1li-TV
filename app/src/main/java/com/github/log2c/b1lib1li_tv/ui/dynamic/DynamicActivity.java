@@ -41,6 +41,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
         mAdapter.getLoadMoreModule().setAutoLoadMore(true);
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> viewModel.loadFeedInfo());
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setEmptyView(R.layout.layout_empty);
         viewModel.feedModelEvent.observe(this, feedModel -> {
             mAdapter.addData(feedModel.getItems());
             mAdapter.getLoadMoreModule().loadMoreComplete();
