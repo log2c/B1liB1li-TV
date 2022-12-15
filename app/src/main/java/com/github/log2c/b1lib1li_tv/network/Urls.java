@@ -12,5 +12,6 @@ public class Urls {
     public static final String TO_VIEW = "http://api.bilibili.com/x/v2/history/toview";
     public static final String HISTORY = "http://api.bilibili.com/x/web-interface/history/cursor";
     public static final String VIDEO_VIEW = "http://api.bilibili.com/x/web-interface/view"; // 获取视频详细信息(web端)
+    public static final String DANMUKU = "http://api.bilibili.com/x/v1/dm/list.so"; // http://api.bilibili.com/x/v1/dm/list.so
 
 }

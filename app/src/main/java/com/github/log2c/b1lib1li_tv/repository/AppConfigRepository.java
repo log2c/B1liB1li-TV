@@ -2,6 +2,8 @@ package com.github.log2c.b1lib1li_tv.repository;
 
 import static com.github.log2c.b1lib1li_tv.common.Constants.SP_NAME_CONFIG;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
@@ -20,6 +22,12 @@ public class AppConfigRepository {
             instance = new AppConfigRepository();
         }
         return instance;
+    }
+
+    public String getDanmukuCacheDir() {
+        final String dir = PathUtils.join(PathUtils.getInternalAppCachePath(), Constants.DANMUKU_CACHE_DIR);
+        FileUtils.createOrExistsDir(dir);
+        return dir;
     }
 
     public int getDynamicSpanCount() {

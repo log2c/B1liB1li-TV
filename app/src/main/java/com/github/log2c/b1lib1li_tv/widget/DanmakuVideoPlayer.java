@@ -3,11 +3,12 @@ package com.github.log2c.b1lib1li_tv.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.FileIOUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.DanamakuAdapter;
 import com.github.log2c.b1lib1li_tv.common.BiliDanmukuParser;
@@ -16,13 +17,8 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import master.flame.danmaku.controller.IDanmakuView;
@@ -37,7 +33,6 @@ import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
-import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
  * Created by guoshuyu on 2017/2/16.
@@ -85,17 +80,13 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
     @Override
     protected void init(Context context) {
         super.init(context);
-        mDanmakuView = (DanmakuView) findViewById(R.id.danmaku_view);
-        mSendDanmaku = (TextView) findViewById(R.id.send_danmaku);
-        mToogleDanmaku = (TextView) findViewById(R.id.toogle_danmaku);
-
-        //初始化弹幕显示
-        initDanmaku();
-
+        mDanmakuView = findViewById(R.id.danmaku_view);
+        mSendDanmaku = findViewById(R.id.send_danmaku);
+        mToogleDanmaku = findViewById(R.id.toogle_danmaku);
         mSendDanmaku.setOnClickListener(this);
         mToogleDanmaku.setOnClickListener(this);
 
-
+        initDanmuku();
     }
 
     @Override
@@ -221,7 +212,7 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
     }
 
 
-    private void initDanmaku() {
+    public void initDanmuku() {
         // 设置最大显示行数
         HashMap<Integer, Integer> maxLinesPair = new HashMap<Integer, Integer>();
         maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 5); // 滚动弹幕最大显示5行
@@ -240,9 +231,6 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
             if (mDumakuFile != null) {
                 mParser = createParser(getIsStream(mDumakuFile));
             }
-
-            //todo 这是为了demo效果，实际上需要去掉这个，外部传输文件进来
-            mParser = createParser(this.getResources().openRawResource(R.raw.comments));
 
             mDanmakuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
                 @Override
@@ -275,27 +263,28 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
     }
 
     private InputStream getIsStream(File file) {
-        try {
-            InputStream instream = new FileInputStream(file);
-            InputStreamReader inputreader = new InputStreamReader(instream);
-            BufferedReader buffreader = new BufferedReader(inputreader);
-            String line;
-            StringBuilder sb1 = new StringBuilder();
-            sb1.append("<i>");
-            //分行读取
-            while ((line = buffreader.readLine()) != null) {
-                sb1.append(line);
-            }
-            sb1.append("</i>");
-            Log.e("3333333", sb1.toString());
-            instream.close();
-            return new ByteArrayInputStream(sb1.toString().getBytes());
-        } catch (java.io.FileNotFoundException e) {
-            Log.d("TestFile", "The File doesn't not exist.");
-        } catch (IOException e) {
-            Log.d("TestFile", e.getMessage());
-        }
-        return null;
+        return ConvertUtils.bytes2InputStream(FileIOUtils.readFile2BytesByStream(file));
+//        try {
+//            InputStream instream = new FileInputStream(file);
+//            InputStreamReader inputreader = new InputStreamReader(instream);
+//            BufferedReader buffreader = new BufferedReader(inputreader);
+//            String line;
+//            StringBuilder sb1 = new StringBuilder();
+//            sb1.append("<i>");
+//            //分行读取
+//            while ((line = buffreader.readLine()) != null) {
+//                sb1.append(line);
+//            }
+//            sb1.append("</i>");
+//            Log.e("3333333", sb1.toString());
+//            instream.close();
+//            return new ByteArrayInputStream(sb1.toString().getBytes());
+//        } catch (java.io.FileNotFoundException e) {
+//            Log.d("TestFile", "The File doesn't not exist.");
+//        } catch (IOException e) {
+//            Log.d("TestFile", e.getMessage());
+//        }
+//        return null;
     }
 
     /**

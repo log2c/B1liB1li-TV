@@ -10,4 +10,6 @@ public interface VideoRepository {
 
     Observable<String> videoView(String aid, String bvid);
 
+    Observable<String> fetchDanmukuLocalFilePath(String cid);
+
 }

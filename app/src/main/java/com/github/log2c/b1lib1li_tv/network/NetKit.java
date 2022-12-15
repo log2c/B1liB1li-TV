@@ -4,9 +4,12 @@ import static com.github.log2c.b1lib1li_tv.common.Constants.DEFAULT_USER_AGENT;
 
 import android.net.Uri;
 
+import org.apache.http.Header;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.DeflateDecompressingEntity;
+import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -81,7 +84,25 @@ public class NetKit {
         getWithEntity.setEntity(entityBuilder.build());
         final HttpResponse response;
         response = mHttpClient.execute(getWithEntity);
-        return EntityUtils.toString(response.getEntity(), "UTF-8");
+        String responseString;
+        Header[] responseHeaders = response.getHeaders("Content-Encoding");
+        boolean isGzip = false;
+        boolean isDeflate = false;
+        for (Header h : responseHeaders) {
+            if (h.getValue().equals("gzip")) {
+                isGzip = true;
+            } else if (h.getValue().equals("deflate")) {
+                isDeflate = true;
+            }
+        }
+        if (isGzip) {
+            responseString = EntityUtils.toString(new GzipDecompressingEntity(response.getEntity()), "UTF-8");
+        } else if (isDeflate) {
+            responseString = EntityUtils.toString(new DeflateDecompressingEntity(response.getEntity()), "UTF-8");
+        } else {
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+        return responseString;
     }
 
     public Observable<String> doGetRx(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams) {
@@ -103,7 +124,25 @@ public class NetKit {
 
         final HttpResponse response;
         response = mHttpClient.execute(httpGet);
-        return EntityUtils.toString(response.getEntity(), "UTF-8");
+        String responseString;
+        Header[] responseHeaders = response.getHeaders("Content-Encoding");
+        boolean isGzip = false;
+        boolean isDeflate = false;
+        for (Header h : responseHeaders) {
+            if (h.getValue().equals("gzip")) {
+                isGzip = true;
+            } else if (h.getValue().equals("deflate")) {
+                isDeflate = true;
+            }
+        }
+        if (isGzip) {
+            responseString = EntityUtils.toString(new GzipDecompressingEntity(response.getEntity()), "UTF-8");
+        } else if (isDeflate) {
+            responseString = EntityUtils.toString(new DeflateDecompressingEntity(response.getEntity()), "UTF-8");
+        } else {
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+        return responseString;
     }
 
     private URI addUrlParams(String originUrl, Map<String, String> queryParams) {

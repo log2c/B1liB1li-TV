@@ -36,7 +36,6 @@ public class BiliDanmukuParser extends BaseDanmakuParser {
 
     @Override
     public Danmakus parse() {
-
         if (mDataSource != null) {
             AndroidFileSource source = (AndroidFileSource) mDataSource;
             try {
@@ -45,14 +44,10 @@ public class BiliDanmukuParser extends BaseDanmakuParser {
                 xmlReader.setContentHandler(contentHandler);
                 xmlReader.parse(new InputSource(source.data()));
                 return contentHandler.getResult();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (SAXException | IOException e) {
                 e.printStackTrace();
             }
-
         }
-
         return null;
     }
 
@@ -233,7 +228,7 @@ public class BiliDanmukuParser extends BaseDanmakuParser {
                                     points[i][0] = Float.parseFloat(pointArray[0]);
                                     points[i][1] = Float.parseFloat(pointArray[1]);
                                 }
-                                mContext.mDanmakuFactory.fillLinePathData(item, points, mDispScaleX,
+                                DanmakuFactory.fillLinePathData(item, points, mDispScaleX,
                                         mDispScaleY);
                             }
                         }

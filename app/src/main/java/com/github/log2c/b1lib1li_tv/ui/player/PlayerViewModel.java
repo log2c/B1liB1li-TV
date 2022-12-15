@@ -4,6 +4,7 @@ import static com.github.log2c.b1lib1li_tv.common.Constants.VIDEO_PARTITION_SIZE
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.blankj.utilcode.util.CollectionUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.LocalObserver;
@@ -18,7 +19,8 @@ import java.util.List;
 
 public class PlayerViewModel extends BaseCoreViewModel {
     private final VideoRepository videoRepository;
-    public SingleLiveEvent<PlayUrlModel> playUrlModelEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<PlayUrlModel> playUrlModelEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<String> danmukuLoadedEvent = new SingleLiveEvent<>();
     public String bvid;
     public String aid;
     public String cid;
@@ -37,6 +39,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
             @Override
             public void onSuccess(PlayUrlModel model) {
                 playUrlModelEvent.postValue(model);
+                fetchDanmuku();
             }
 
             @Override
@@ -77,4 +80,13 @@ public class PlayerViewModel extends BaseCoreViewModel {
         Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));
         return videoModel.getBaseUrl();
     }
+
+    public void fetchDanmuku() {
+        if (StringUtils.isTrimEmpty(cid)) {
+            return;
+        }
+        videoRepository.fetchDanmukuLocalFilePath(cid)
+                .subscribe(danmukuLoadedEvent::postValue);
+    }
+
 }

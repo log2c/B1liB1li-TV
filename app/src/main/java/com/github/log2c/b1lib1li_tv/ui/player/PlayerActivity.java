@@ -158,6 +158,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
                 playVideo(videoUrl, playUrlModel.getDash().getAudio().get(0).getBaseUrl());
             } else playVideo(videoUrl, null);
         });
+        viewModel.danmukuLoadedEvent.observe(this, xmlPath -> mBinding.player.setDanmaKuStream(new File(xmlPath)));
 
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);
