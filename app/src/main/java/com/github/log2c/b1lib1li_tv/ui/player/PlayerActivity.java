@@ -26,7 +26,6 @@ import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
-import com.github.log2c.base.toast.ToastUtils;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -226,12 +225,9 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private void showDanmuSetting() {
-        String str = "开";
-        String btnStr = "关";
-        if (!mBinding.player.isDanmakuShow()) {
-            str = "关";
-            btnStr = "开";
-        }
+        final boolean enable = mBinding.player.isShowDanmaku();
+        String str = enable ? "开" : "关";
+        String btnStr = enable ? "关" : "开";
         AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
 
         SpannableStringBuilder spannableString = new SpannableStringBuilder();
@@ -242,11 +238,12 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         spannableString.setSpan(new AbsoluteSizeSpan(ConvertUtils.sp2px(28)), spannableString.length() - 1, spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 
         builder.setTitle("弹幕开关").setMessage(spannableString).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setNegativeButton(btnStr, (dialog, which) -> {
-            if (!mBinding.player.isShowDanmaku()) {
-                ToastUtils.showLong("下次打开播放页时生效!");
+            final boolean toToggle = !enable;
+            AppConfigRepository.getInstance().storeDanmakuToggle(toToggle);
+            mBinding.player.setDanmakuShow(toToggle);
+            if (toToggle) {
+                viewModel.fetchDanmuku();
             }
-            AppConfigRepository.getInstance().storeDanmakuToggle(!mBinding.player.isShowDanmaku());
-            mBinding.player.setDanmakuShow(!mBinding.player.isShowDanmaku());
         }).create().show();
     }
 

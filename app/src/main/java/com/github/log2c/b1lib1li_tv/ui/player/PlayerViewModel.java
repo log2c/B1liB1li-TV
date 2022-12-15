@@ -61,9 +61,9 @@ public class PlayerViewModel extends BaseCoreViewModel {
         }
         final int selectRes = AppConfigRepository.getInstance().fetchDefaultResolution();
         if (model.getAccept_quality().contains(selectRes)) {
-            final PlayUrlModel.DashModel.VideoModel videoModel = partitions.get(model.getAccept_quality().indexOf(selectRes)).get(0);
+            final PlayUrlModel.DashModel.VideoModel videoModel = getSuggestCodecsUrl(partitions.get(model.getAccept_quality().indexOf(selectRes)));
             Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));
-            return videoModel.getBaseUrl();//TODO 根据不同解码器返回对应url
+            return videoModel.getBaseUrl();
         }
         final ArrayList<Integer> list = new ArrayList<>(model.getAccept_quality());
         CollectionUtils.filter(list, item -> item < selectRes);
@@ -79,6 +79,15 @@ public class PlayerViewModel extends BaseCoreViewModel {
         final PlayUrlModel.DashModel.VideoModel videoModel = model.getDash().getVideo().get(model.getDash().getVideo().size() - 1);
         Logging.i("最终播放质量: " + Constants.Resolution.ITEMS.get(videoModel.getId()));
         return videoModel.getBaseUrl();
+    }
+
+    private PlayUrlModel.DashModel.VideoModel getSuggestCodecsUrl(List<PlayUrlModel.DashModel.VideoModel> models) {
+        for (PlayUrlModel.DashModel.VideoModel model : models) {
+            if (model.getCodecs().contains("hev")) {
+                return model;
+            }
+        }
+        return models.get(0);
     }
 
     public void fetchDanmuku() {
