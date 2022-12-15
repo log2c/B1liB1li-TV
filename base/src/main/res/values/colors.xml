@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ed781b</color>
-    <color name="colorPrimaryDark">#A35416</color>
-    <color name="colorAccent">#F29BB9</color>
+    <color name="colorPrimary">#ff8ba3</color>
+    <color name="colorPrimaryDark">#fb7299</color>
+    <color name="colorAccent">#fb7299</color>
     <color name="colorDanger">#F44336</color>
     <color name="colorDangerDark">#E14034</color>
+
+
+    <color name="fontColorPrimary">#FFFFFF</color>
+    <color name="bilibiliBg0">#fb7299</color>
+    <color name="bilibili0">#ff8ba3</color>
+    <color name="bilibili1">#62c0eb</color>
+    <color name="bilibili2">#6aecc8</color>
+    <color name="bilibili3">#ffce3a</color>
+    <color name="bilibili4">#fb7299</color>
+
+    <color name="btn_blue_dark">#3aa3d3</color>
+    <color name="btn_blue_light">#42b6e2</color>
 </resources>

@@ -6,6 +6,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
@@ -14,6 +18,7 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
@@ -70,6 +75,8 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         viewModel.aid = getIntent().getStringExtra(INTENT_AID);
         viewModel.cid = getIntent().getStringExtra(INTENT_CID);
         viewModel.parsePlayUrl();
+
+        mBinding.player.setDanmakuShow(AppConfigRepository.getInstance().fetchDanmakuToggle());
     }
 
     @Override
@@ -80,11 +87,10 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        int action = event.getAction();
-        int keyCode = event.getKeyCode();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_UNKNOWN:
                 showMenuPopup();
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -94,9 +100,9 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
                 doPauseOrStart();
                 break;
             default:
-                return super.dispatchKeyEvent(event);
+                return super.onKeyDown(keyCode, event);
         }
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 
     private void doPauseOrStart() {
@@ -205,10 +211,39 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private void showMenuPopup() {
-        final String[] menu = new String[]{"设置"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("选择").setItems(menu, (dialog, which) -> showResolutionSetting());
+        final String[] menu = new String[]{"视频清晰度", "弹幕开关"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
+        builder.setTitle("选择").setItems(menu, (dialog, which) -> {
+            if (which == 0) {
+                showResolutionSetting();
+            } else {
+                showDanmuSetting();
+            }
+            dialog.dismiss();
+        });
         builder.create().show();
+    }
+
+    private void showDanmuSetting() {
+        String str = "开";
+        String btnStr = "关";
+        if (!mBinding.player.isDanmakuShow()) {
+            str = "关";
+            btnStr = "开";
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
+
+        SpannableStringBuilder spannableString = new SpannableStringBuilder();
+        spannableString.append("当前弹幕状态: \t").append(str);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(com.github.log2c.base.R.color.colorDanger));
+
+        spannableString.setSpan(colorSpan, spannableString.length() - 1, spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableString.setSpan(new AbsoluteSizeSpan(ConvertUtils.sp2px(28)), spannableString.length() - 1, spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        builder.setTitle("弹幕开关").setMessage(spannableString).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setNegativeButton(btnStr, (dialog, which) -> {
+            AppConfigRepository.getInstance().storeDanmakuToggle(!mBinding.player.isShowDanmaku());
+            mBinding.player.setDanmakuShow(!mBinding.player.isShowDanmaku());
+        }).create().show();
     }
 
     private void showResolutionSetting() {
@@ -242,20 +277,18 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             }
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
         builder.setTitle("请选择分辨率").setItems(menus, (dialog, which) -> {
             AppConfigRepository.getInstance().storeResolution(model.getAccept_quality().get(which));
             if (dashMode) {
                 if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
                     playVideo(partitions.get(which).get(0).getBaseUrl(), model.getDash().getAudio().get(0).getBaseUrl());
-                } else
-                    playVideo(partitions.get(which).get(0).getBaseUrl(), null);
+                } else playVideo(partitions.get(which).get(0).getBaseUrl(), null);
             } else {
 
                 if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
                     playVideo(model.getDurl().get(which).getUrl(), model.getDash().getAudio().get(0).getBaseUrl());
-                } else
-                    playVideo(model.getDurl().get(which).getUrl(), null);
+                } else playVideo(model.getDurl().get(which).getUrl(), null);
             }
         });
         builder.create().show();

@@ -72,4 +72,12 @@ public class AppConfigRepository {
     public int fetchDefaultResolution() {
         return SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DEFAULT_RESOLUTION, Constants.DEFAULT_RESOLUTION);
     }
+
+    public void storeDanmakuToggle(boolean toggle) {
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DANMAKU_TOGGLE, toggle);
+    }
+
+    public boolean fetchDanmakuToggle() {
+        return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Constants.SP_DANMAKU_TOGGLE, true);
+    }
 }
