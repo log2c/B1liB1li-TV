@@ -80,4 +80,28 @@ public class AppConfigRepository {
     public boolean fetchDanmakuToggle() {
         return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Constants.SP_DANMAKU_TOGGLE, true);
     }
+
+    private void storeDefaultCodec(String codec) {
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DEFAULT_CODEC, codec);
+    }
+
+    public void setDefaultH265Codec() {
+        storeDefaultCodec(Constants.CODEC_H265);
+    }
+
+    public void setDefaultH264Codec() {
+        storeDefaultCodec(Constants.CODEC_H264);
+    }
+
+    public String fetchDefaultCodec() {
+        return SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DEFAULT_CODEC, Constants.DEFAULT_CODEC);
+    }
+
+    public boolean isH265() {
+        return Constants.CODEC_H265.equals(fetchDefaultCodec());
+    }
+
+    public boolean isH264() {
+        return Constants.CODEC_H264.equals(fetchDefaultCodec());
+    }
 }

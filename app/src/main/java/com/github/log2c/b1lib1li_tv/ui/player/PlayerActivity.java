@@ -1,7 +1,5 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
-import static com.github.log2c.b1lib1li_tv.common.Constants.VIDEO_PARTITION_SIZE;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -53,7 +51,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
     private StandardGSYVideoPlayer videoView;
-    private boolean dashMode;
 
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid, @Nullable String cid) {
@@ -158,17 +155,19 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public void initView(@Nullable Bundle bundle) {
         videoView = mBinding.player;
 
-        viewModel.playUrlModelEvent.observe(this, playUrlModel -> {
-            final String videoUrl = viewModel.getDefaultResolution(playUrlModel);
-            if (playUrlModel.getDash() != null && playUrlModel.getDash().getAudio() != null && !playUrlModel.getDash().getAudio().isEmpty()) {
-                playVideo(videoUrl, playUrlModel.getDash().getAudio().get(0).getBaseUrl());
-            } else playVideo(videoUrl, null);
-        });
+        viewModel.playUrlModelEvent.observe(this, this::loadVideo);
         viewModel.danmukuLoadedEvent.observe(this, xmlPath -> mBinding.player.setDanmaKuStream(new File(xmlPath)));
 
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);
         });
+    }
+
+    private void loadVideo(PlayUrlModel playUrlModel) {
+        final String videoUrl = viewModel.getPlayUrl(playUrlModel);
+        if (viewModel.isDashMode(playUrlModel)) {
+            playVideo(videoUrl, viewModel.getAudioUrl(playUrlModel));
+        } else playVideo(videoUrl, null);
     }
 
     private void playVideo(String videoUrl, @Nullable String audioUrl) {
@@ -211,21 +210,46 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private void showMenuPopup() {
-        final String[] menu = new String[]{"视频清晰度", "弹幕开关"};
+        final String[] menu = new String[]{"视频清晰度", "弹幕开关", "视频编码"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
         builder.setTitle("选择").setItems(menu, (dialog, which) -> {
             if (which == 0) {
                 showResolutionSetting();
-            } else {
+            } else if (which == 1) {
                 showDanmuSetting();
+            } else if (which == 2) {
+                showCodecSetting();
             }
             dialog.dismiss();
         });
         builder.create().show();
     }
 
+    private void showCodecSetting() {
+        final boolean isH265 = AppConfigRepository.getInstance().isH265();
+        String str = isH265 ? "H.265" : "H.264";
+        String btnStr = isH265 ? "H.264" : "H.265";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
+
+        SpannableStringBuilder spannableString = new SpannableStringBuilder();
+        spannableString.append("当前编码: \t").append(str);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(com.github.log2c.base.R.color.colorDanger));
+
+        spannableString.setSpan(colorSpan, spannableString.length() - str.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableString.setSpan(new AbsoluteSizeSpan(ConvertUtils.sp2px(28)), spannableString.length() - str.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        builder.setTitle("编码选择").setMessage(spannableString).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setNegativeButton(btnStr, (dialog, which) -> {
+            if (isH265) {
+                AppConfigRepository.getInstance().setDefaultH264Codec();
+            } else {
+                AppConfigRepository.getInstance().setDefaultH265Codec();
+            }
+            loadVideo(viewModel.playUrlModelEvent.getValue());
+        }).create().show();
+    }
+
     private void showDanmuSetting() {
-        final boolean enable = mBinding.player.isShowDanmaku();
+        final boolean enable = AppConfigRepository.getInstance().fetchDanmakuToggle();
         String str = enable ? "开" : "关";
         String btnStr = enable ? "关" : "开";
         AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
@@ -253,44 +277,22 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             return;
         }
         final List<String> items = new ArrayList<>();
-        for (Integer quality : model.getAccept_quality()) {
-            if (Constants.Resolution.ITEMS.containsKey(quality)) {
-                items.add(Constants.Resolution.ITEMS.get(quality));
-            } else {
-                items.add("未适配分辨率");
+        List<Integer> supported = viewModel.getCurrentSupportResolution();
+        final List<Integer> resolutions = new ArrayList<>(Constants.Resolution.ITEMS.keySet());
+        for (Integer quality : resolutions) {
+            String str = "";
+            if (!supported.contains(quality)) {
+                str = "  (当前视频不支持)";
             }
+            items.add(Constants.Resolution.ITEMS.get(quality) + str);
         }
         String[] menus = new String[items.size()];
         items.toArray(menus);
 
-        dashMode = false;
-        List<List<PlayUrlModel.DashModel.VideoModel>> partitions = new ArrayList<>();
-
-        if (model.getDash() != null && model.getDash().getVideo() != null && model.getDash().getVideo().size() > 0) {
-            dashMode = true;
-            int partitionSize = VIDEO_PARTITION_SIZE;
-            final List<PlayUrlModel.DashModel.VideoModel> videoModelList = model.getDash().getVideo();
-            for (int i = 0; i < videoModelList.size(); i += partitionSize) {
-                partitions.add(videoModelList.subList(i, Math.min(i + partitionSize, videoModelList.size())));
-            }
-            if (partitions.size() != menus.length) {
-                throw new RuntimeException("showResolutionSetting: ");
-            }
-        }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
         builder.setTitle("请选择分辨率").setItems(menus, (dialog, which) -> {
-            AppConfigRepository.getInstance().storeResolution(model.getAccept_quality().get(which));
-            if (dashMode) {
-                if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
-                    playVideo(partitions.get(which).get(0).getBaseUrl(), model.getDash().getAudio().get(0).getBaseUrl());
-                } else playVideo(partitions.get(which).get(0).getBaseUrl(), null);
-            } else {
-
-                if (model.getDash() != null && model.getDash().getAudio() != null && !model.getDash().getAudio().isEmpty()) {
-                    playVideo(model.getDurl().get(which).getUrl(), model.getDash().getAudio().get(0).getBaseUrl());
-                } else playVideo(model.getDurl().get(which).getUrl(), null);
-            }
+            AppConfigRepository.getInstance().storeResolution(resolutions.get(which));
+            loadVideo(viewModel.playUrlModelEvent.getValue());
         });
         builder.create().show();
     }

@@ -12,6 +12,7 @@ public class Constants {
     public static final String SP_BILIBILI_API_DEDEUSERID = "DedeUserID";
     public static final String SP_DEFAULT_RESOLUTION = "default_resolution";
     public static final String SP_DANMAKU_TOGGLE = "danmaku";
+    public static final String SP_DEFAULT_CODEC = "default_codec";
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清
     public static final int DEFAULT_DYNAMIC_SPAN_COUNT = 3;
     public static final String REFERER = "https://www.bilibili.com";
@@ -21,6 +22,13 @@ public class Constants {
     public static final int RESPONSE_CODE_UN_LOGIN = -101;  // 账号未登录
     public static final String SP_DYNAMIC_SPAN_COUNT = "dynamic_span_count";
     public static final String DANMUKU_CACHE_DIR = "danmuku";   // 弹幕文件缓存文件夹
+
+    /**
+     * 视频编码
+     */
+    public static final String CODEC_H264 = "H.264";
+    public static final String CODEC_H265 = "H.265";
+    public static final String DEFAULT_CODEC = CODEC_H265;
 
     static {
         PLAYER_HEADERS.put("referer", REFERER);
