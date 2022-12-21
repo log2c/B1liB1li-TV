@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDetailBinding;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
@@ -55,7 +56,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         adapter = new BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder>(R.layout.item_tag_flow_adapter) {
             @Override
             protected void convert(@NonNull BaseViewHolder baseViewHolder, VideoViewModel.PagesModel page) {
-                final String s = String.format(Locale.getDefault(), "%1$s  %2$s", page.getPart(), formatSeconds(page.getDuration()));
+                final String s = String.format(Locale.getDefault(), "%1$s  %2$s", page.getPart(), CommonUtils.formatSeconds(page.getDuration()));
                 baseViewHolder.setText(R.id.tv_tag_item, s);
             }
         };
@@ -89,17 +90,4 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         adapter.setNewInstance(videoViewModel.getPages());
     }
 
-    public static String formatSeconds(long seconds) {
-        String standardTime;
-        if (seconds <= 0) {
-            standardTime = "00:00";
-        } else if (seconds < 60) {
-            standardTime = String.format(Locale.getDefault(), "00:%02d", seconds % 60);
-        } else if (seconds < 3600) {
-            standardTime = String.format(Locale.getDefault(), "%02d:%02d", seconds / 60, seconds % 60);
-        } else {
-            standardTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", seconds / 3600, seconds % 3600 / 60, seconds % 60);
-        }
-        return standardTime;
-    }
 }

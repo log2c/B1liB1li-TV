@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -16,7 +17,6 @@ import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
-import com.github.log2c.b1lib1li_tv.ui.detail.DetailActivity;
 
 public class ToviewAdapter extends BaseQuickAdapter<ToViewModel.ListModel, BaseViewHolder> implements LoadMoreModule {
     public ToviewAdapter() {
@@ -48,7 +48,7 @@ public class ToviewAdapter extends BaseQuickAdapter<ToViewModel.ListModel, BaseV
         ImageView avatar = baseViewHolder.getView(R.id.iv_avatar);
         ImageView cover = baseViewHolder.getView(R.id.iv_cover);
         TextView title = baseViewHolder.getView(R.id.tv_title);
-        TextView subTitle = baseViewHolder.getView(R.id.tv_sub_title);
+        TextView name = baseViewHolder.getView(R.id.tv_name);
         TextView time = baseViewHolder.getView(R.id.tv_time);
 
         try {
@@ -56,8 +56,8 @@ public class ToviewAdapter extends BaseQuickAdapter<ToViewModel.ListModel, BaseV
             Glide.with(avatar).load(itemsModel.getPic()).transform(new RoundedCorners(12)).into(cover);
 
             title.setText(itemsModel.getTitle());
-            subTitle.setText(itemsModel.getDesc());
-            time.setText(DetailActivity.formatSeconds(itemsModel.getPubdate()));
+            name.setText(itemsModel.getOwner().getName());
+            time.setText(TimeUtils.millis2String(itemsModel.getPubdate(), "MM-dd HH:mm"));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

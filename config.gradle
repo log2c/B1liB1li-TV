@@ -33,6 +33,7 @@ ext {
             "navigation-ui"      : "androidx.navigation:navigation-ui:${versions['navigation']}",
             annotation           : "androidx.annotation:annotation:${versions['annotation']}",
             percentlayout        : 'androidx.percentlayout:percentlayout:1.0.0',
+            multidex: "androidx.multidex:multidex:2.0.1"
     ]
 
     test = [
@@ -69,17 +70,16 @@ ext {
             XUI                  : 'com.github.xuexiangjys:XUI:1.2.0',
             SuperTextView        : 'com.github.lygttpod:SuperTextView:2.4.6',
             // Logger   https://github.com/orhanobut/logger
-            logger            : 'com.orhanobut:logger:2.2.0',
+            logger               : 'com.orhanobut:logger:2.2.0',
             // RxJava
-            rxJava            : 'io.reactivex.rxjava2:rxjava:2.2.21',
-            rxAndroid         : 'io.reactivex.rxjava2:rxandroid:2.1.1',
-            'android-saripaar': 'com.mobsandgeeks:android-saripaar:2.0.3',   // EditText 验证
-            arouter           : 'com.alibaba:arouter-api:1.5.0',
-            'arouter-compiler': 'com.alibaba:arouter-compiler:1.2.2',
-            xxpermissions     : 'com.hjq:xxpermissions:16.2',
-            QRGen             : "com.github.kenglxn.QRGen:android:3.0.1",
-            xpopup            : 'com.github.li-xiaojun:XPopup:2.9.16',
-            GSYVideoPlayer    : "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack"
+            rxJava               : 'io.reactivex.rxjava2:rxjava:2.2.21',
+            rxAndroid            : 'io.reactivex.rxjava2:rxandroid:2.1.1',
+            'android-saripaar'   : 'com.mobsandgeeks:android-saripaar:2.0.3',   // EditText 验证
+            arouter              : 'com.alibaba:arouter-api:1.5.0',
+            'arouter-compiler'   : 'com.alibaba:arouter-compiler:1.2.2',
+            xxpermissions        : 'com.hjq:xxpermissions:16.2',
+            QRGen                : "com.github.kenglxn.QRGen:android:3.0.1",
+            xpopup               : 'com.github.li-xiaojun:XPopup:2.9.16'
     ]
 
     dkplayer_lib = [
@@ -94,10 +94,19 @@ ext {
             DanmakuFlameMaster: 'com.github.ctiao:DanmakuFlameMaster:0.9.25',
             ndkbitmap         : 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
     ]
+    GSYVideoPlayer = [
+            gsyVideoPlayer: 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.4-release-jitpack',
+            //是否需要ExoPlayer模式
+            exo2          : 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v8.3.4-release-jitpack',
+
+            arm64         : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.4-release-jitpack',
+            armv7a        : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.4-release-jitpack'
+    ]
 
     androidxs = androidx.values()
     network = retrofit.values()
     test = retrofit.values()
     dkplayer = dkplayer_lib.values()
     danmukus = danmuku.values()
+    gsyVideoPlayer = GSYVideoPlayer.values()
 }

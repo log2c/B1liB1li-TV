@@ -41,13 +41,16 @@ android {
         exclude 'org/apache/http/entity/mime/version.properties'
     }
 }
+configurations.all {
+    exclude group: "io.coil-kt", module: "coil"
+}
 
 dependencies {
     api rootProject.ext.androidxs
     api rootProject.ext.network
     api rootProject.ext.test
     api rootProject.ext.danmukus
-//    api rootProject.ext.dkplayer
+    api rootProject.ext.gsyVideoPlayer
 
     api rootProject.ext.dependencies.MVVMLin
 
@@ -63,7 +66,6 @@ dependencies {
     api rootProject.ext.dependencies.BRVAH
     api rootProject.ext.dependencies.QRGen
     api rootProject.ext.dependencies.xpopup
-    api rootProject.ext.dependencies.GSYVideoPlayer
 
     api files('libs/httpclient-4.3.6.jar')
     api files('libs/httpcore-4.3.3.jar')

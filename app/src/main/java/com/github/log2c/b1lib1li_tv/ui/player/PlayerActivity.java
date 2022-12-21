@@ -1,6 +1,7 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,15 +10,21 @@ import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
@@ -33,13 +40,17 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.utils.CommonUtil;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener;
@@ -84,22 +95,145 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                Log.i(TAG, "On key up.");
+                if (preKeyCodes[1] != -1) {// 长按
+                    Log.i(TAG, "onKeyUp: 长按");
+                    seekByProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT);
+                } else {    //短按
+                    Log.i(TAG, "onKeyUp: 短按");
+                    seekByStep(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT);
+                }
+                preKeyCodes = new int[]{-1, -1};
+                dismissProgressDialog();
+                return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    private void seekByStep(boolean isForward) {
+        int STEP = 5 * 1000;
+        final long duration = mBinding.player.getCurrentPlayer().getCurrentPositionWhenPlaying();
+        long time = isForward ? STEP + duration : duration - STEP;
+        mBinding.player.getCurrentPlayer().seekTo(time);
+    }
+
+    private void seekByProgressDialog(boolean isForward) {
+        final GSYVideoViewBridge manager = mBinding.player.getCurrentPlayer().getGSYVideoManager();
+        final long time = dialogCurrentTimeToTime(isForward);
+        manager.seekTo(time);
+        dismissProgressDialog();
+    }
+
+    private int[] preKeyCodes = new int[]{-1, -1};
+    private int longPressCount = 0;
+    protected Dialog mProgressDialog;
+    protected TextView mDialogCurrentTime;
+    protected TextView mDialogTotalTime;
+    protected ImageView mDialogIcon;
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
             case KeyEvent.KEYCODE_UNKNOWN:
                 showMenuPopup();
                 break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                doForward();
+                Log.i(TAG, "On key down.");
+                if (preKeyCodes[0] == -1) {    // 第一次
+                    preKeyCodes[0] = keyCode;
+                    longPressCount = 1;
+                } else {
+                    preKeyCodes[1] = keyCode;   // 无论后续回调多少次
+                    longPressCount++;
+                    showProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT, getNextPosition(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT), mBinding.player.getCurrentPlayer().getDuration());
+                }
                 break;
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-                doPauseOrStart();
-                break;
-            default:
-                return super.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private long getNextPosition(boolean isForward) {
+        long nowPosition = mBinding.player.getCurrentPlayer().getCurrentPositionWhenPlaying();
+        if (mProgressDialog != null && mDialogCurrentTime != null && mProgressDialog.isShowing()) {
+            long time = dialogCurrentTimeToTime(isForward);
+            Log.i(TAG, "getNextPosition now: " + CommonUtil.stringForTime(nowPosition) + "," + CommonUtil.stringForTime(time));
+            if (isForward) {
+                time = Math.min(time, mBinding.player.getCurrentPlayer().getDuration());
+            } else {
+                time = Math.max(time, 0);
+            }
+            return time;
+        }
+        return nowPosition;
+    }
+
+    private long dialogCurrentTimeToTime(boolean isForward) {
+        final int STEP = 10; // 每步10秒
+        final String start = "1970-01-01 ";
+        final long timeOffset = 28800000; // GMT+8时差
+        final String str = mDialogCurrentTime.getText().toString();
+        final boolean isHours = str.split(":").length == 3;
+        String timeStr = isHours ? start + str : start + "00:" + str;
+        final Date date = TimeUtils.string2Date(timeStr, "yyyy-MM-dd HH:mm:ss");
+        final Calendar instance = Calendar.getInstance(Locale.CHINA);
+        instance.setTime(date);
+        instance.set(Calendar.SECOND, instance.get(Calendar.SECOND) + (isForward ? STEP : -STEP));
+        return instance.getTime().getTime() + timeOffset;
+    }
+
+    protected void showProgressDialog(boolean isForward, long nowPosition, long totalTime) {
+        if (mProgressDialog == null) {
+            View localView = LayoutInflater.from(this).inflate(R.layout.dialog_progress_video_player, null);
+            mDialogCurrentTime = localView.findViewById(R.id.tv_current);
+            mDialogTotalTime = localView.findViewById(R.id.tv_duration);
+            mDialogIcon = localView.findViewById(R.id.duration_image_tip);
+            mProgressDialog = new Dialog(this, com.shuyu.gsyvideoplayer.R.style.video_style_dialog_progress);
+            mProgressDialog.setContentView(localView);
+            mProgressDialog.getWindow().addFlags(Window.FEATURE_ACTION_BAR);
+            mProgressDialog.getWindow().addFlags(32);
+            mProgressDialog.getWindow().addFlags(16);
+            mProgressDialog.getWindow().setLayout(mBinding.player.getWidth(), mBinding.player.getHeight());
+            WindowManager.LayoutParams localLayoutParams = mProgressDialog.getWindow().getAttributes();
+            localLayoutParams.gravity = Gravity.TOP;
+            localLayoutParams.width = mBinding.player.getWidth();
+            localLayoutParams.height = mBinding.player.getHeight();
+            final int[] location = new int[2];
+            mBinding.player.getLocationOnScreen(location);
+            localLayoutParams.x = location[0];
+            localLayoutParams.y = location[1];
+            mProgressDialog.getWindow().setAttributes(localLayoutParams);
+        }
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
+        if (mDialogCurrentTime != null) {
+            mDialogCurrentTime.setText(CommonUtil.stringForTime(nowPosition));
+        }
+        if (mDialogTotalTime != null) {
+            mDialogTotalTime.setText(CommonUtil.stringForTime(totalTime));
+        }
+        if (isForward) {
+            if (mDialogIcon != null) {
+                mDialogIcon.setBackgroundResource(com.shuyu.gsyvideoplayer.R.drawable.video_forward_icon);
+            }
+        } else {
+            if (mDialogIcon != null) {
+                mDialogIcon.setBackgroundResource(com.shuyu.gsyvideoplayer.R.drawable.video_backward_icon);
+            }
+        }
+    }
+
+    protected void dismissProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     private void doPauseOrStart() {
@@ -114,17 +248,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         return mBinding.player.getCurrentState() == GSYVideoView.CURRENT_STATE_PLAYING;
     }
 
-    /**
-     * 快进
-     */
-    private void doForward() {
-        if (isPlaying()) {
-            final GSYVideoViewBridge manager = mBinding.player.getCurrentPlayer().getGSYVideoManager();
-            final long seek = 5 * 1000;
-            Log.d(TAG, "doForward: current " + manager.getCurrentPosition());
-            manager.seekTo(manager.getCurrentPosition() + seek);
-        }
-    }
 
     @Override
     protected void onPause() {

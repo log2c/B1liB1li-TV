@@ -47,7 +47,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
         ImageView avatar = baseViewHolder.getView(R.id.iv_avatar);
         ImageView cover = baseViewHolder.getView(R.id.iv_cover);
         TextView title = baseViewHolder.getView(R.id.tv_title);
-        TextView subTitle = baseViewHolder.getView(R.id.tv_sub_title);
+        TextView name = baseViewHolder.getView(R.id.tv_name);
         TextView time = baseViewHolder.getView(R.id.tv_time);
 
         try {
@@ -55,7 +55,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
             Glide.with(avatar).load(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getCover()).transform(new RoundedCorners(12)).into(cover);
 
             title.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getTitle());
-            subTitle.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getDesc());
+            name.setText(itemsModel.getModules().getModule_author().getName());
             time.setText(itemsModel.getModules().getModule_author().getPub_time());
         } catch (NullPointerException e) {
             e.printStackTrace();
