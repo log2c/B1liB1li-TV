@@ -13,6 +13,7 @@ public class DetailViewModel extends BaseCoreViewModel {
     public final SingleLiveEvent<VideoViewModel> viewModelLiveEvent = new SingleLiveEvent<>();
     public String bvid;
     public String aid;
+    public String hostMid;
 
     public DetailViewModel() {
         videoRepository = new VideoRepositoryImpl();
@@ -27,6 +28,7 @@ public class DetailViewModel extends BaseCoreViewModel {
             @Override
             public void onSuccess(VideoViewModel model) {
                 viewModelLiveEvent.postValue(model);
+                hostMid = model.getOwner().getMid() + "";
             }
 
             @Override

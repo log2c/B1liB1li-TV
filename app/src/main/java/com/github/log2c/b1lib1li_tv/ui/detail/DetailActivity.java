@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +22,12 @@ import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDetailBinding;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
+import com.github.log2c.b1lib1li_tv.ui.upfeed.UpFeedActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
 
 import java.util.Locale;
 
-public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDetailBinding> {
+public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDetailBinding> implements View.OnClickListener {
     public static final String TAG = DetailActivity.class.getSimpleName();
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
@@ -53,6 +55,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
 
     @Override
     public void initView(@Nullable Bundle bundle) {
+        mBinding.tvAuthor.setOnClickListener(this);
         adapter = new BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder>(R.layout.item_tag_flow_adapter) {
             @Override
             protected void convert(@NonNull BaseViewHolder baseViewHolder, VideoViewModel.PagesModel page) {
@@ -90,4 +93,10 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         adapter.setNewInstance(videoViewModel.getPages());
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.tv_author) {
+            UpFeedActivity.showActivity(this, viewModel.hostMid);
+        }
+    }
 }

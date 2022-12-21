@@ -22,6 +22,7 @@ public class Constants {
     public static final int RESPONSE_CODE_UN_LOGIN = -101;  // 账号未登录
     public static final String SP_DYNAMIC_SPAN_COUNT = "dynamic_span_count";
     public static final String DANMUKU_CACHE_DIR = "danmuku";   // 弹幕文件缓存文件夹
+    public static final String DYNAMIC_TYPE_AV = "DYNAMIC_TYPE_AV";   // 类型
 
     /**
      * 视频编码

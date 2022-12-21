@@ -35,35 +35,44 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="标题标题标题标题标题标题标题标题标题" />
 
-    <ImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="25dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
     <LinearLayout
+        android:id="@+id/ll_up"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@+id/iv_avatar">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical" />
+
+        <com.allen.library.SuperButton
             android:id="@+id/tv_author"
+            style="@style/AppTheme.Button.Blue"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_10"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textSize="16sp"
+            android:gravity="center"
+            android:minWidth="165dp"
+            android:textAlignment="center"
             tools:text="UP主名称" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/dp_10"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@id/ll_up">
 
         <ImageView
             android:layout_width="20dp"
@@ -125,7 +134,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
         app:layout_constraintStart_toStartOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/iv_avatar">
+        app:layout_constraintTop_toBottomOf="@id/linearLayout1">
 
         <ImageView
             android:layout_width="20dp"
