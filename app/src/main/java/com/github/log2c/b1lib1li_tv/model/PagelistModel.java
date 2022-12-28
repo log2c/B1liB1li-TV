@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class PagelistModel {
     @SerializedName("cid")
-    private int cid;
+    private long cid;
     @SerializedName("page")
-    private int page;
+    private long page;
     @SerializedName("from")
     private String from;
     @SerializedName("part")
     private String part;
     @SerializedName("duration")
-    private int duration;
+    private long duration;
     @SerializedName("vid")
     private String vid;
     @SerializedName("weblink")
@@ -22,19 +22,19 @@ public class PagelistModel {
     @SerializedName("first_frame")
     private String firstFrame;
 
-    public int getCid() {
+    public long getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(long cid) {
         this.cid = cid;
     }
 
-    public int getPage() {
+    public long getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(long page) {
         this.page = page;
     }
 
@@ -54,11 +54,11 @@ public class PagelistModel {
         this.part = part;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
@@ -102,33 +102,33 @@ public class PagelistModel {
          */
 
         @SerializedName("width")
-        private int width;
+        private long width;
         @SerializedName("height")
-        private int height;
+        private long height;
         @SerializedName("rotate")
-        private int rotate;
+        private long rotate;
 
-        public int getWidth() {
+        public long getWidth() {
             return width;
         }
 
-        public void setWidth(int width) {
+        public void setWidth(long width) {
             this.width = width;
         }
 
-        public int getHeight() {
+        public long getHeight() {
             return height;
         }
 
-        public void setHeight(int height) {
+        public void setHeight(long height) {
             this.height = height;
         }
 
-        public int getRotate() {
+        public long getRotate() {
             return rotate;
         }
 
-        public void setRotate(int rotate) {
+        public void setRotate(long rotate) {
             this.rotate = rotate;
         }
     }

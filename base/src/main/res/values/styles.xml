@@ -49,15 +49,19 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppTheme.Button.Blue" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <style name="AppTheme.Button.Blue" parent="SuperButton.Blue">
         <item name="sCornersRadius">6dp</item>
         <item name="sGradientCenterColor">@android:color/white</item>
-        <item name="sSelectorNormalColor">@color/btn_blue_dark</item>
+        <item name="sSelectorNormalColor">@android:color/transparent</item>
         <item name="sSelectorPressedColor">@color/btn_blue_light</item>
         <item name="sShapeCornersRadius">10dp</item>
         <item name="sUseSelector">true</item>
         <item name="sUseShape">true</item>
         <item name="sCenterTextGravity">center</item>
+    </style>
+
+    <style name="AppTheme.Button.Common" parent="Widget.AppCompat.Button.Borderless.Colored">
+
     </style>
 
 </resources>

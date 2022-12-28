@@ -7,7 +7,7 @@ public class UpFeedModel implements Serializable {
     private boolean has_more;
     private String offset;
     private String update_baseline;
-    private int update_num;
+    private long update_num;
     private List<ItemsModel> items;
 
     public boolean isHas_more() {
@@ -34,11 +34,11 @@ public class UpFeedModel implements Serializable {
         this.update_baseline = update_baseline;
     }
 
-    public int getUpdate_num() {
+    public long getUpdate_num() {
         return update_num;
     }
 
-    public void setUpdate_num(int update_num) {
+    public void setUpdate_num(long update_num) {
         this.update_num = update_num;
     }
 
@@ -108,7 +108,7 @@ public class UpFeedModel implements Serializable {
 
         public static class BasicModel implements Serializable {
             private String comment_id_str;
-            private int comment_type;
+            private long comment_type;
             private LikeIconModel like_icon;
             private String rid_str;
 
@@ -120,11 +120,11 @@ public class UpFeedModel implements Serializable {
                 this.comment_id_str = comment_id_str;
             }
 
-            public int getComment_type() {
+            public long getComment_type() {
                 return comment_type;
             }
 
-            public void setComment_type(int comment_type) {
+            public void setComment_type(long comment_type) {
                 this.comment_type = comment_type;
             }
 
@@ -147,7 +147,7 @@ public class UpFeedModel implements Serializable {
             public static class LikeIconModel implements Serializable {
                 private String action_url;
                 private String end_url;
-                private int id;
+                private long id;
                 private String start_url;
 
                 public String getAction_url() {
@@ -166,11 +166,11 @@ public class UpFeedModel implements Serializable {
                     this.end_url = end_url;
                 }
 
-                public int getId() {
+                public long getId() {
                     return id;
                 }
 
-                public void setId(int id) {
+                public void setId(long id) {
                     this.id = id;
                 }
 
@@ -228,14 +228,14 @@ public class UpFeedModel implements Serializable {
                 private boolean following;
                 private String jump_url;
                 private String label;
-                private int mid;
+                private long mid;
                 private String name;
                 private OfficialVerifyModel official_verify;
                 private PendantModel pendant;
                 private String pub_action;
                 private String pub_location_text;
                 private String pub_time;
-                private int pub_ts;
+                private long pub_ts;
                 private String type;
                 private VipModel vip;
 
@@ -279,11 +279,11 @@ public class UpFeedModel implements Serializable {
                     this.label = label;
                 }
 
-                public int getMid() {
+                public long getMid() {
                     return mid;
                 }
 
-                public void setMid(int mid) {
+                public void setMid(long mid) {
                     this.mid = mid;
                 }
 
@@ -335,11 +335,11 @@ public class UpFeedModel implements Serializable {
                     this.pub_time = pub_time;
                 }
 
-                public int getPub_ts() {
+                public long getPub_ts() {
                     return pub_ts;
                 }
 
-                public void setPub_ts(int pub_ts) {
+                public void setPub_ts(long pub_ts) {
                     this.pub_ts = pub_ts;
                 }
 
@@ -361,7 +361,7 @@ public class UpFeedModel implements Serializable {
 
                 public static class OfficialVerifyModel implements Serializable {
                     private String desc;
-                    private int type;
+                    private long type;
 
                     public String getDesc() {
                         return desc;
@@ -371,28 +371,28 @@ public class UpFeedModel implements Serializable {
                         this.desc = desc;
                     }
 
-                    public int getType() {
+                    public long getType() {
                         return type;
                     }
 
-                    public void setType(int type) {
+                    public void setType(long type) {
                         this.type = type;
                     }
                 }
 
                 public static class PendantModel implements Serializable {
-                    private int expire;
+                    private long expire;
                     private String image;
                     private String image_enhance;
                     private String image_enhance_frame;
                     private String name;
-                    private int pid;
+                    private long pid;
 
-                    public int getExpire() {
+                    public long getExpire() {
                         return expire;
                     }
 
-                    public void setExpire(int expire) {
+                    public void setExpire(long expire) {
                         this.expire = expire;
                     }
 
@@ -428,30 +428,30 @@ public class UpFeedModel implements Serializable {
                         this.name = name;
                     }
 
-                    public int getPid() {
+                    public long getPid() {
                         return pid;
                     }
 
-                    public void setPid(int pid) {
+                    public void setPid(long pid) {
                         this.pid = pid;
                     }
                 }
 
                 public static class VipModel implements Serializable {
-                    private int avatar_subscript;
+                    private long avatar_subscript;
                     private String avatar_subscript_url;
                     private long due_date;
                     private LabelModel label;
                     private String nickname_color;
-                    private int status;
-                    private int theme_type;
-                    private int type;
+                    private long status;
+                    private long theme_type;
+                    private long type;
 
-                    public int getAvatar_subscript() {
+                    public long getAvatar_subscript() {
                         return avatar_subscript;
                     }
 
-                    public void setAvatar_subscript(int avatar_subscript) {
+                    public void setAvatar_subscript(long avatar_subscript) {
                         this.avatar_subscript = avatar_subscript;
                     }
 
@@ -487,33 +487,33 @@ public class UpFeedModel implements Serializable {
                         this.nickname_color = nickname_color;
                     }
 
-                    public int getStatus() {
+                    public long getStatus() {
                         return status;
                     }
 
-                    public void setStatus(int status) {
+                    public void setStatus(long status) {
                         this.status = status;
                     }
 
-                    public int getTheme_type() {
+                    public long getTheme_type() {
                         return theme_type;
                     }
 
-                    public void setTheme_type(int theme_type) {
+                    public void setTheme_type(long theme_type) {
                         this.theme_type = theme_type;
                     }
 
-                    public int getType() {
+                    public long getType() {
                         return type;
                     }
 
-                    public void setType(int type) {
+                    public void setType(long type) {
                         this.type = type;
                     }
 
                     public static class LabelModel implements Serializable {
                         private String bg_color;
-                        private int bg_style;
+                        private long bg_style;
                         private String border_color;
                         private String img_label_uri_hans;
                         private String img_label_uri_hans_static;
@@ -533,11 +533,11 @@ public class UpFeedModel implements Serializable {
                             this.bg_color = bg_color;
                         }
 
-                        public int getBg_style() {
+                        public long getBg_style() {
                             return bg_style;
                         }
 
-                        public void setBg_style(int bg_style) {
+                        public void setBg_style(long bg_style) {
                             this.bg_style = bg_style;
                         }
 
@@ -739,12 +739,12 @@ public class UpFeedModel implements Serializable {
                         private String bvid;
                         private String cover;
                         private String desc;
-                        private int disable_preview;
+                        private long disable_preview;
                         private String duration_text;
                         private String jump_url;
                         private StatModel stat;
                         private String title;
-                        private int type;
+                        private long type;
 
                         public String getAid() {
                             return aid;
@@ -786,11 +786,11 @@ public class UpFeedModel implements Serializable {
                             this.desc = desc;
                         }
 
-                        public int getDisable_preview() {
+                        public long getDisable_preview() {
                             return disable_preview;
                         }
 
-                        public void setDisable_preview(int disable_preview) {
+                        public void setDisable_preview(long disable_preview) {
                             this.disable_preview = disable_preview;
                         }
 
@@ -826,11 +826,11 @@ public class UpFeedModel implements Serializable {
                             this.title = title;
                         }
 
-                        public int getType() {
+                        public long getType() {
                             return type;
                         }
 
-                        public void setType(int type) {
+                        public void setType(long type) {
                             this.type = type;
                         }
 
@@ -888,15 +888,15 @@ public class UpFeedModel implements Serializable {
                 }
 
                 public static class TopicModel implements Serializable {
-                    private int id;
+                    private long id;
                     private String jump_url;
                     private String name;
 
-                    public int getId() {
+                    public long getId() {
                         return id;
                     }
 
-                    public void setId(int id) {
+                    public void setId(long id) {
                         this.id = id;
                     }
 
@@ -981,14 +981,14 @@ public class UpFeedModel implements Serializable {
                 }
 
                 public static class CommentModel implements Serializable {
-                    private int count;
+                    private long count;
                     private boolean forbidden;
 
-                    public int getCount() {
+                    public long getCount() {
                         return count;
                     }
 
-                    public void setCount(int count) {
+                    public void setCount(long count) {
                         this.count = count;
                     }
 
@@ -1002,14 +1002,14 @@ public class UpFeedModel implements Serializable {
                 }
 
                 public static class ForwardModel implements Serializable {
-                    private int count;
+                    private long count;
                     private boolean forbidden;
 
-                    public int getCount() {
+                    public long getCount() {
                         return count;
                     }
 
-                    public void setCount(int count) {
+                    public void setCount(long count) {
                         this.count = count;
                     }
 
@@ -1023,15 +1023,15 @@ public class UpFeedModel implements Serializable {
                 }
 
                 public static class LikeModel implements Serializable {
-                    private int count;
+                    private long count;
                     private boolean forbidden;
                     private boolean status;
 
-                    public int getCount() {
+                    public long getCount() {
                         return count;
                     }
 
-                    public void setCount(int count) {
+                    public void setCount(long count) {
                         this.count = count;
                     }
 
@@ -1103,7 +1103,7 @@ public class UpFeedModel implements Serializable {
 
             public static class BasicModelX implements Serializable {
                 private String comment_id_str;
-                private int comment_type;
+                private long comment_type;
                 private LikeIconModelX like_icon;
                 private String rid_str;
 
@@ -1115,11 +1115,11 @@ public class UpFeedModel implements Serializable {
                     this.comment_id_str = comment_id_str;
                 }
 
-                public int getComment_type() {
+                public long getComment_type() {
                     return comment_type;
                 }
 
-                public void setComment_type(int comment_type) {
+                public void setComment_type(long comment_type) {
                     this.comment_type = comment_type;
                 }
 
@@ -1142,7 +1142,7 @@ public class UpFeedModel implements Serializable {
                 public static class LikeIconModelX implements Serializable {
                     private String action_url;
                     private String end_url;
-                    private int id;
+                    private long id;
                     private String start_url;
 
                     public String getAction_url() {
@@ -1161,11 +1161,11 @@ public class UpFeedModel implements Serializable {
                         this.end_url = end_url;
                     }
 
-                    public int getId() {
+                    public long getId() {
                         return id;
                     }
 
-                    public void setId(int id) {
+                    public void setId(long id) {
                         this.id = id;
                     }
 
@@ -1205,13 +1205,13 @@ public class UpFeedModel implements Serializable {
                     private boolean following;
                     private String jump_url;
                     private String label;
-                    private int mid;
+                    private long mid;
                     private String name;
                     private OfficialVerifyModelX official_verify;
                     private PendantModelX pendant;
                     private String pub_action;
                     private String pub_time;
-                    private int pub_ts;
+                    private long pub_ts;
                     private String type;
                     private VipModelX vip;
 
@@ -1255,11 +1255,11 @@ public class UpFeedModel implements Serializable {
                         this.label = label;
                     }
 
-                    public int getMid() {
+                    public long getMid() {
                         return mid;
                     }
 
-                    public void setMid(int mid) {
+                    public void setMid(long mid) {
                         this.mid = mid;
                     }
 
@@ -1303,11 +1303,11 @@ public class UpFeedModel implements Serializable {
                         this.pub_time = pub_time;
                     }
 
-                    public int getPub_ts() {
+                    public long getPub_ts() {
                         return pub_ts;
                     }
 
-                    public void setPub_ts(int pub_ts) {
+                    public void setPub_ts(long pub_ts) {
                         this.pub_ts = pub_ts;
                     }
 
@@ -1329,7 +1329,7 @@ public class UpFeedModel implements Serializable {
 
                     public static class OfficialVerifyModelX implements Serializable {
                         private String desc;
-                        private int type;
+                        private long type;
 
                         public String getDesc() {
                             return desc;
@@ -1339,28 +1339,28 @@ public class UpFeedModel implements Serializable {
                             this.desc = desc;
                         }
 
-                        public int getType() {
+                        public long getType() {
                             return type;
                         }
 
-                        public void setType(int type) {
+                        public void setType(long type) {
                             this.type = type;
                         }
                     }
 
                     public static class PendantModelX implements Serializable {
-                        private int expire;
+                        private long expire;
                         private String image;
                         private String image_enhance;
                         private String image_enhance_frame;
                         private String name;
-                        private int pid;
+                        private long pid;
 
-                        public int getExpire() {
+                        public long getExpire() {
                             return expire;
                         }
 
-                        public void setExpire(int expire) {
+                        public void setExpire(long expire) {
                             this.expire = expire;
                         }
 
@@ -1396,30 +1396,30 @@ public class UpFeedModel implements Serializable {
                             this.name = name;
                         }
 
-                        public int getPid() {
+                        public long getPid() {
                             return pid;
                         }
 
-                        public void setPid(int pid) {
+                        public void setPid(long pid) {
                             this.pid = pid;
                         }
                     }
 
                     public static class VipModelX implements Serializable {
-                        private int avatar_subscript;
+                        private long avatar_subscript;
                         private String avatar_subscript_url;
                         private long due_date;
                         private LabelModelX label;
                         private String nickname_color;
-                        private int status;
-                        private int theme_type;
-                        private int type;
+                        private long status;
+                        private long theme_type;
+                        private long type;
 
-                        public int getAvatar_subscript() {
+                        public long getAvatar_subscript() {
                             return avatar_subscript;
                         }
 
-                        public void setAvatar_subscript(int avatar_subscript) {
+                        public void setAvatar_subscript(long avatar_subscript) {
                             this.avatar_subscript = avatar_subscript;
                         }
 
@@ -1455,33 +1455,33 @@ public class UpFeedModel implements Serializable {
                             this.nickname_color = nickname_color;
                         }
 
-                        public int getStatus() {
+                        public long getStatus() {
                             return status;
                         }
 
-                        public void setStatus(int status) {
+                        public void setStatus(long status) {
                             this.status = status;
                         }
 
-                        public int getTheme_type() {
+                        public long getTheme_type() {
                             return theme_type;
                         }
 
-                        public void setTheme_type(int theme_type) {
+                        public void setTheme_type(long theme_type) {
                             this.theme_type = theme_type;
                         }
 
-                        public int getType() {
+                        public long getType() {
                             return type;
                         }
 
-                        public void setType(int type) {
+                        public void setType(long type) {
                             this.type = type;
                         }
 
                         public static class LabelModelX implements Serializable {
                             private String bg_color;
-                            private int bg_style;
+                            private long bg_style;
                             private String border_color;
                             private String img_label_uri_hans;
                             private String img_label_uri_hans_static;
@@ -1501,11 +1501,11 @@ public class UpFeedModel implements Serializable {
                                 this.bg_color = bg_color;
                             }
 
-                            public int getBg_style() {
+                            public long getBg_style() {
                                 return bg_style;
                             }
 
-                            public void setBg_style(int bg_style) {
+                            public void setBg_style(long bg_style) {
                                 this.bg_style = bg_style;
                             }
 
@@ -1707,12 +1707,12 @@ public class UpFeedModel implements Serializable {
                             private String bvid;
                             private String cover;
                             private String desc;
-                            private int disable_preview;
+                            private long disable_preview;
                             private String duration_text;
                             private String jump_url;
                             private StatModelX stat;
                             private String title;
-                            private int type;
+                            private long type;
 
                             public String getAid() {
                                 return aid;
@@ -1754,11 +1754,11 @@ public class UpFeedModel implements Serializable {
                                 this.desc = desc;
                             }
 
-                            public int getDisable_preview() {
+                            public long getDisable_preview() {
                                 return disable_preview;
                             }
 
-                            public void setDisable_preview(int disable_preview) {
+                            public void setDisable_preview(long disable_preview) {
                                 this.disable_preview = disable_preview;
                             }
 
@@ -1794,11 +1794,11 @@ public class UpFeedModel implements Serializable {
                                 this.title = title;
                             }
 
-                            public int getType() {
+                            public long getType() {
                                 return type;
                             }
 
-                            public void setType(int type) {
+                            public void setType(long type) {
                                 this.type = type;
                             }
 

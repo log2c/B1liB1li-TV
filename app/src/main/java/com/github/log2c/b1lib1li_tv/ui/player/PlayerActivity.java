@@ -154,6 +154,9 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
                     showProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT, getNextPosition(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT), mBinding.player.getCurrentPlayer().getDuration());
                 }
                 break;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                doPauseOrStart();
+                break;
         }
         return super.onKeyDown(keyCode, event);
     }

@@ -16,4 +16,12 @@ public class CommonUtils {
         }
         return standardTime;
     }
+
+    public static String formatNumbers(long numbers) {
+        String result = numbers + "";
+        if (numbers > 10000) {
+            return String.format(Locale.CHINA, "%1$.1f万", numbers / 10000.0f);
+        } else
+            return result;
+    }
 }

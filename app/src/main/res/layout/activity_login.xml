@@ -21,11 +21,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.allen.library.SuperButton
+    <Button
         android:id="@+id/bt_refresh"
-        style="@style/AppTheme.Button.Blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/selector_button_blue_normal"
         android:paddingStart="@dimen/dp_40"
         android:paddingTop="@dimen/dp_10"
         android:paddingEnd="@dimen/dp_40"

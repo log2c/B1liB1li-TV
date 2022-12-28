@@ -6,15 +6,15 @@ import java.util.List;
 
 public class ToViewModel {
     @SerializedName("count")
-    private int count;
+    private long count;
     @SerializedName("list")
     private List<ListModel> list;
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 
@@ -28,15 +28,15 @@ public class ToViewModel {
 
     public static class ListModel {
         @SerializedName("aid")
-        private int aid;
+        private long aid;
         @SerializedName("videos")
-        private int videos;
+        private long videos;
         @SerializedName("tid")
-        private int tid;
+        private long tid;
         @SerializedName("tname")
         private String tname;
         @SerializedName("copyright")
-        private int copyright;
+        private long copyright;
         @SerializedName("pic")
         private String pic;
         @SerializedName("title")
@@ -44,15 +44,15 @@ public class ToViewModel {
         @SerializedName("pubdate")
         private long pubdate;
         @SerializedName("ctime")
-        private int ctime;
+        private long ctime;
         @SerializedName("desc")
         private String desc;
         @SerializedName("state")
-        private int state;
+        private long state;
         @SerializedName("duration")
-        private int duration;
+        private long duration;
         @SerializedName("mission_id")
-        private int missionId;
+        private long missionId;
         @SerializedName("rights")
         private RightsModel rights;
         @SerializedName("owner")
@@ -64,7 +64,7 @@ public class ToViewModel {
         @SerializedName("dimension")
         private DimensionModel dimension;
         @SerializedName("season_id")
-        private int seasonId;
+        private long seasonId;
         @SerializedName("short_link_v2")
         private String shortLinkV2;
         @SerializedName("first_frame")
@@ -74,13 +74,13 @@ public class ToViewModel {
         @SerializedName("page")
         private PageModel page;
         @SerializedName("count")
-        private int count;
+        private long count;
         @SerializedName("cid")
-        private int cid;
+        private long cid;
         @SerializedName("progress")
-        private int progress;
+        private long progress;
         @SerializedName("add_at")
-        private int addAt;
+        private long addAt;
         @SerializedName("bvid")
         private String bvid;
         @SerializedName("uri")
@@ -88,29 +88,29 @@ public class ToViewModel {
         @SerializedName("viewed")
         private boolean viewed;
         @SerializedName("up_from_v2")
-        private int upFromV2;
+        private long upFromV2;
 
-        public int getAid() {
+        public long getAid() {
             return aid;
         }
 
-        public void setAid(int aid) {
+        public void setAid(long aid) {
             this.aid = aid;
         }
 
-        public int getVideos() {
+        public long getVideos() {
             return videos;
         }
 
-        public void setVideos(int videos) {
+        public void setVideos(long videos) {
             this.videos = videos;
         }
 
-        public int getTid() {
+        public long getTid() {
             return tid;
         }
 
-        public void setTid(int tid) {
+        public void setTid(long tid) {
             this.tid = tid;
         }
 
@@ -122,11 +122,11 @@ public class ToViewModel {
             this.tname = tname;
         }
 
-        public int getCopyright() {
+        public long getCopyright() {
             return copyright;
         }
 
-        public void setCopyright(int copyright) {
+        public void setCopyright(long copyright) {
             this.copyright = copyright;
         }
 
@@ -154,11 +154,11 @@ public class ToViewModel {
             this.pubdate = pubdate;
         }
 
-        public int getCtime() {
+        public long getCtime() {
             return ctime;
         }
 
-        public void setCtime(int ctime) {
+        public void setCtime(long ctime) {
             this.ctime = ctime;
         }
 
@@ -170,27 +170,27 @@ public class ToViewModel {
             this.desc = desc;
         }
 
-        public int getState() {
+        public long getState() {
             return state;
         }
 
-        public void setState(int state) {
+        public void setState(long state) {
             this.state = state;
         }
 
-        public int getDuration() {
+        public long getDuration() {
             return duration;
         }
 
-        public void setDuration(int duration) {
+        public void setDuration(long duration) {
             this.duration = duration;
         }
 
-        public int getMissionId() {
+        public long getMissionId() {
             return missionId;
         }
 
-        public void setMissionId(int missionId) {
+        public void setMissionId(long missionId) {
             this.missionId = missionId;
         }
 
@@ -234,11 +234,11 @@ public class ToViewModel {
             this.dimension = dimension;
         }
 
-        public int getSeasonId() {
+        public long getSeasonId() {
             return seasonId;
         }
 
-        public void setSeasonId(int seasonId) {
+        public void setSeasonId(long seasonId) {
             this.seasonId = seasonId;
         }
 
@@ -274,35 +274,35 @@ public class ToViewModel {
             this.page = page;
         }
 
-        public int getCount() {
+        public long getCount() {
             return count;
         }
 
-        public void setCount(int count) {
+        public void setCount(long count) {
             this.count = count;
         }
 
-        public int getCid() {
+        public long getCid() {
             return cid;
         }
 
-        public void setCid(int cid) {
+        public void setCid(long cid) {
             this.cid = cid;
         }
 
-        public int getProgress() {
+        public long getProgress() {
             return progress;
         }
 
-        public void setProgress(int progress) {
+        public void setProgress(long progress) {
             this.progress = progress;
         }
 
-        public int getAddAt() {
+        public long getAddAt() {
             return addAt;
         }
 
-        public void setAddAt(int addAt) {
+        public void setAddAt(long addAt) {
             this.addAt = addAt;
         }
 
@@ -330,170 +330,170 @@ public class ToViewModel {
             this.viewed = viewed;
         }
 
-        public int getUpFromV2() {
+        public long getUpFromV2() {
             return upFromV2;
         }
 
-        public void setUpFromV2(int upFromV2) {
+        public void setUpFromV2(long upFromV2) {
             this.upFromV2 = upFromV2;
         }
 
         public static class RightsModel {
             @SerializedName("bp")
-            private int bp;
+            private long bp;
             @SerializedName("elec")
-            private int elec;
+            private long elec;
             @SerializedName("download")
-            private int download;
+            private long download;
             @SerializedName("movie")
-            private int movie;
+            private long movie;
             @SerializedName("pay")
-            private int pay;
+            private long pay;
             @SerializedName("hd5")
-            private int hd5;
+            private long hd5;
             @SerializedName("no_reprint")
-            private int noReprint;
+            private long noReprint;
             @SerializedName("autoplay")
-            private int autoplay;
+            private long autoplay;
             @SerializedName("ugc_pay")
-            private int ugcPay;
+            private long ugcPay;
             @SerializedName("is_cooperation")
-            private int isCooperation;
+            private long isCooperation;
             @SerializedName("ugc_pay_preview")
-            private int ugcPayPreview;
+            private long ugcPayPreview;
             @SerializedName("no_background")
-            private int noBackground;
+            private long noBackground;
             @SerializedName("arc_pay")
-            private int arcPay;
+            private long arcPay;
             @SerializedName("pay_free_watch")
-            private int payFreeWatch;
+            private long payFreeWatch;
 
-            public int getBp() {
+            public long getBp() {
                 return bp;
             }
 
-            public void setBp(int bp) {
+            public void setBp(long bp) {
                 this.bp = bp;
             }
 
-            public int getElec() {
+            public long getElec() {
                 return elec;
             }
 
-            public void setElec(int elec) {
+            public void setElec(long elec) {
                 this.elec = elec;
             }
 
-            public int getDownload() {
+            public long getDownload() {
                 return download;
             }
 
-            public void setDownload(int download) {
+            public void setDownload(long download) {
                 this.download = download;
             }
 
-            public int getMovie() {
+            public long getMovie() {
                 return movie;
             }
 
-            public void setMovie(int movie) {
+            public void setMovie(long movie) {
                 this.movie = movie;
             }
 
-            public int getPay() {
+            public long getPay() {
                 return pay;
             }
 
-            public void setPay(int pay) {
+            public void setPay(long pay) {
                 this.pay = pay;
             }
 
-            public int getHd5() {
+            public long getHd5() {
                 return hd5;
             }
 
-            public void setHd5(int hd5) {
+            public void setHd5(long hd5) {
                 this.hd5 = hd5;
             }
 
-            public int getNoReprint() {
+            public long getNoReprint() {
                 return noReprint;
             }
 
-            public void setNoReprint(int noReprint) {
+            public void setNoReprint(long noReprint) {
                 this.noReprint = noReprint;
             }
 
-            public int getAutoplay() {
+            public long getAutoplay() {
                 return autoplay;
             }
 
-            public void setAutoplay(int autoplay) {
+            public void setAutoplay(long autoplay) {
                 this.autoplay = autoplay;
             }
 
-            public int getUgcPay() {
+            public long getUgcPay() {
                 return ugcPay;
             }
 
-            public void setUgcPay(int ugcPay) {
+            public void setUgcPay(long ugcPay) {
                 this.ugcPay = ugcPay;
             }
 
-            public int getIsCooperation() {
+            public long getIsCooperation() {
                 return isCooperation;
             }
 
-            public void setIsCooperation(int isCooperation) {
+            public void setIsCooperation(long isCooperation) {
                 this.isCooperation = isCooperation;
             }
 
-            public int getUgcPayPreview() {
+            public long getUgcPayPreview() {
                 return ugcPayPreview;
             }
 
-            public void setUgcPayPreview(int ugcPayPreview) {
+            public void setUgcPayPreview(long ugcPayPreview) {
                 this.ugcPayPreview = ugcPayPreview;
             }
 
-            public int getNoBackground() {
+            public long getNoBackground() {
                 return noBackground;
             }
 
-            public void setNoBackground(int noBackground) {
+            public void setNoBackground(long noBackground) {
                 this.noBackground = noBackground;
             }
 
-            public int getArcPay() {
+            public long getArcPay() {
                 return arcPay;
             }
 
-            public void setArcPay(int arcPay) {
+            public void setArcPay(long arcPay) {
                 this.arcPay = arcPay;
             }
 
-            public int getPayFreeWatch() {
+            public long getPayFreeWatch() {
                 return payFreeWatch;
             }
 
-            public void setPayFreeWatch(int payFreeWatch) {
+            public void setPayFreeWatch(long payFreeWatch) {
                 this.payFreeWatch = payFreeWatch;
             }
         }
 
         public static class OwnerModel {
             @SerializedName("mid")
-            private int mid;
+            private long mid;
             @SerializedName("name")
             private String name;
             @SerializedName("face")
             private String face;
 
-            public int getMid() {
+            public long getMid() {
                 return mid;
             }
 
-            public void setMid(int mid) {
+            public void setMid(long mid) {
                 this.mid = mid;
             }
 
@@ -516,161 +516,161 @@ public class ToViewModel {
 
         public static class StatModel {
             @SerializedName("aid")
-            private int aid;
+            private long aid;
             @SerializedName("view")
-            private int view;
+            private long view;
             @SerializedName("danmaku")
-            private int danmaku;
+            private long danmaku;
             @SerializedName("reply")
-            private int reply;
+            private long reply;
             @SerializedName("favorite")
-            private int favorite;
+            private long favorite;
             @SerializedName("coin")
-            private int coin;
+            private long coin;
             @SerializedName("share")
-            private int share;
+            private long share;
             @SerializedName("now_rank")
-            private int nowRank;
+            private long nowRank;
             @SerializedName("his_rank")
-            private int hisRank;
+            private long hisRank;
             @SerializedName("like")
-            private int like;
+            private long like;
             @SerializedName("dislike")
-            private int dislike;
+            private long dislike;
 
-            public int getAid() {
+            public long getAid() {
                 return aid;
             }
 
-            public void setAid(int aid) {
+            public void setAid(long aid) {
                 this.aid = aid;
             }
 
-            public int getView() {
+            public long getView() {
                 return view;
             }
 
-            public void setView(int view) {
+            public void setView(long view) {
                 this.view = view;
             }
 
-            public int getDanmaku() {
+            public long getDanmaku() {
                 return danmaku;
             }
 
-            public void setDanmaku(int danmaku) {
+            public void setDanmaku(long danmaku) {
                 this.danmaku = danmaku;
             }
 
-            public int getReply() {
+            public long getReply() {
                 return reply;
             }
 
-            public void setReply(int reply) {
+            public void setReply(long reply) {
                 this.reply = reply;
             }
 
-            public int getFavorite() {
+            public long getFavorite() {
                 return favorite;
             }
 
-            public void setFavorite(int favorite) {
+            public void setFavorite(long favorite) {
                 this.favorite = favorite;
             }
 
-            public int getCoin() {
+            public long getCoin() {
                 return coin;
             }
 
-            public void setCoin(int coin) {
+            public void setCoin(long coin) {
                 this.coin = coin;
             }
 
-            public int getShare() {
+            public long getShare() {
                 return share;
             }
 
-            public void setShare(int share) {
+            public void setShare(long share) {
                 this.share = share;
             }
 
-            public int getNowRank() {
+            public long getNowRank() {
                 return nowRank;
             }
 
-            public void setNowRank(int nowRank) {
+            public void setNowRank(long nowRank) {
                 this.nowRank = nowRank;
             }
 
-            public int getHisRank() {
+            public long getHisRank() {
                 return hisRank;
             }
 
-            public void setHisRank(int hisRank) {
+            public void setHisRank(long hisRank) {
                 this.hisRank = hisRank;
             }
 
-            public int getLike() {
+            public long getLike() {
                 return like;
             }
 
-            public void setLike(int like) {
+            public void setLike(long like) {
                 this.like = like;
             }
 
-            public int getDislike() {
+            public long getDislike() {
                 return dislike;
             }
 
-            public void setDislike(int dislike) {
+            public void setDislike(long dislike) {
                 this.dislike = dislike;
             }
         }
 
         public static class DimensionModel {
             @SerializedName("width")
-            private int width;
+            private long width;
             @SerializedName("height")
-            private int height;
+            private long height;
             @SerializedName("rotate")
-            private int rotate;
+            private long rotate;
 
-            public int getWidth() {
+            public long getWidth() {
                 return width;
             }
 
-            public void setWidth(int width) {
+            public void setWidth(long width) {
                 this.width = width;
             }
 
-            public int getHeight() {
+            public long getHeight() {
                 return height;
             }
 
-            public void setHeight(int height) {
+            public void setHeight(long height) {
                 this.height = height;
             }
 
-            public int getRotate() {
+            public long getRotate() {
                 return rotate;
             }
 
-            public void setRotate(int rotate) {
+            public void setRotate(long rotate) {
                 this.rotate = rotate;
             }
         }
 
         public static class PageModel {
             @SerializedName("cid")
-            private int cid;
+            private long cid;
             @SerializedName("page")
-            private int page;
+            private long page;
             @SerializedName("from")
             private String from;
             @SerializedName("part")
             private String part;
             @SerializedName("duration")
-            private int duration;
+            private long duration;
             @SerializedName("vid")
             private String vid;
             @SerializedName("weblink")
@@ -680,19 +680,19 @@ public class ToViewModel {
             @SerializedName("first_frame")
             private String firstFrame;
 
-            public int getCid() {
+            public long getCid() {
                 return cid;
             }
 
-            public void setCid(int cid) {
+            public void setCid(long cid) {
                 this.cid = cid;
             }
 
-            public int getPage() {
+            public long getPage() {
                 return page;
             }
 
-            public void setPage(int page) {
+            public void setPage(long page) {
                 this.page = page;
             }
 
@@ -712,11 +712,11 @@ public class ToViewModel {
                 this.part = part;
             }
 
-            public int getDuration() {
+            public long getDuration() {
                 return duration;
             }
 
-            public void setDuration(int duration) {
+            public void setDuration(long duration) {
                 this.duration = duration;
             }
 
@@ -754,33 +754,33 @@ public class ToViewModel {
 
             public static class DimensionModelX {
                 @SerializedName("width")
-                private int width;
+                private long width;
                 @SerializedName("height")
-                private int height;
+                private long height;
                 @SerializedName("rotate")
-                private int rotate;
+                private long rotate;
 
-                public int getWidth() {
+                public long getWidth() {
                     return width;
                 }
 
-                public void setWidth(int width) {
+                public void setWidth(long width) {
                     this.width = width;
                 }
 
-                public int getHeight() {
+                public long getHeight() {
                     return height;
                 }
 
-                public void setHeight(int height) {
+                public void setHeight(long height) {
                     this.height = height;
                 }
 
-                public int getRotate() {
+                public long getRotate() {
                     return rotate;
                 }
 
-                public void setRotate(int rotate) {
+                public void setRotate(long rotate) {
                     this.rotate = rotate;
                 }
             }

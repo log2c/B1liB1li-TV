@@ -33,7 +33,8 @@ ext {
             "navigation-ui"      : "androidx.navigation:navigation-ui:${versions['navigation']}",
             annotation           : "androidx.annotation:annotation:${versions['annotation']}",
             percentlayout        : 'androidx.percentlayout:percentlayout:1.0.0',
-            multidex: "androidx.multidex:multidex:2.0.1"
+            multidex             : "androidx.multidex:multidex:2.0.1",
+            palette              : "androidx.palette:palette:1.0.0"
     ]
 
     test = [

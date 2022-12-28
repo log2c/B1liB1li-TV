@@ -10,16 +10,16 @@ public class PlayUrlModel {
     private String message;
     private int quality;
     private String format;
-    private int timelength;
+    private long timelength;
     private String accept_format;
-    private int video_codecid;
+    private long video_codecid;
     private String seek_param;
     private String seek_type;
     private List<DUrlModel> durl;
     private DashModel dash;
     private Object high_format;
-    private int last_play_time;
-    private int last_play_cid;
+    private long last_play_time;
+    private long last_play_cid;
     private List<String> accept_description;
     private List<Integer> accept_quality;
     private List<SupportFormatsModel> support_formats;
@@ -72,11 +72,11 @@ public class PlayUrlModel {
         this.format = format;
     }
 
-    public int getTimelength() {
+    public long getTimelength() {
         return timelength;
     }
 
-    public void setTimelength(int timelength) {
+    public void setTimelength(long timelength) {
         this.timelength = timelength;
     }
 
@@ -88,11 +88,11 @@ public class PlayUrlModel {
         this.accept_format = accept_format;
     }
 
-    public int getVideo_codecid() {
+    public long getVideo_codecid() {
         return video_codecid;
     }
 
-    public void setVideo_codecid(int video_codecid) {
+    public void setVideo_codecid(long video_codecid) {
         this.video_codecid = video_codecid;
     }
 
@@ -128,19 +128,19 @@ public class PlayUrlModel {
         this.high_format = high_format;
     }
 
-    public int getLast_play_time() {
+    public long getLast_play_time() {
         return last_play_time;
     }
 
-    public void setLast_play_time(int last_play_time) {
+    public void setLast_play_time(long last_play_time) {
         this.last_play_time = last_play_time;
     }
 
-    public int getLast_play_cid() {
+    public long getLast_play_cid() {
         return last_play_cid;
     }
 
-    public void setLast_play_cid(int last_play_cid) {
+    public void setLast_play_cid(long last_play_cid) {
         this.last_play_cid = last_play_cid;
     }
 
@@ -169,7 +169,7 @@ public class PlayUrlModel {
     }
 
     public static class DashModel {
-        private int duration;
+        private long duration;
         private double minBufferTime;
         private double min_buffer_time;
         private DolbyModel dolby;
@@ -177,11 +177,11 @@ public class PlayUrlModel {
         private List<VideoModel> video;
         private List<AudioModel> audio;
 
-        public int getDuration() {
+        public long getDuration() {
             return duration;
         }
 
-        public void setDuration(int duration) {
+        public void setDuration(long duration) {
             this.duration = duration;
         }
 
@@ -234,14 +234,14 @@ public class PlayUrlModel {
         }
 
         public static class DolbyModel {
-            private int type;
+            private long type;
             private Object audio;
 
-            public int getType() {
+            public long getType() {
                 return type;
             }
 
-            public void setType(int type) {
+            public void setType(long type) {
                 this.type = type;
             }
 
@@ -258,20 +258,20 @@ public class PlayUrlModel {
             private int id;
             private String baseUrl;
             private String base_url;
-            private int bandwidth;
+            private long bandwidth;
             private String mimeType;
             private String mime_type;
             private String codecs;
-            private int width;
-            private int height;
+            private long width;
+            private long height;
             private String frameRate;
             private String frame_rate;
             private String sar;
-            private int startWithSap;
-            private int start_with_sap;
+            private long startWithSap;
+            private long start_with_sap;
             private SegmentBaseModel SegmentBase;
             private SegmentBaseModelX segment_base;
-            private int codecid;
+            private long codecid;
             private List<String> backupUrl;
             private List<String> backup_url;
 
@@ -299,11 +299,11 @@ public class PlayUrlModel {
                 this.base_url = base_url;
             }
 
-            public int getBandwidth() {
+            public long getBandwidth() {
                 return bandwidth;
             }
 
-            public void setBandwidth(int bandwidth) {
+            public void setBandwidth(long bandwidth) {
                 this.bandwidth = bandwidth;
             }
 
@@ -331,19 +331,19 @@ public class PlayUrlModel {
                 this.codecs = codecs;
             }
 
-            public int getWidth() {
+            public long getWidth() {
                 return width;
             }
 
-            public void setWidth(int width) {
+            public void setWidth(long width) {
                 this.width = width;
             }
 
-            public int getHeight() {
+            public long getHeight() {
                 return height;
             }
 
-            public void setHeight(int height) {
+            public void setHeight(long height) {
                 this.height = height;
             }
 
@@ -371,19 +371,19 @@ public class PlayUrlModel {
                 this.sar = sar;
             }
 
-            public int getStartWithSap() {
+            public long getStartWithSap() {
                 return startWithSap;
             }
 
-            public void setStartWithSap(int startWithSap) {
+            public void setStartWithSap(long startWithSap) {
                 this.startWithSap = startWithSap;
             }
 
-            public int getStart_with_sap() {
+            public long getStart_with_sap() {
                 return start_with_sap;
             }
 
-            public void setStart_with_sap(int start_with_sap) {
+            public void setStart_with_sap(long start_with_sap) {
                 this.start_with_sap = start_with_sap;
             }
 
@@ -403,11 +403,11 @@ public class PlayUrlModel {
                 this.segment_base = segment_base;
             }
 
-            public int getCodecid() {
+            public long getCodecid() {
                 return codecid;
             }
 
-            public void setCodecid(int codecid) {
+            public void setCodecid(long codecid) {
                 this.codecid = codecid;
             }
 
@@ -471,31 +471,31 @@ public class PlayUrlModel {
         }
 
         public static class AudioModel {
-            private int id;
+            private long id;
             private String baseUrl;
             private String base_url;
-            private int bandwidth;
+            private long bandwidth;
             private String mimeType;
             private String mime_type;
             private String codecs;
-            private int width;
-            private int height;
+            private long width;
+            private long height;
             private String frameRate;
             private String frame_rate;
             private String sar;
-            private int startWithSap;
-            private int start_with_sap;
+            private long startWithSap;
+            private long start_with_sap;
             private SegmentBaseModelXX SegmentBase;
             private SegmentBaseModelXXX segment_base;
-            private int codecid;
+            private long codecid;
             private List<String> backupUrl;
             private List<String> backup_url;
 
-            public int getId() {
+            public long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(long id) {
                 this.id = id;
             }
 
@@ -515,11 +515,11 @@ public class PlayUrlModel {
                 this.base_url = base_url;
             }
 
-            public int getBandwidth() {
+            public long getBandwidth() {
                 return bandwidth;
             }
 
-            public void setBandwidth(int bandwidth) {
+            public void setBandwidth(long bandwidth) {
                 this.bandwidth = bandwidth;
             }
 
@@ -547,19 +547,19 @@ public class PlayUrlModel {
                 this.codecs = codecs;
             }
 
-            public int getWidth() {
+            public long getWidth() {
                 return width;
             }
 
-            public void setWidth(int width) {
+            public void setWidth(long width) {
                 this.width = width;
             }
 
-            public int getHeight() {
+            public long getHeight() {
                 return height;
             }
 
-            public void setHeight(int height) {
+            public void setHeight(long height) {
                 this.height = height;
             }
 
@@ -587,19 +587,19 @@ public class PlayUrlModel {
                 this.sar = sar;
             }
 
-            public int getStartWithSap() {
+            public long getStartWithSap() {
                 return startWithSap;
             }
 
-            public void setStartWithSap(int startWithSap) {
+            public void setStartWithSap(long startWithSap) {
                 this.startWithSap = startWithSap;
             }
 
-            public int getStart_with_sap() {
+            public long getStart_with_sap() {
                 return start_with_sap;
             }
 
-            public void setStart_with_sap(int start_with_sap) {
+            public void setStart_with_sap(long start_with_sap) {
                 this.start_with_sap = start_with_sap;
             }
 
@@ -619,11 +619,11 @@ public class PlayUrlModel {
                 this.segment_base = segment_base;
             }
 
-            public int getCodecid() {
+            public long getCodecid() {
                 return codecid;
             }
 
-            public void setCodecid(int codecid) {
+            public void setCodecid(long codecid) {
                 this.codecid = codecid;
             }
 
@@ -688,35 +688,35 @@ public class PlayUrlModel {
     }
 
     public static class DUrlModel implements Serializable {
-        private int order;
-        private int length;
-        private int size;
+        private long order;
+        private long length;
+        private long size;
         private String ahead;
         private String vhead;
         private String url;
         private List<String> backup_url;
 
-        public int getOrder() {
+        public long getOrder() {
             return order;
         }
 
-        public void setOrder(int order) {
+        public void setOrder(long order) {
             this.order = order;
         }
 
-        public int getLength() {
+        public long getLength() {
             return length;
         }
 
-        public void setLength(int length) {
+        public void setLength(long length) {
             this.length = length;
         }
 
-        public int getSize() {
+        public long getSize() {
             return size;
         }
 
-        public void setSize(int size) {
+        public void setSize(long size) {
             this.size = size;
         }
 
@@ -754,18 +754,18 @@ public class PlayUrlModel {
     }
 
     public static class SupportFormatsModel {
-        private int quality;
+        private long quality;
         private String format;
         private String new_description;
         private String display_desc;
         private String superscript;
         private List<String> codecs;
 
-        public int getQuality() {
+        public long getQuality() {
             return quality;
         }
 
-        public void setQuality(int quality) {
+        public void setQuality(long quality) {
             this.quality = quality;
         }
 

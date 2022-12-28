@@ -1,20 +1,30 @@
 package com.github.log2c.b1lib1li_tv.ui.detail;
 
+import static com.github.log2c.b1lib1li_tv.common.CommonUtils.formatNumbers;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
@@ -78,15 +88,35 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
     private void fillData(VideoViewModel videoViewModel) {
         mBinding.tvTitle.setText(videoViewModel.getTitle());
         Glide.with(this).load(videoViewModel.getOwner().getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);
-        Glide.with(this).load(videoViewModel.getPic()).transform(new RoundedCorners(12)).into(mBinding.ivCover);
+        Glide.with(this).load(videoViewModel.getPic()).transform(new RoundedCorners(12)).addListener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                Log.i(TAG, "onLoadFailed: ");
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                if (resource instanceof BitmapDrawable) {
+                    Palette.from(((BitmapDrawable) resource).getBitmap())
+                            .generate(palette -> {
+                                if (palette != null && palette.getDarkMutedSwatch() != null) {
+                                    mBinding.container.setBackgroundColor(palette.getDarkMutedSwatch().getRgb());
+                                }
+                            });
+                }
+                Log.i(TAG, "onResourceReady: ");
+                return false;
+            }
+        }).into(mBinding.ivCover);
 
         mBinding.tvAuthor.setText(videoViewModel.getOwner().getName());
-        mBinding.tvLike.setText(videoViewModel.getStat().getLike() + "");
-        mBinding.tvCoin.setText(videoViewModel.getStat().getCoin() + "");
-        mBinding.tvFavor.setText(videoViewModel.getStat().getFavorite() + "");
+        mBinding.tvLike.setText(formatNumbers(videoViewModel.getStat().getLike()));
+        mBinding.tvCoin.setText(formatNumbers(videoViewModel.getStat().getCoin()));
+        mBinding.tvFavor.setText(formatNumbers(videoViewModel.getStat().getFavorite()));
 
-        mBinding.tvPlayCount.setText(videoViewModel.getStat().getView() + "");
-        mBinding.tvDanmuku.setText(videoViewModel.getStat().getDanmaku() + "");
+        mBinding.tvPlayCount.setText(formatNumbers(videoViewModel.getStat().getView()));
+        mBinding.tvDanmuku.setText(formatNumbers(videoViewModel.getStat().getDanmaku()));
         mBinding.tvPubTime.setText(TimeUtils.millis2String(videoViewModel.getPubdate() * 1000L, "yyyy-MM-dd"));
 
         mBinding.tvDesc.setText(videoViewModel.getDesc());

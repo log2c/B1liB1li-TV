@@ -5,32 +5,32 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class NavStatModel implements Serializable {
-    private int following;
-    private int follower;
+    private long following;
+    private long follower;
     @SerializedName("dynamic_count")
-    private int dynamicCount;
+    private long dynamicCount;
 
-    public int getFollowing() {
+    public long getFollowing() {
         return following;
     }
 
-    public void setFollowing(int following) {
+    public void setFollowing(long following) {
         this.following = following;
     }
 
-    public int getFollower() {
+    public long getFollower() {
         return follower;
     }
 
-    public void setFollower(int follower) {
+    public void setFollower(long follower) {
         this.follower = follower;
     }
 
-    public int getDynamicCount() {
+    public long getDynamicCount() {
         return dynamicCount;
     }
 
-    public void setDynamicCount(int dynamicCount) {
+    public void setDynamicCount(long dynamicCount) {
         this.dynamicCount = dynamicCount;
     }
 }

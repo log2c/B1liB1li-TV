@@ -4,35 +4,35 @@ import java.io.Serializable;
 
 public class NavUserInfoModel implements Serializable {
     private boolean isLogin;
-    private int email_verified;
+    private long email_verified;
     private String face;
-    private int face_nft;
-    private int face_nft_type;
+    private long face_nft;
+    private long face_nft_type;
     private LevelInfoModel level_info;
-    private int mid;
-    private int mobile_verified;
-    private int money;
-    private int moral;
+    private long mid;
+    private long mobile_verified;
+    private long money;
+    private long moral;
     private OfficialModel official;
     private OfficialVerifyModel officialVerify;
     private PendantModel pendant;
-    private int scores;
+    private long scores;
     private String uname;
     private long vipDueDate;
-    private int vipStatus;
-    private int vipType;
-    private int vip_pay_type;
-    private int vip_theme_type;
+    private long vipStatus;
+    private long vipType;
+    private long vip_pay_type;
+    private long vip_theme_type;
     private VipLabelModel vip_label;
-    private int vip_avatar_subscript;
+    private long vip_avatar_subscript;
     private String vip_nickname_color;
     private VipModel vip;
     private WalletModel wallet;
     private boolean has_shop;
     private String shop_url;
-    private int allowance_count;
-    private int answer_status;
-    private int is_senior_member;
+    private long allowance_count;
+    private long answer_status;
+    private long is_senior_member;
     private WbiImgModel wbi_img;
     private boolean is_jury;
 
@@ -44,11 +44,11 @@ public class NavUserInfoModel implements Serializable {
         this.isLogin = isLogin;
     }
 
-    public int getEmail_verified() {
+    public long getEmail_verified() {
         return email_verified;
     }
 
-    public void setEmail_verified(int email_verified) {
+    public void setEmail_verified(long email_verified) {
         this.email_verified = email_verified;
     }
 
@@ -60,19 +60,19 @@ public class NavUserInfoModel implements Serializable {
         this.face = face;
     }
 
-    public int getFace_nft() {
+    public long getFace_nft() {
         return face_nft;
     }
 
-    public void setFace_nft(int face_nft) {
+    public void setFace_nft(long face_nft) {
         this.face_nft = face_nft;
     }
 
-    public int getFace_nft_type() {
+    public long getFace_nft_type() {
         return face_nft_type;
     }
 
-    public void setFace_nft_type(int face_nft_type) {
+    public void setFace_nft_type(long face_nft_type) {
         this.face_nft_type = face_nft_type;
     }
 
@@ -84,35 +84,35 @@ public class NavUserInfoModel implements Serializable {
         this.level_info = level_info;
     }
 
-    public int getMid() {
+    public long getMid() {
         return mid;
     }
 
-    public void setMid(int mid) {
+    public void setMid(long mid) {
         this.mid = mid;
     }
 
-    public int getMobile_verified() {
+    public long getMobile_verified() {
         return mobile_verified;
     }
 
-    public void setMobile_verified(int mobile_verified) {
+    public void setMobile_verified(long mobile_verified) {
         this.mobile_verified = mobile_verified;
     }
 
-    public int getMoney() {
+    public long getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(long money) {
         this.money = money;
     }
 
-    public int getMoral() {
+    public long getMoral() {
         return moral;
     }
 
-    public void setMoral(int moral) {
+    public void setMoral(long moral) {
         this.moral = moral;
     }
 
@@ -140,11 +140,11 @@ public class NavUserInfoModel implements Serializable {
         this.pendant = pendant;
     }
 
-    public int getScores() {
+    public long getScores() {
         return scores;
     }
 
-    public void setScores(int scores) {
+    public void setScores(long scores) {
         this.scores = scores;
     }
 
@@ -164,35 +164,35 @@ public class NavUserInfoModel implements Serializable {
         this.vipDueDate = vipDueDate;
     }
 
-    public int getVipStatus() {
+    public long getVipStatus() {
         return vipStatus;
     }
 
-    public void setVipStatus(int vipStatus) {
+    public void setVipStatus(long vipStatus) {
         this.vipStatus = vipStatus;
     }
 
-    public int getVipType() {
+    public long getVipType() {
         return vipType;
     }
 
-    public void setVipType(int vipType) {
+    public void setVipType(long vipType) {
         this.vipType = vipType;
     }
 
-    public int getVip_pay_type() {
+    public long getVip_pay_type() {
         return vip_pay_type;
     }
 
-    public void setVip_pay_type(int vip_pay_type) {
+    public void setVip_pay_type(long vip_pay_type) {
         this.vip_pay_type = vip_pay_type;
     }
 
-    public int getVip_theme_type() {
+    public long getVip_theme_type() {
         return vip_theme_type;
     }
 
-    public void setVip_theme_type(int vip_theme_type) {
+    public void setVip_theme_type(long vip_theme_type) {
         this.vip_theme_type = vip_theme_type;
     }
 
@@ -204,11 +204,11 @@ public class NavUserInfoModel implements Serializable {
         this.vip_label = vip_label;
     }
 
-    public int getVip_avatar_subscript() {
+    public long getVip_avatar_subscript() {
         return vip_avatar_subscript;
     }
 
-    public void setVip_avatar_subscript(int vip_avatar_subscript) {
+    public void setVip_avatar_subscript(long vip_avatar_subscript) {
         this.vip_avatar_subscript = vip_avatar_subscript;
     }
 
@@ -252,27 +252,27 @@ public class NavUserInfoModel implements Serializable {
         this.shop_url = shop_url;
     }
 
-    public int getAllowance_count() {
+    public long getAllowance_count() {
         return allowance_count;
     }
 
-    public void setAllowance_count(int allowance_count) {
+    public void setAllowance_count(long allowance_count) {
         this.allowance_count = allowance_count;
     }
 
-    public int getAnswer_status() {
+    public long getAnswer_status() {
         return answer_status;
     }
 
-    public void setAnswer_status(int answer_status) {
+    public void setAnswer_status(long answer_status) {
         this.answer_status = answer_status;
     }
 
-    public int getIs_senior_member() {
+    public long getIs_senior_member() {
         return is_senior_member;
     }
 
-    public void setIs_senior_member(int is_senior_member) {
+    public void setIs_senior_member(long is_senior_member) {
         this.is_senior_member = is_senior_member;
     }
 
@@ -293,55 +293,55 @@ public class NavUserInfoModel implements Serializable {
     }
 
     public static class LevelInfoModel implements Serializable {
-        private int current_level;
-        private int current_min;
-        private int current_exp;
-        private int next_exp;
+        private long current_level;
+        private long current_min;
+        private long current_exp;
+        private long next_exp;
 
-        public int getCurrent_level() {
+        public long getCurrent_level() {
             return current_level;
         }
 
-        public void setCurrent_level(int current_level) {
+        public void setCurrent_level(long current_level) {
             this.current_level = current_level;
         }
 
-        public int getCurrent_min() {
+        public long getCurrent_min() {
             return current_min;
         }
 
-        public void setCurrent_min(int current_min) {
+        public void setCurrent_min(long current_min) {
             this.current_min = current_min;
         }
 
-        public int getCurrent_exp() {
+        public long getCurrent_exp() {
             return current_exp;
         }
 
-        public void setCurrent_exp(int current_exp) {
+        public void setCurrent_exp(long current_exp) {
             this.current_exp = current_exp;
         }
 
-        public int getNext_exp() {
+        public long getNext_exp() {
             return next_exp;
         }
 
-        public void setNext_exp(int next_exp) {
+        public void setNext_exp(long next_exp) {
             this.next_exp = next_exp;
         }
     }
 
     public static class OfficialModel implements Serializable {
-        private int role;
+        private long role;
         private String title;
         private String desc;
-        private int type;
+        private long type;
 
-        public int getRole() {
+        public long getRole() {
             return role;
         }
 
-        public void setRole(int role) {
+        public void setRole(long role) {
             this.role = role;
         }
 
@@ -361,24 +361,24 @@ public class NavUserInfoModel implements Serializable {
             this.desc = desc;
         }
 
-        public int getType() {
+        public long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(long type) {
             this.type = type;
         }
     }
 
     public static class OfficialVerifyModel implements Serializable {
-        private int type;
+        private long type;
         private String desc;
 
-        public int getType() {
+        public long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(long type) {
             this.type = type;
         }
 
@@ -392,18 +392,18 @@ public class NavUserInfoModel implements Serializable {
     }
 
     public static class PendantModel implements Serializable {
-        private int pid;
+        private long pid;
         private String name;
         private String image;
-        private int expire;
+        private long expire;
         private String image_enhance;
         private String image_enhance_frame;
 
-        public int getPid() {
+        public long getPid() {
             return pid;
         }
 
-        public void setPid(int pid) {
+        public void setPid(long pid) {
             this.pid = pid;
         }
 
@@ -423,11 +423,11 @@ public class NavUserInfoModel implements Serializable {
             this.image = image;
         }
 
-        public int getExpire() {
+        public long getExpire() {
             return expire;
         }
 
-        public void setExpire(int expire) {
+        public void setExpire(long expire) {
             this.expire = expire;
         }
 
@@ -453,7 +453,7 @@ public class NavUserInfoModel implements Serializable {
         private String text;
         private String label_theme;
         private String text_color;
-        private int bg_style;
+        private long bg_style;
         private String bg_color;
         private String border_color;
         private boolean use_img_label;
@@ -494,11 +494,11 @@ public class NavUserInfoModel implements Serializable {
             this.text_color = text_color;
         }
 
-        public int getBg_style() {
+        public long getBg_style() {
             return bg_style;
         }
 
-        public void setBg_style(int bg_style) {
+        public void setBg_style(long bg_style) {
             this.bg_style = bg_style;
         }
 
@@ -560,32 +560,32 @@ public class NavUserInfoModel implements Serializable {
     }
 
     public static class VipModel implements Serializable {
-        private int type;
-        private int status;
+        private long type;
+        private long status;
         private long due_date;
-        private int vip_pay_type;
-        private int theme_type;
+        private long vip_pay_type;
+        private long theme_type;
         private LabelModel label;
-        private int avatar_subscript;
+        private long avatar_subscript;
         private String nickname_color;
-        private int role;
+        private long role;
         private String avatar_subscript_url;
-        private int tv_vip_status;
-        private int tv_vip_pay_type;
+        private long tv_vip_status;
+        private long tv_vip_pay_type;
 
-        public int getType() {
+        public long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(long type) {
             this.type = type;
         }
 
-        public int getStatus() {
+        public long getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(long status) {
             this.status = status;
         }
 
@@ -597,19 +597,19 @@ public class NavUserInfoModel implements Serializable {
             this.due_date = due_date;
         }
 
-        public int getVip_pay_type() {
+        public long getVip_pay_type() {
             return vip_pay_type;
         }
 
-        public void setVip_pay_type(int vip_pay_type) {
+        public void setVip_pay_type(long vip_pay_type) {
             this.vip_pay_type = vip_pay_type;
         }
 
-        public int getTheme_type() {
+        public long getTheme_type() {
             return theme_type;
         }
 
-        public void setTheme_type(int theme_type) {
+        public void setTheme_type(long theme_type) {
             this.theme_type = theme_type;
         }
 
@@ -621,11 +621,11 @@ public class NavUserInfoModel implements Serializable {
             this.label = label;
         }
 
-        public int getAvatar_subscript() {
+        public long getAvatar_subscript() {
             return avatar_subscript;
         }
 
-        public void setAvatar_subscript(int avatar_subscript) {
+        public void setAvatar_subscript(long avatar_subscript) {
             this.avatar_subscript = avatar_subscript;
         }
 
@@ -637,11 +637,11 @@ public class NavUserInfoModel implements Serializable {
             this.nickname_color = nickname_color;
         }
 
-        public int getRole() {
+        public long getRole() {
             return role;
         }
 
-        public void setRole(int role) {
+        public void setRole(long role) {
             this.role = role;
         }
 
@@ -653,19 +653,19 @@ public class NavUserInfoModel implements Serializable {
             this.avatar_subscript_url = avatar_subscript_url;
         }
 
-        public int getTv_vip_status() {
+        public long getTv_vip_status() {
             return tv_vip_status;
         }
 
-        public void setTv_vip_status(int tv_vip_status) {
+        public void setTv_vip_status(long tv_vip_status) {
             this.tv_vip_status = tv_vip_status;
         }
 
-        public int getTv_vip_pay_type() {
+        public long getTv_vip_pay_type() {
             return tv_vip_pay_type;
         }
 
-        public void setTv_vip_pay_type(int tv_vip_pay_type) {
+        public void setTv_vip_pay_type(long tv_vip_pay_type) {
             this.tv_vip_pay_type = tv_vip_pay_type;
         }
 
@@ -674,7 +674,7 @@ public class NavUserInfoModel implements Serializable {
             private String text;
             private String label_theme;
             private String text_color;
-            private int bg_style;
+            private long bg_style;
             private String bg_color;
             private String border_color;
             private boolean use_img_label;
@@ -715,11 +715,11 @@ public class NavUserInfoModel implements Serializable {
                 this.text_color = text_color;
             }
 
-            public int getBg_style() {
+            public long getBg_style() {
                 return bg_style;
             }
 
-            public void setBg_style(int bg_style) {
+            public void setBg_style(long bg_style) {
                 this.bg_style = bg_style;
             }
 
@@ -782,40 +782,40 @@ public class NavUserInfoModel implements Serializable {
     }
 
     public static class WalletModel implements Serializable {
-        private int mid;
-        private int bcoin_balance;
-        private int coupon_balance;
-        private int coupon_due_time;
+        private long mid;
+        private long bcoin_balance;
+        private long coupon_balance;
+        private long coupon_due_time;
 
-        public int getMid() {
+        public long getMid() {
             return mid;
         }
 
-        public void setMid(int mid) {
+        public void setMid(long mid) {
             this.mid = mid;
         }
 
-        public int getBcoin_balance() {
+        public long getBcoin_balance() {
             return bcoin_balance;
         }
 
-        public void setBcoin_balance(int bcoin_balance) {
+        public void setBcoin_balance(long bcoin_balance) {
             this.bcoin_balance = bcoin_balance;
         }
 
-        public int getCoupon_balance() {
+        public long getCoupon_balance() {
             return coupon_balance;
         }
 
-        public void setCoupon_balance(int coupon_balance) {
+        public void setCoupon_balance(long coupon_balance) {
             this.coupon_balance = coupon_balance;
         }
 
-        public int getCoupon_due_time() {
+        public long getCoupon_due_time() {
             return coupon_due_time;
         }
 
-        public void setCoupon_due_time(int coupon_due_time) {
+        public void setCoupon_due_time(long coupon_due_time) {
             this.coupon_due_time = coupon_due_time;
         }
     }

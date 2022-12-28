@@ -38,27 +38,27 @@ public class HistoryModel {
 
     public static class CursorModel {
         @SerializedName("max")
-        private int max;
+        private long max;
         @SerializedName("view_at")
-        private int viewAt;
+        private long viewAt;
         @SerializedName("business")
         private String business;
         @SerializedName("ps")
-        private int ps;
+        private long ps;
 
-        public int getMax() {
+        public long getMax() {
             return max;
         }
 
-        public void setMax(int max) {
+        public void setMax(long max) {
             this.max = max;
         }
 
-        public int getViewAt() {
+        public long getViewAt() {
             return viewAt;
         }
 
-        public void setViewAt(int viewAt) {
+        public void setViewAt(long viewAt) {
             this.viewAt = viewAt;
         }
 
@@ -70,11 +70,11 @@ public class HistoryModel {
             this.business = business;
         }
 
-        public int getPs() {
+        public long getPs() {
             return ps;
         }
 
-        public void setPs(int ps) {
+        public void setPs(long ps) {
             this.ps = ps;
         }
     }
@@ -116,39 +116,39 @@ public class HistoryModel {
         @SerializedName("history")
         private HistoryEntityModel history;
         @SerializedName("videos")
-        private int videos;
+        private long videos;
         @SerializedName("author_name")
         private String authorName;
         @SerializedName("author_face")
         private String authorFace;
         @SerializedName("author_mid")
-        private int authorMid;
+        private long authorMid;
         @SerializedName("view_at")
-        private int viewAt;
+        private long viewAt;
         @SerializedName("progress")
-        private int progress;
+        private long progress;
         @SerializedName("badge")
         private String badge;
         @SerializedName("show_title")
         private String showTitle;
         @SerializedName("duration")
-        private int duration;
+        private long duration;
         @SerializedName("current")
         private String current;
         @SerializedName("total")
-        private int total;
+        private long total;
         @SerializedName("new_desc")
         private String newDesc;
         @SerializedName("is_finish")
-        private int isFinish;
+        private long isFinish;
         @SerializedName("is_fav")
-        private int isFav;
+        private long isFav;
         @SerializedName("kid")
-        private int kid;
+        private long kid;
         @SerializedName("tag_name")
         private String tagName;
         @SerializedName("live_status")
-        private int liveStatus;
+        private long liveStatus;
 
         public String getTitle() {
             return title;
@@ -198,11 +198,11 @@ public class HistoryModel {
             this.history = history;
         }
 
-        public int getVideos() {
+        public long getVideos() {
             return videos;
         }
 
-        public void setVideos(int videos) {
+        public void setVideos(long videos) {
             this.videos = videos;
         }
 
@@ -222,27 +222,27 @@ public class HistoryModel {
             this.authorFace = authorFace;
         }
 
-        public int getAuthorMid() {
+        public long getAuthorMid() {
             return authorMid;
         }
 
-        public void setAuthorMid(int authorMid) {
+        public void setAuthorMid(long authorMid) {
             this.authorMid = authorMid;
         }
 
-        public int getViewAt() {
+        public long getViewAt() {
             return viewAt;
         }
 
-        public void setViewAt(int viewAt) {
+        public void setViewAt(long viewAt) {
             this.viewAt = viewAt;
         }
 
-        public int getProgress() {
+        public long getProgress() {
             return progress;
         }
 
-        public void setProgress(int progress) {
+        public void setProgress(long progress) {
             this.progress = progress;
         }
 
@@ -262,11 +262,11 @@ public class HistoryModel {
             this.showTitle = showTitle;
         }
 
-        public int getDuration() {
+        public long getDuration() {
             return duration;
         }
 
-        public void setDuration(int duration) {
+        public void setDuration(long duration) {
             this.duration = duration;
         }
 
@@ -278,11 +278,11 @@ public class HistoryModel {
             this.current = current;
         }
 
-        public int getTotal() {
+        public long getTotal() {
             return total;
         }
 
-        public void setTotal(int total) {
+        public void setTotal(long total) {
             this.total = total;
         }
 
@@ -294,27 +294,27 @@ public class HistoryModel {
             this.newDesc = newDesc;
         }
 
-        public int getIsFinish() {
+        public long getIsFinish() {
             return isFinish;
         }
 
-        public void setIsFinish(int isFinish) {
+        public void setIsFinish(long isFinish) {
             this.isFinish = isFinish;
         }
 
-        public int getIsFav() {
+        public long getIsFav() {
             return isFav;
         }
 
-        public void setIsFav(int isFav) {
+        public void setIsFav(long isFav) {
             this.isFav = isFav;
         }
 
-        public int getKid() {
+        public long getKid() {
             return kid;
         }
 
-        public void setKid(int kid) {
+        public void setKid(long kid) {
             this.kid = kid;
         }
 
@@ -326,45 +326,45 @@ public class HistoryModel {
             this.tagName = tagName;
         }
 
-        public int getLiveStatus() {
+        public long getLiveStatus() {
             return liveStatus;
         }
 
-        public void setLiveStatus(int liveStatus) {
+        public void setLiveStatus(long liveStatus) {
             this.liveStatus = liveStatus;
         }
 
         public static class HistoryEntityModel {
             @SerializedName("oid")
-            private int oid;
+            private long oid;
             @SerializedName("epid")
-            private int epid;
+            private long epid;
             @SerializedName("bvid")
             private String bvid;
             @SerializedName("page")
-            private int page;
+            private long page;
             @SerializedName("cid")
-            private int cid;
+            private long cid;
             @SerializedName("part")
             private String part;
             @SerializedName("business")
             private String business;
             @SerializedName("dt")
-            private int dt;
+            private long dt;
 
-            public int getOid() {
+            public long getOid() {
                 return oid;
             }
 
-            public void setOid(int oid) {
+            public void setOid(long oid) {
                 this.oid = oid;
             }
 
-            public int getEpid() {
+            public long getEpid() {
                 return epid;
             }
 
-            public void setEpid(int epid) {
+            public void setEpid(long epid) {
                 this.epid = epid;
             }
 
@@ -376,19 +376,19 @@ public class HistoryModel {
                 this.bvid = bvid;
             }
 
-            public int getPage() {
+            public long getPage() {
                 return page;
             }
 
-            public void setPage(int page) {
+            public void setPage(long page) {
                 this.page = page;
             }
 
-            public int getCid() {
+            public long getCid() {
                 return cid;
             }
 
-            public void setCid(int cid) {
+            public void setCid(long cid) {
                 this.cid = cid;
             }
 
@@ -408,11 +408,11 @@ public class HistoryModel {
                 this.business = business;
             }
 
-            public int getDt() {
+            public long getDt() {
                 return dt;
             }
 
-            public void setDt(int dt) {
+            public void setDt(long dt) {
                 this.dt = dt;
             }
         }

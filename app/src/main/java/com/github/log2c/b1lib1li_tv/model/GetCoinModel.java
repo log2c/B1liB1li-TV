@@ -1,13 +1,13 @@
 package com.github.log2c.b1lib1li_tv.model;
 
 public class GetCoinModel {
-    private int money;
+    private long money;
 
-    public int getMoney() {
+    public long getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(long money) {
         this.money = money;
     }
 }

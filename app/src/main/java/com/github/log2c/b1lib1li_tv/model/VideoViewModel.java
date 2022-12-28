@@ -4,26 +4,26 @@ import java.util.List;
 
 public class VideoViewModel {
     private String bvid;
-    private int aid;
-    private int videos;
-    private int tid;
+    private long aid;
+    private long videos;
+    private long tid;
     private String tname;
-    private int copyright;
+    private long copyright;
     private String pic;
     private String title;
-    private int pubdate;
-    private int ctime;
+    private long pubdate;
+    private long ctime;
     private String desc;
-    private int state;
-    private int duration;
+    private long state;
+    private long duration;
     private RightsModel rights;
     private OwnerModel owner;
     private StatModel stat;
     private String dynamic;
-    private int cid;
+    private long cid;
     private DimensionModel dimension;
     private Object premiere;
-    private int teenage_mode;
+    private long teenage_mode;
     private boolean is_chargeable_season;
     private boolean is_story;
     private boolean no_cache;
@@ -43,27 +43,27 @@ public class VideoViewModel {
         this.bvid = bvid;
     }
 
-    public int getAid() {
+    public long getAid() {
         return aid;
     }
 
-    public void setAid(int aid) {
+    public void setAid(long aid) {
         this.aid = aid;
     }
 
-    public int getVideos() {
+    public long getVideos() {
         return videos;
     }
 
-    public void setVideos(int videos) {
+    public void setVideos(long videos) {
         this.videos = videos;
     }
 
-    public int getTid() {
+    public long getTid() {
         return tid;
     }
 
-    public void setTid(int tid) {
+    public void setTid(long tid) {
         this.tid = tid;
     }
 
@@ -75,11 +75,11 @@ public class VideoViewModel {
         this.tname = tname;
     }
 
-    public int getCopyright() {
+    public long getCopyright() {
         return copyright;
     }
 
-    public void setCopyright(int copyright) {
+    public void setCopyright(long copyright) {
         this.copyright = copyright;
     }
 
@@ -99,19 +99,19 @@ public class VideoViewModel {
         this.title = title;
     }
 
-    public int getPubdate() {
+    public long getPubdate() {
         return pubdate;
     }
 
-    public void setPubdate(int pubdate) {
+    public void setPubdate(long pubdate) {
         this.pubdate = pubdate;
     }
 
-    public int getCtime() {
+    public long getCtime() {
         return ctime;
     }
 
-    public void setCtime(int ctime) {
+    public void setCtime(long ctime) {
         this.ctime = ctime;
     }
 
@@ -123,19 +123,19 @@ public class VideoViewModel {
         this.desc = desc;
     }
 
-    public int getState() {
+    public long getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(long state) {
         this.state = state;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
@@ -171,11 +171,11 @@ public class VideoViewModel {
         this.dynamic = dynamic;
     }
 
-    public int getCid() {
+    public long getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(long cid) {
         this.cid = cid;
     }
 
@@ -195,11 +195,11 @@ public class VideoViewModel {
         this.premiere = premiere;
     }
 
-    public int getTeenage_mode() {
+    public long getTeenage_mode() {
         return teenage_mode;
     }
 
-    public void setTeenage_mode(int teenage_mode) {
+    public void setTeenage_mode(long teenage_mode) {
         this.teenage_mode = teenage_mode;
     }
 
@@ -284,180 +284,180 @@ public class VideoViewModel {
     }
 
     public static class RightsModel {
-        private int bp;
-        private int elec;
-        private int download;
-        private int movie;
-        private int pay;
-        private int hd5;
-        private int no_reprint;
-        private int autoplay;
-        private int ugc_pay;
-        private int is_cooperation;
-        private int ugc_pay_preview;
-        private int no_background;
-        private int clean_mode;
-        private int is_stein_gate;
-        private int is_360;
-        private int no_share;
-        private int arc_pay;
-        private int free_watch;
+        private long bp;
+        private long elec;
+        private long download;
+        private long movie;
+        private long pay;
+        private long hd5;
+        private long no_reprint;
+        private long autoplay;
+        private long ugc_pay;
+        private long is_cooperation;
+        private long ugc_pay_preview;
+        private long no_background;
+        private long clean_mode;
+        private long is_stein_gate;
+        private long is_360;
+        private long no_share;
+        private long arc_pay;
+        private long free_watch;
 
-        public int getBp() {
+        public long getBp() {
             return bp;
         }
 
-        public void setBp(int bp) {
+        public void setBp(long bp) {
             this.bp = bp;
         }
 
-        public int getElec() {
+        public long getElec() {
             return elec;
         }
 
-        public void setElec(int elec) {
+        public void setElec(long elec) {
             this.elec = elec;
         }
 
-        public int getDownload() {
+        public long getDownload() {
             return download;
         }
 
-        public void setDownload(int download) {
+        public void setDownload(long download) {
             this.download = download;
         }
 
-        public int getMovie() {
+        public long getMovie() {
             return movie;
         }
 
-        public void setMovie(int movie) {
+        public void setMovie(long movie) {
             this.movie = movie;
         }
 
-        public int getPay() {
+        public long getPay() {
             return pay;
         }
 
-        public void setPay(int pay) {
+        public void setPay(long pay) {
             this.pay = pay;
         }
 
-        public int getHd5() {
+        public long getHd5() {
             return hd5;
         }
 
-        public void setHd5(int hd5) {
+        public void setHd5(long hd5) {
             this.hd5 = hd5;
         }
 
-        public int getNo_reprint() {
+        public long getNo_reprint() {
             return no_reprint;
         }
 
-        public void setNo_reprint(int no_reprint) {
+        public void setNo_reprint(long no_reprint) {
             this.no_reprint = no_reprint;
         }
 
-        public int getAutoplay() {
+        public long getAutoplay() {
             return autoplay;
         }
 
-        public void setAutoplay(int autoplay) {
+        public void setAutoplay(long autoplay) {
             this.autoplay = autoplay;
         }
 
-        public int getUgc_pay() {
+        public long getUgc_pay() {
             return ugc_pay;
         }
 
-        public void setUgc_pay(int ugc_pay) {
+        public void setUgc_pay(long ugc_pay) {
             this.ugc_pay = ugc_pay;
         }
 
-        public int getIs_cooperation() {
+        public long getIs_cooperation() {
             return is_cooperation;
         }
 
-        public void setIs_cooperation(int is_cooperation) {
+        public void setIs_cooperation(long is_cooperation) {
             this.is_cooperation = is_cooperation;
         }
 
-        public int getUgc_pay_preview() {
+        public long getUgc_pay_preview() {
             return ugc_pay_preview;
         }
 
-        public void setUgc_pay_preview(int ugc_pay_preview) {
+        public void setUgc_pay_preview(long ugc_pay_preview) {
             this.ugc_pay_preview = ugc_pay_preview;
         }
 
-        public int getNo_background() {
+        public long getNo_background() {
             return no_background;
         }
 
-        public void setNo_background(int no_background) {
+        public void setNo_background(long no_background) {
             this.no_background = no_background;
         }
 
-        public int getClean_mode() {
+        public long getClean_mode() {
             return clean_mode;
         }
 
-        public void setClean_mode(int clean_mode) {
+        public void setClean_mode(long clean_mode) {
             this.clean_mode = clean_mode;
         }
 
-        public int getIs_stein_gate() {
+        public long getIs_stein_gate() {
             return is_stein_gate;
         }
 
-        public void setIs_stein_gate(int is_stein_gate) {
+        public void setIs_stein_gate(long is_stein_gate) {
             this.is_stein_gate = is_stein_gate;
         }
 
-        public int getIs_360() {
+        public long getIs_360() {
             return is_360;
         }
 
-        public void setIs_360(int is_360) {
+        public void setIs_360(long is_360) {
             this.is_360 = is_360;
         }
 
-        public int getNo_share() {
+        public long getNo_share() {
             return no_share;
         }
 
-        public void setNo_share(int no_share) {
+        public void setNo_share(long no_share) {
             this.no_share = no_share;
         }
 
-        public int getArc_pay() {
+        public long getArc_pay() {
             return arc_pay;
         }
 
-        public void setArc_pay(int arc_pay) {
+        public void setArc_pay(long arc_pay) {
             this.arc_pay = arc_pay;
         }
 
-        public int getFree_watch() {
+        public long getFree_watch() {
             return free_watch;
         }
 
-        public void setFree_watch(int free_watch) {
+        public void setFree_watch(long free_watch) {
             this.free_watch = free_watch;
         }
     }
 
     public static class OwnerModel {
-        private int mid;
+        private long mid;
         private String name;
         private String face;
 
-        public int getMid() {
+        public long getMid() {
             return mid;
         }
 
-        public void setMid(int mid) {
+        public void setMid(long mid) {
             this.mid = mid;
         }
 
@@ -479,105 +479,105 @@ public class VideoViewModel {
     }
 
     public static class StatModel {
-        private int aid;
-        private int view;
-        private int danmaku;
-        private int reply;
-        private int favorite;
-        private int coin;
-        private int share;
-        private int now_rank;
-        private int his_rank;
-        private int like;
-        private int dislike;
+        private long aid;
+        private long view;
+        private long danmaku;
+        private long reply;
+        private long favorite;
+        private long coin;
+        private long share;
+        private long now_rank;
+        private long his_rank;
+        private long like;
+        private long dislike;
         private String evaluation;
         private String argue_msg;
 
-        public int getAid() {
+        public long getAid() {
             return aid;
         }
 
-        public void setAid(int aid) {
+        public void setAid(long aid) {
             this.aid = aid;
         }
 
-        public int getView() {
+        public long getView() {
             return view;
         }
 
-        public void setView(int view) {
+        public void setView(long view) {
             this.view = view;
         }
 
-        public int getDanmaku() {
+        public long getDanmaku() {
             return danmaku;
         }
 
-        public void setDanmaku(int danmaku) {
+        public void setDanmaku(long danmaku) {
             this.danmaku = danmaku;
         }
 
-        public int getReply() {
+        public long getReply() {
             return reply;
         }
 
-        public void setReply(int reply) {
+        public void setReply(long reply) {
             this.reply = reply;
         }
 
-        public int getFavorite() {
+        public long getFavorite() {
             return favorite;
         }
 
-        public void setFavorite(int favorite) {
+        public void setFavorite(long favorite) {
             this.favorite = favorite;
         }
 
-        public int getCoin() {
+        public long getCoin() {
             return coin;
         }
 
-        public void setCoin(int coin) {
+        public void setCoin(long coin) {
             this.coin = coin;
         }
 
-        public int getShare() {
+        public long getShare() {
             return share;
         }
 
-        public void setShare(int share) {
+        public void setShare(long share) {
             this.share = share;
         }
 
-        public int getNow_rank() {
+        public long getNow_rank() {
             return now_rank;
         }
 
-        public void setNow_rank(int now_rank) {
+        public void setNow_rank(long now_rank) {
             this.now_rank = now_rank;
         }
 
-        public int getHis_rank() {
+        public long getHis_rank() {
             return his_rank;
         }
 
-        public void setHis_rank(int his_rank) {
+        public void setHis_rank(long his_rank) {
             this.his_rank = his_rank;
         }
 
-        public int getLike() {
+        public long getLike() {
             return like;
         }
 
-        public void setLike(int like) {
+        public void setLike(long like) {
             this.like = like;
         }
 
-        public int getDislike() {
+        public long getDislike() {
             return dislike;
         }
 
-        public void setDislike(int dislike) {
+        public void setDislike(long dislike) {
             this.dislike = dislike;
         }
 
@@ -599,31 +599,31 @@ public class VideoViewModel {
     }
 
     public static class DimensionModel {
-        private int width;
-        private int height;
-        private int rotate;
+        private long width;
+        private long height;
+        private long rotate;
 
-        public int getWidth() {
+        public long getWidth() {
             return width;
         }
 
-        public void setWidth(int width) {
+        public void setWidth(long width) {
             this.width = width;
         }
 
-        public int getHeight() {
+        public long getHeight() {
             return height;
         }
 
-        public void setHeight(int height) {
+        public void setHeight(long height) {
             this.height = height;
         }
 
-        public int getRotate() {
+        public long getRotate() {
             return rotate;
         }
 
-        public void setRotate(int rotate) {
+        public void setRotate(long rotate) {
             this.rotate = rotate;
         }
     }
@@ -654,10 +654,10 @@ public class VideoViewModel {
             private String lan_doc;
             private boolean is_lock;
             private String subtitle_url;
-            private int type;
+            private long type;
             private String id_str;
-            private int ai_type;
-            private int ai_status;
+            private long ai_type;
+            private long ai_status;
             private AuthorModel author;
 
             public long getId() {
@@ -700,11 +700,11 @@ public class VideoViewModel {
                 this.subtitle_url = subtitle_url;
             }
 
-            public int getType() {
+            public long getType() {
                 return type;
             }
 
-            public void setType(int type) {
+            public void setType(long type) {
                 this.type = type;
             }
 
@@ -716,19 +716,19 @@ public class VideoViewModel {
                 this.id_str = id_str;
             }
 
-            public int getAi_type() {
+            public long getAi_type() {
                 return ai_type;
             }
 
-            public void setAi_type(int ai_type) {
+            public void setAi_type(long ai_type) {
                 this.ai_type = ai_type;
             }
 
-            public int getAi_status() {
+            public long getAi_status() {
                 return ai_status;
             }
 
-            public void setAi_status(int ai_status) {
+            public void setAi_status(long ai_status) {
                 this.ai_status = ai_status;
             }
 
@@ -741,23 +741,23 @@ public class VideoViewModel {
             }
 
             public static class AuthorModel {
-                private int mid;
+                private long mid;
                 private String name;
                 private String sex;
                 private String face;
                 private String sign;
-                private int rank;
-                private int birthday;
-                private int is_fake_account;
-                private int is_deleted;
-                private int in_reg_audit;
-                private int is_senior_member;
+                private long rank;
+                private long birthday;
+                private long is_fake_account;
+                private long is_deleted;
+                private long in_reg_audit;
+                private long is_senior_member;
 
-                public int getMid() {
+                public long getMid() {
                     return mid;
                 }
 
-                public void setMid(int mid) {
+                public void setMid(long mid) {
                     this.mid = mid;
                 }
 
@@ -793,51 +793,51 @@ public class VideoViewModel {
                     this.sign = sign;
                 }
 
-                public int getRank() {
+                public long getRank() {
                     return rank;
                 }
 
-                public void setRank(int rank) {
+                public void setRank(long rank) {
                     this.rank = rank;
                 }
 
-                public int getBirthday() {
+                public long getBirthday() {
                     return birthday;
                 }
 
-                public void setBirthday(int birthday) {
+                public void setBirthday(long birthday) {
                     this.birthday = birthday;
                 }
 
-                public int getIs_fake_account() {
+                public long getIs_fake_account() {
                     return is_fake_account;
                 }
 
-                public void setIs_fake_account(int is_fake_account) {
+                public void setIs_fake_account(long is_fake_account) {
                     this.is_fake_account = is_fake_account;
                 }
 
-                public int getIs_deleted() {
+                public long getIs_deleted() {
                     return is_deleted;
                 }
 
-                public void setIs_deleted(int is_deleted) {
+                public void setIs_deleted(long is_deleted) {
                     this.is_deleted = is_deleted;
                 }
 
-                public int getIn_reg_audit() {
+                public long getIn_reg_audit() {
                     return in_reg_audit;
                 }
 
-                public void setIn_reg_audit(int in_reg_audit) {
+                public void setIn_reg_audit(long in_reg_audit) {
                     this.in_reg_audit = in_reg_audit;
                 }
 
-                public int getIs_senior_member() {
+                public long getIs_senior_member() {
                     return is_senior_member;
                 }
 
-                public void setIs_senior_member(int is_senior_member) {
+                public void setIs_senior_member(long is_senior_member) {
                     this.is_senior_member = is_senior_member;
                 }
             }
@@ -868,24 +868,24 @@ public class VideoViewModel {
         }
 
         public static class HonorModel {
-            private int aid;
-            private int type;
+            private long aid;
+            private long type;
             private String desc;
-            private int weekly_recommend_num;
+            private long weekly_recommend_num;
 
-            public int getAid() {
+            public long getAid() {
                 return aid;
             }
 
-            public void setAid(int aid) {
+            public void setAid(long aid) {
                 this.aid = aid;
             }
 
-            public int getType() {
+            public long getType() {
                 return type;
             }
 
-            public void setType(int type) {
+            public void setType(long type) {
                 this.type = type;
             }
 
@@ -897,11 +897,11 @@ public class VideoViewModel {
                 this.desc = desc;
             }
 
-            public int getWeekly_recommend_num() {
+            public long getWeekly_recommend_num() {
                 return weekly_recommend_num;
             }
 
-            public void setWeekly_recommend_num(int weekly_recommend_num) {
+            public void setWeekly_recommend_num(long weekly_recommend_num) {
                 this.weekly_recommend_num = weekly_recommend_num;
             }
         }
@@ -909,8 +909,8 @@ public class VideoViewModel {
 
     public static class DescV2Model {
         private String raw_text;
-        private int type;
-        private int biz_id;
+        private long type;
+        private long biz_id;
 
         public String getRaw_text() {
             return raw_text;
@@ -920,47 +920,47 @@ public class VideoViewModel {
             this.raw_text = raw_text;
         }
 
-        public int getType() {
+        public long getType() {
             return type;
         }
 
-        public void setType(int type) {
+        public void setType(long type) {
             this.type = type;
         }
 
-        public int getBiz_id() {
+        public long getBiz_id() {
             return biz_id;
         }
 
-        public void setBiz_id(int biz_id) {
+        public void setBiz_id(long biz_id) {
             this.biz_id = biz_id;
         }
     }
 
     public static class PagesModel {
-        private int cid;
-        private int page;
+        private long cid;
+        private long page;
         private String from;
         private String part;
-        private int duration;
+        private long duration;
         private String vid;
         private String weblink;
         private DimensionModelX dimension;
         private String first_frame;
 
-        public int getCid() {
+        public long getCid() {
             return cid;
         }
 
-        public void setCid(int cid) {
+        public void setCid(long cid) {
             this.cid = cid;
         }
 
-        public int getPage() {
+        public long getPage() {
             return page;
         }
 
-        public void setPage(int page) {
+        public void setPage(long page) {
             this.page = page;
         }
 
@@ -980,11 +980,11 @@ public class VideoViewModel {
             this.part = part;
         }
 
-        public int getDuration() {
+        public long getDuration() {
             return duration;
         }
 
-        public void setDuration(int duration) {
+        public void setDuration(long duration) {
             this.duration = duration;
         }
 
@@ -1021,31 +1021,31 @@ public class VideoViewModel {
         }
 
         public static class DimensionModelX {
-            private int width;
-            private int height;
-            private int rotate;
+            private long width;
+            private long height;
+            private long rotate;
 
-            public int getWidth() {
+            public long getWidth() {
                 return width;
             }
 
-            public void setWidth(int width) {
+            public void setWidth(long width) {
                 this.width = width;
             }
 
-            public int getHeight() {
+            public long getHeight() {
                 return height;
             }
 
-            public void setHeight(int height) {
+            public void setHeight(long height) {
                 this.height = height;
             }
 
-            public int getRotate() {
+            public long getRotate() {
                 return rotate;
             }
 
-            public void setRotate(int rotate) {
+            public void setRotate(long rotate) {
                 this.rotate = rotate;
             }
         }
