@@ -17,6 +17,7 @@ import java.util.List;
 public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
     private static final String SESSDATA_REGEX = "(?<=SESSDATA\\=)[^;]+";
     private static final String DEDE_USER_ID_REGEX = "(?<=DedeUserID\\=)\\d+";
+    private static final String CSRF_REGEX = "(?<=bili_jct\\=)[^;]+";
     private static HttpClientResponseInterceptor instance;
 
     private HttpClientResponseInterceptor() {
@@ -39,6 +40,7 @@ public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
                     if (header.getName().equals("Set-Cookie")) {
                         final List<String> sessdataMatches = RegexUtils.getMatches(SESSDATA_REGEX, header.getValue());
                         final List<String> dedeUserIdMatches = RegexUtils.getMatches(DEDE_USER_ID_REGEX, header.getValue());
+                        final List<String> csrfMatches = RegexUtils.getMatches(CSRF_REGEX, header.getValue());
                         if (!sessdataMatches.isEmpty()) {
                             Logging.i("Store cookie: " + sessdataMatches.get(0));
                             storeSessdata(sessdataMatches.get(0));
@@ -47,12 +49,20 @@ public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
                             Logging.i("Store DedeUserId: " + dedeUserIdMatches.get(0));
                             storeDedeUserId(dedeUserIdMatches.get(0));
                         }
+                        if (!csrfMatches.isEmpty()) {
+                            Logging.i("Store CSRF: " + csrfMatches.get(0));
+                            storeCsrf(csrfMatches.get(0));
+                        }
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void storeCsrf(String csrf) {
+        AppConfigRepository.getInstance().storeCsrf(csrf);
     }
 
     private void storeDedeUserId(String userId) {

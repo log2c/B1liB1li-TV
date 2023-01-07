@@ -12,4 +12,6 @@ public interface VideoRepository {
 
     Observable<String> fetchDanmukuLocalFilePath(String cid);
 
+    Observable<String> historyReport(String aid, String bvid, String cid, String progress);
+
 }

@@ -59,4 +59,16 @@ public class VideoRepositoryImpl implements VideoRepository {
             return xmlFullPath;
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<String> historyReport(String aid, String bvid, String cid, String progress) {
+        final HashMap<String, String> form = new HashMap<>();
+        form.put("aid", aid);
+        form.put("bvid", bvid);
+        form.put("cid", cid);
+        form.put("progress", progress); // 秒
+        form.put("platform", "android");
+        form.put("csrf", AppConfigRepository.getInstance().fetchCsrf());
+        return NetKit.getInstance().doPostRx(Urls.HISTORY_REPORT, null, null, form);
+    }
 }

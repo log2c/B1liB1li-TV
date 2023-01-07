@@ -7,16 +7,21 @@ import android.net.Uri;
 import org.apache.http.Header;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.DeflateDecompressingEntity;
 import org.apache.http.client.entity.GzipDecompressingEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -113,6 +118,14 @@ public class NetKit {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<String> doPostRx(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams, @Nullable Map<String, String> formData) {
+        return Observable.create((ObservableOnSubscribe<String>) emitter -> {
+            final String bodyString = doPost(url, headers, queryParams, formData);
+            emitter.onNext(bodyString);
+            emitter.onComplete();
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     public String doGet(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams) throws Exception {
         final HttpGet httpGet = new HttpGet(url);
 
@@ -124,6 +137,56 @@ public class NetKit {
 
         final HttpResponse response;
         response = mHttpClient.execute(httpGet);
+        String responseString;
+        Header[] responseHeaders = response.getHeaders("Content-Encoding");
+        boolean isGzip = false;
+        boolean isDeflate = false;
+        for (Header h : responseHeaders) {
+            if (h.getValue().equals("gzip")) {
+                isGzip = true;
+            } else if (h.getValue().equals("deflate")) {
+                isDeflate = true;
+            }
+        }
+        if (isGzip) {
+            responseString = EntityUtils.toString(new GzipDecompressingEntity(response.getEntity()), "UTF-8");
+        } else if (isDeflate) {
+            responseString = EntityUtils.toString(new DeflateDecompressingEntity(response.getEntity()), "UTF-8");
+        } else {
+            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+        return responseString;
+    }
+
+    public String doPost(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams, @Nullable Map<String, String> formData) throws Exception {
+        final HttpPost httpPost = new HttpPost(url);
+
+        URI finalUri = addUrlParams(url, queryParams);
+        addHeadersByMap(httpPost, COMMON_HEADERS);
+        addHeadersByMap(httpPost, headers);
+        httpPost.setURI(finalUri);
+
+        List<NameValuePair> forms = new ArrayList<>();
+        if (formData != null) {
+            for (String key : formData.keySet()) {
+                forms.add(new NameValuePair() {
+                    @Override
+                    public String getName() {
+                        return key;
+                    }
+
+                    @Override
+                    public String getValue() {
+                        return formData.get(key);
+                    }
+                });
+            }
+        }
+
+        httpPost.setEntity(new UrlEncodedFormEntity(forms));
+
+        final HttpResponse response;
+        response = mHttpClient.execute(httpPost);
         String responseString;
         Header[] responseHeaders = response.getHeaders("Content-Encoding");
         boolean isGzip = false;

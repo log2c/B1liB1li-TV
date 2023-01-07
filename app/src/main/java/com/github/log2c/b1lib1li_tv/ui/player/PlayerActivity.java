@@ -1,5 +1,8 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
+import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PAUSE;
+import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -42,7 +45,6 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.CommonUtil;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoView;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
 
 import java.io.File;
@@ -52,6 +54,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener;
 import tv.danmaku.ijk.media.exo2.ExoSourceManager;
@@ -61,7 +65,9 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
+    private static final long UPLOAD_HISTORY_TIMER = 15 * 1000;
     private StandardGSYVideoPlayer videoView;
+    private Timer timer;
 
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid, @Nullable String cid) {
@@ -177,7 +183,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private long dialogCurrentTimeToTime(boolean isForward) {
-        final int STEP = 10; // 每步10秒
+        final int STEP = 5; // 每步10秒
         final String start = "1970-01-01 ";
         final long timeOffset = 28800000; // GMT+8时差
         final String str = mDialogCurrentTime.getText().toString();
@@ -248,7 +254,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     public boolean isPlaying() {
-        return mBinding.player.getCurrentState() == GSYVideoView.CURRENT_STATE_PLAYING;
+        return mBinding.player.getCurrentState() == CURRENT_STATE_PLAYING;
     }
 
 
@@ -256,6 +262,9 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     protected void onPause() {
         super.onPause();
         GSYVideoManager.onPause();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     @Override
@@ -286,6 +295,22 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);
+            if (state == CURRENT_STATE_PLAYING) {   // 播放中
+                if (timer != null) {
+                    timer.cancel();
+                }
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(() -> viewModel.updateHistory(videoView.getCurrentPlayer().getCurrentPositionWhenPlaying()));
+                    }
+                }, 0, UPLOAD_HISTORY_TIMER);
+            } else if (state == CURRENT_STATE_PAUSE) {//暂停
+                if (timer != null) {
+                    timer.cancel();
+                }
+            }
         });
     }
 

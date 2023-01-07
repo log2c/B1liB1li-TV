@@ -104,4 +104,12 @@ public class AppConfigRepository {
     public boolean isH264() {
         return Constants.CODEC_H264.equals(fetchDefaultCodec());
     }
+
+    public void storeCsrf(String csrf) {
+        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_BILIBILI_CSRF, csrf);
+    }
+
+    public String fetchCsrf() {
+        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_CSRF);
+    }
 }

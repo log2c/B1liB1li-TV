@@ -10,6 +10,7 @@ public class Constants {
     public static final String SP_BILIBILI_API_SESSDATA = "sessdata";
     public static final String SP_BILIBILI_MID = "mid";
     public static final String SP_BILIBILI_API_DEDEUSERID = "DedeUserID";
+    public static final String SP_BILIBILI_CSRF = "csrf";
     public static final String SP_DEFAULT_RESOLUTION = "default_resolution";
     public static final String SP_DANMAKU_TOGGLE = "danmaku";
     public static final String SP_DEFAULT_CODEC = "default_codec";

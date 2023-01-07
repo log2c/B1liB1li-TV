@@ -18,6 +18,7 @@ import com.github.log2c.base.utils.Logging;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerViewModel extends BaseCoreViewModel {
     private final VideoRepository videoRepository;
@@ -142,5 +143,15 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
     public String getAudioUrl(PlayUrlModel playUrlModel) {
         return playUrlModel.getDash().getAudio().get(0).getBaseUrl();
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("CheckResult")
+    public void updateHistory(long duration) {
+        final long progress = TimeUnit.MILLISECONDS.toSeconds(duration);
+        Logging.i("当前播放进度: " + progress + " 秒");
+        videoRepository.historyReport(aid, bvid, cid, String.valueOf(progress))
+                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), e -> {
+                });
     }
 }
