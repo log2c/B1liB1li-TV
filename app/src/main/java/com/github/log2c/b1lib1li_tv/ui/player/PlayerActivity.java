@@ -100,13 +100,44 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         super.onCreate(savedInstanceState);
     }
 
+
+    private int[] preKeyCodes = new int[]{-1, -1};
+    protected Dialog mProgressDialog;
+    protected TextView mDialogCurrentTime;
+    protected TextView mDialogTotalTime;
+    protected ImageView mDialogIcon;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_UNKNOWN:
+                showMenuPopup();
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                Log.i(TAG, "On key down.");
+                if (preKeyCodes[0] == -1) {    // 第一次
+                    preKeyCodes[0] = keyCode;
+                } else {
+                    preKeyCodes[1] = keyCode;   // 无论后续回调多少次
+                    showProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT, getNextPosition(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT), mBinding.player.getCurrentPlayer().getDuration());
+                }
+                break;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                doPauseOrStart();
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                Log.i(TAG, "On key up.");
-                if (preKeyCodes[1] != -1) {// 长按
+                if (preKeyCodes[1] != -1 && preKeyCodes[0] == preKeyCodes[1]) {// 长按
                     Log.i(TAG, "onKeyUp: 长按");
                     seekByProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT);
                 } else {    //短按
@@ -132,39 +163,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         final long time = dialogCurrentTimeToTime(isForward);
         manager.seekTo(time);
         dismissProgressDialog();
-    }
-
-    private int[] preKeyCodes = new int[]{-1, -1};
-    private int longPressCount = 0;
-    protected Dialog mProgressDialog;
-    protected TextView mDialogCurrentTime;
-    protected TextView mDialogTotalTime;
-    protected ImageView mDialogIcon;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_MENU:
-            case KeyEvent.KEYCODE_UNKNOWN:
-                showMenuPopup();
-                break;
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                Log.i(TAG, "On key down.");
-                if (preKeyCodes[0] == -1) {    // 第一次
-                    preKeyCodes[0] = keyCode;
-                    longPressCount = 1;
-                } else {
-                    preKeyCodes[1] = keyCode;   // 无论后续回调多少次
-                    longPressCount++;
-                    showProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT, getNextPosition(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT), mBinding.player.getCurrentPlayer().getDuration());
-                }
-                break;
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-                doPauseOrStart();
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     private long getNextPosition(boolean isForward) {

@@ -1,6 +1,7 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.blankj.utilcode.util.CollectionUtils;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerViewModel extends BaseCoreViewModel {
+    private static final String TAG = PlayerViewModel.class.getSimpleName();
     private final VideoRepository videoRepository;
     public final SingleLiveEvent<PlayUrlModel> playUrlModelEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String> danmukuLoadedEvent = new SingleLiveEvent<>();
@@ -47,7 +49,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
             @Override
             public void onException(Throwable e) {
-
+                Log.e(TAG, e.getMessage());
             }
         });
     }
@@ -151,7 +153,6 @@ public class PlayerViewModel extends BaseCoreViewModel {
         final long progress = TimeUnit.MILLISECONDS.toSeconds(duration);
         Logging.i("当前播放进度: " + progress + " 秒");
         videoRepository.historyReport(aid, bvid, cid, String.valueOf(progress))
-                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), e -> {
-                });
+                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), e -> Log.e(TAG, e.getMessage()));
     }
 }
