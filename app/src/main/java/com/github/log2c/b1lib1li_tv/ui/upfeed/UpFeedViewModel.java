@@ -35,6 +35,7 @@ public class UpFeedViewModel extends BaseCoreViewModel {
             @Override
             public void onException(Throwable e) {
                 showErrorToast(e.getMessage());
+                feedModelEvent.postValue(null);
             }
 
             @Override

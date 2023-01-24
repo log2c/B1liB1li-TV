@@ -86,6 +86,10 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
 
     @SuppressLint("SetTextI18n")
     private void fillData(VideoViewModel videoViewModel) {
+        if (videoViewModel == null) {
+            adapter.getLoadMoreModule().loadMoreFail();
+            return;
+        }
         mBinding.tvTitle.setText(videoViewModel.getTitle());
         Glide.with(this).load(videoViewModel.getOwner().getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);
         Glide.with(this).load(videoViewModel.getPic()).transform(new RoundedCorners(12)).addListener(new RequestListener<Drawable>() {

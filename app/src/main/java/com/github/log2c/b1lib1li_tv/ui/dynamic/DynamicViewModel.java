@@ -21,7 +21,8 @@ public class DynamicViewModel extends BaseCoreViewModel {
 
     public void loadFeedInfo() {
         getDefUI().getShowDialog().call();
-        userRepository.getFeed(FEED_TYPE, page, offset).subscribe(new LocalObserver<FeedModel>() {
+        userRepository.getFeed(FEED_TYPE, page, offset)
+                .subscribe(new LocalObserver<FeedModel>() {
             @Override
             public void onSuccess(FeedModel model) {
                 page++;
@@ -32,6 +33,7 @@ public class DynamicViewModel extends BaseCoreViewModel {
             @Override
             public void onException(Throwable e) {
                 showErrorToast(e.getMessage());
+                feedModelEvent.postValue(null);
             }
 
             @Override

@@ -49,6 +49,10 @@ public class UpFeedActivity extends BaseCoreActivity<UpFeedViewModel, ActivityUp
         mAdapter.setOnItemClickListener(this);
         mAdapter.setEmptyView(R.layout.layout_empty);
         viewModel.feedModelEvent.observe(this, feedModel -> {
+            if (feedModel == null) {
+                mAdapter.getLoadMoreModule().loadMoreFail();
+                return;
+            }
             mAdapter.addData(feedModel.getItems());
             mAdapter.getLoadMoreModule().loadMoreComplete();
             mAdapter.getLoadMoreModule().setEnableLoadMore(feedModel.isHas_more());

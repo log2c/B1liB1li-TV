@@ -261,6 +261,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         super.onPause();
         GSYVideoManager.onPause();
         if (timer != null) {
+            timer.purge();
             timer.cancel();
         }
     }
@@ -295,6 +296,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             Log.i(TAG, "GSYStateUiListener: " + state);
             if (state == CURRENT_STATE_PLAYING) {   // 播放中
                 if (timer != null) {
+                    timer.purge();
                     timer.cancel();
                 }
                 timer = new Timer();

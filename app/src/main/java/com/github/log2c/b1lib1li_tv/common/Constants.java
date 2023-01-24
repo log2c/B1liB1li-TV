@@ -25,6 +25,8 @@ public class Constants {
     public static final String DANMUKU_CACHE_DIR = "danmuku";   // 弹幕文件缓存文件夹
     public static final String DYNAMIC_TYPE_AV = "DYNAMIC_TYPE_AV";   // 类型
 
+    public static final int NETWORK_REQUEST_RETRY_COUNT = 3;
+
     /**
      * 视频编码
      */

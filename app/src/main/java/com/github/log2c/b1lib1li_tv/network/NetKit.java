@@ -3,6 +3,9 @@ package com.github.log2c.b1lib1li_tv.network;
 import static com.github.log2c.b1lib1li_tv.common.Constants.DEFAULT_USER_AGENT;
 
 import android.net.Uri;
+import android.util.Log;
+
+import com.github.log2c.b1lib1li_tv.common.Constants;
 
 import org.apache.http.Header;
 import org.apache.http.HttpMessage;
@@ -18,17 +21,21 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.net.SocketException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class NetKit {
@@ -65,10 +72,26 @@ public class NetKit {
 
     public Observable<String> doGetWithFormBodyRx(String url, @Nullable Map<String, String> form, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams) {
         return Observable.create((ObservableOnSubscribe<String>) emitter -> {
-            final String bodyString = doGetWithFormBody(url, form, headers, queryParams);
-            emitter.onNext(bodyString);
-            emitter.onComplete();
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                    final String bodyString = doGetWithFormBody(url, form, headers, queryParams);
+                    emitter.onNext(bodyString);
+                    emitter.onComplete();
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwableObservable -> throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                    int mRetryCount = 0;
+
+                    @Override
+                    public ObservableSource<?> apply(Throwable throwable) throws Exception {
+                        long waitTime = 0;
+                        if (throwable instanceof SocketException) {
+                            waitTime = 2000;
+                        }
+                        Log.d(TAG, "发生错误，尝试等待时间=" + waitTime + ",当前重试次数=" + mRetryCount);
+                        mRetryCount++;
+                        return waitTime > 0 && mRetryCount <= Constants.NETWORK_REQUEST_RETRY_COUNT ? Observable.timer(waitTime, TimeUnit.MILLISECONDS) : Observable.error(throwable);
+                    }
+                }));
     }
 
     public String doGetWithFormBody(String url, @Nullable Map<String, String> form, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams) throws Exception {
@@ -112,18 +135,48 @@ public class NetKit {
 
     public Observable<String> doGetRx(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams) {
         return Observable.create((ObservableOnSubscribe<String>) emitter -> {
-            final String bodyString = doGet(url, headers, queryParams);
-            emitter.onNext(bodyString);
-            emitter.onComplete();
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                    final String bodyString = doGet(url, headers, queryParams);
+                    emitter.onNext(bodyString);
+                    emitter.onComplete();
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwableObservable -> throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                    int mRetryCount = 0;
+
+                    @Override
+                    public ObservableSource<?> apply(Throwable throwable) throws Exception {
+                        long waitTime = 0;
+                        if (throwable instanceof SocketException) {
+                            waitTime = 2000;
+                        }
+                        Log.d(TAG, "发生错误，尝试等待时间=" + waitTime + ",当前重试次数=" + mRetryCount);
+                        mRetryCount++;
+                        return waitTime > 0 && mRetryCount <= Constants.NETWORK_REQUEST_RETRY_COUNT ? Observable.timer(waitTime, TimeUnit.MILLISECONDS) : Observable.error(throwable);
+                    }
+                }));
     }
 
     public Observable<String> doPostRx(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams, @Nullable Map<String, String> formData) {
         return Observable.create((ObservableOnSubscribe<String>) emitter -> {
-            final String bodyString = doPost(url, headers, queryParams, formData);
-            emitter.onNext(bodyString);
-            emitter.onComplete();
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                    final String bodyString = doPost(url, headers, queryParams, formData);
+                    emitter.onNext(bodyString);
+                    emitter.onComplete();
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwableObservable -> throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                    int mRetryCount = 0;
+
+                    @Override
+                    public ObservableSource<?> apply(Throwable throwable) throws Exception {
+                        long waitTime = 0;
+                        if (throwable instanceof SocketException) {
+                            waitTime = 2000;
+                        }
+                        Log.d(TAG, "发生错误，尝试等待时间=" + waitTime + ",当前重试次数=" + mRetryCount);
+                        mRetryCount++;
+                        return waitTime > 0 && mRetryCount <= Constants.NETWORK_REQUEST_RETRY_COUNT ? Observable.timer(waitTime, TimeUnit.MILLISECONDS) : Observable.error(throwable);
+                    }
+                }));
     }
 
     public String doGet(String url, @Nullable Map<String, String> headers, @Nullable Map<String, String> queryParams) throws Exception {

@@ -33,7 +33,7 @@ public class DetailViewModel extends BaseCoreViewModel {
 
             @Override
             public void onException(Throwable e) {
-
+                viewModelLiveEvent.postValue(null);
             }
         });
     }
