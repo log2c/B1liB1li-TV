@@ -50,7 +50,7 @@ ext {
             "rxjava2-adapter"    : "com.squareup.retrofit2:adapter-rxjava2:2.9.0",
             "logging-interceptor": "com.squareup.okhttp3:logging-interceptor:4.10.0",
             'stetho'             : "com.facebook.stetho:stetho:1.6.0",
-            'stetho-okhttp': "com.facebook.stetho:stetho-okhttp:1.6.0"
+            'stetho-okhttp'      : "com.facebook.stetho:stetho-okhttp:1.6.0"
     ]
 
     //依赖第三方配置
@@ -80,7 +80,8 @@ ext {
             'arouter-compiler'   : 'com.alibaba:arouter-compiler:1.2.2',
             xxpermissions        : 'com.hjq:xxpermissions:16.2',
             QRGen                : "com.github.kenglxn.QRGen:android:3.0.1",
-            xpopup               : 'com.github.li-xiaojun:XPopup:2.9.16'
+            xpopup               : 'com.github.li-xiaojun:XPopup:2.9.16',
+            AndroidAutoSize      : 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
     ]
 
     dkplayer_lib = [

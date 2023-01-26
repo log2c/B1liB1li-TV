@@ -21,7 +21,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.net.SocketException;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +84,7 @@ public class NetKit {
                     @Override
                     public ObservableSource<?> apply(Throwable throwable) throws Exception {
                         long waitTime = 0;
-                        if (throwable instanceof SocketException) {
+                        if (throwable instanceof IOException) {
                             waitTime = 2000;
                         }
                         Log.d(TAG, "发生错误，尝试等待时间=" + waitTime + ",当前重试次数=" + mRetryCount);
@@ -147,7 +147,7 @@ public class NetKit {
                     @Override
                     public ObservableSource<?> apply(Throwable throwable) throws Exception {
                         long waitTime = 0;
-                        if (throwable instanceof SocketException) {
+                        if (throwable instanceof IOException) {
                             waitTime = 2000;
                         }
                         Log.d(TAG, "发生错误，尝试等待时间=" + waitTime + ",当前重试次数=" + mRetryCount);
@@ -169,7 +169,7 @@ public class NetKit {
                     @Override
                     public ObservableSource<?> apply(Throwable throwable) throws Exception {
                         long waitTime = 0;
-                        if (throwable instanceof SocketException) {
+                        if (throwable instanceof IOException) {
                             waitTime = 2000;
                         }
                         Log.d(TAG, "发生错误，尝试等待时间=" + waitTime + ",当前重试次数=" + mRetryCount);

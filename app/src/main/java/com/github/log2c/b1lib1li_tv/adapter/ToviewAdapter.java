@@ -50,6 +50,7 @@ public class ToviewAdapter extends BaseQuickAdapter<ToViewModel.ListModel, BaseV
         TextView title = baseViewHolder.getView(R.id.tv_title);
         TextView name = baseViewHolder.getView(R.id.tv_name);
         TextView time = baseViewHolder.getView(R.id.tv_time);
+        TextView duration = baseViewHolder.getView(R.id.tv_duration);
 
         try {
             Glide.with(avatar).load(itemsModel.getOwner().getFace()).transform(new CircleCrop()).into(avatar);

@@ -49,6 +49,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
         TextView title = baseViewHolder.getView(R.id.tv_title);
         TextView name = baseViewHolder.getView(R.id.tv_name);
         TextView time = baseViewHolder.getView(R.id.tv_time);
+        TextView duration = baseViewHolder.getView(R.id.tv_duration);
 
         try {
             Glide.with(avatar).load(itemsModel.getModules().getModule_author().getFace()).transform(new CircleCrop()).into(avatar);
@@ -57,6 +58,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
             title.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getTitle());
             name.setText(itemsModel.getModules().getModule_author().getName());
             time.setText(itemsModel.getModules().getModule_author().getPub_time());
+            duration.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getDuration_text());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

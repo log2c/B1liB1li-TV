@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -108,14 +109,27 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     protected ImageView mDialogIcon;
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        Log.i(TAG, "dispatchKeyEvent: " + event.getKeyCode() + ", Event: " + event.getAction());
+        if (getCurrentFocus() instanceof RelativeLayout && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                doPauseOrStart();
+                return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.i(TAG, "onKeyDown: " + keyCode);
         switch (keyCode) {
-            case KeyEvent.KEYCODE_MENU:
-            case KeyEvent.KEYCODE_UNKNOWN:
-                showMenuPopup();
-                break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if (videoView.getCurrentState() != CURRENT_STATE_PLAYING) {
+                    Log.i(TAG, "On key down but not playing.");
+                    return true;
+                }
                 Log.i(TAG, "On key down.");
                 if (preKeyCodes[0] == -1) {    // 第一次
                     preKeyCodes[0] = keyCode;
@@ -123,10 +137,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
                     preKeyCodes[1] = keyCode;   // 无论后续回调多少次
                     showProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT, getNextPosition(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT), mBinding.player.getCurrentPlayer().getDuration());
                 }
-                break;
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-                doPauseOrStart();
-                break;
+                return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -134,9 +145,22 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.i(TAG, "onKeyUp: " + keyCode);
         switch (keyCode) {
+            case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_UNKNOWN:
+                showMenuPopup();
+                return true;
+//            case KeyEvent.KEYCODE_DPAD_CENTER:
+//                Log.i(TAG, "onKeyUp: center");
+//                doPauseOrStart();
+//                return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_DPAD_LEFT:
+                if (videoView.getCurrentState() != CURRENT_STATE_PLAYING) {
+                    Log.i(TAG, "onKeyUp but not playing.");
+                    return true;
+                }
                 if (preKeyCodes[1] != -1 && preKeyCodes[0] == preKeyCodes[1]) {// 长按
                     Log.i(TAG, "onKeyUp: 长按");
                     seekByProgressDialog(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT);

@@ -16,20 +16,36 @@
         app:barrierDirection="start"
         app:constraint_referenced_ids="iv_cover" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
     <ImageView
         android:id="@+id/iv_cover"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="2"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +55,7 @@
     <LinearLayout
         android:id="@+id/ll_up"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
@@ -48,8 +64,8 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical" />
 
         <Button
@@ -197,7 +213,6 @@
         android:padding="@dimen/dp_4"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
-        app:layout_constraintHeight_max="300dp"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:text="test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test." />
@@ -208,9 +223,11 @@
         android:layout_height="85dp"
         android:layout_margin="@dimen/dp_10"
         android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
         android:focusable="true"
         android:overScrollMode="never"
-        app:layout_constraintEnd_toStartOf="@id/barrier_cover"
+        android:focusableInTouchMode="true"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_desc"
         app:layout_constraintTop_toBottomOf="@id/tv_desc" />
 </androidx.constraintlayout.widget.ConstraintLayout>

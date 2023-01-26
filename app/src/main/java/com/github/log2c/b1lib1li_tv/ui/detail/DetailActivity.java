@@ -75,7 +75,16 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         };
         viewModel.viewModelLiveEvent.observe(this, this::fillData);
 
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false) {
+            @Override
+            public void onLayoutCompleted(RecyclerView.State state) {
+                super.onLayoutCompleted(state);
+                if (getItemCount() == 0) {
+                    return;
+                }
+                trySetViewFocus();
+            }
+        });
         mBinding.recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
             final VideoViewModel viewModel = DetailActivity.this.viewModel.viewModelLiveEvent.getValue();
@@ -109,7 +118,6 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
                                 }
                             });
                 }
-                Log.i(TAG, "onResourceReady: ");
                 return false;
             }
         }).into(mBinding.ivCover);
@@ -125,6 +133,19 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
 
         mBinding.tvDesc.setText(videoViewModel.getDesc());
         adapter.setNewInstance(videoViewModel.getPages());
+        trySetViewFocus();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void trySetViewFocus() {
+        try {
+            RecyclerView.ViewHolder viewHolder = mBinding.recyclerView.findViewHolderForAdapterPosition(0);
+            viewHolder.itemView.setFocusable(true);
+            viewHolder.itemView.setFocusableInTouchMode(true);
+            viewHolder.itemView.requestFocus();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

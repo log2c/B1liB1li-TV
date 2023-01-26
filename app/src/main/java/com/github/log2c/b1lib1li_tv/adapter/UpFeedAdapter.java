@@ -45,6 +45,7 @@ public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ItemsModel, Base
         TextView title = baseViewHolder.getView(R.id.tv_title);
         TextView name = baseViewHolder.getView(R.id.tv_name);
         TextView time = baseViewHolder.getView(R.id.tv_time);
+        TextView duration = baseViewHolder.getView(R.id.tv_duration);
 
         try {
             Glide.with(avatar).load(upFeedModel.getModules().getModule_author().getFace()).transform(new CircleCrop()).into(avatar);
@@ -53,6 +54,7 @@ public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ItemsModel, Base
             title.setText(upFeedModel.getModules().getModule_dynamic().getMajor().getArchive().getTitle());
             name.setText(upFeedModel.getModules().getModule_author().getName());
             time.setText(upFeedModel.getModules().getModule_author().getPub_time());
+            duration.setText(upFeedModel.getModules().getModule_dynamic().getMajor().getArchive().getDuration_text());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
