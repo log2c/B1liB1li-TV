@@ -40,14 +40,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<String> getUpFeed(String hostMid, int page, String offset) {
+    public Observable<String> getUpFeed(String hostMid, int page, int pageSize) {
         Map<String, String> params = new HashMap<>();
-        params.put("host_mid", hostMid);
-        params.put("page", "" + page);
-        if (!StringUtils.isTrimEmpty(offset)) {
-            params.put("offset", "" + offset);
-        }
-        return NetKit.getInstance().doGetRx(Urls.FEED_ALL, null, params);
+        params.put("mid", hostMid);
+        params.put("keyword", "");  // 筛选关键词
+        params.put("tid", "0"); // 默认为0 0：不进行分区筛选 分区tid为所筛选的分区
+        params.put("pn", "" + page);
+        params.put("ps", pageSize + "");
+        return NetKit.getInstance().doGetRx(Urls.SPACE_SEARCH_VIDEOS, null, params);
     }
 
     @Override

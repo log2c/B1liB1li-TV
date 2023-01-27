@@ -9,21 +9,21 @@ import androidx.cardview.widget.CardView;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
 
-public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ItemsModel, BaseViewHolder> implements LoadMoreModule {
+public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ListModel.VlistModel, BaseViewHolder> implements LoadMoreModule {
     public UpFeedAdapter() {
         super(R.layout.item_glance_dynamic);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder baseViewHolder, UpFeedModel.ItemsModel upFeedModel) {
+    protected void convert(@NonNull BaseViewHolder baseViewHolder, UpFeedModel.ListModel.VlistModel upFeedModel) {
         CardView cv = baseViewHolder.getView(R.id.cv_root);
         cv.setCardElevation(0f);
         cv.setOnFocusChangeListener((v, hasFocus) -> {
@@ -48,13 +48,13 @@ public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ItemsModel, Base
         TextView duration = baseViewHolder.getView(R.id.tv_duration);
 
         try {
-            Glide.with(avatar).load(upFeedModel.getModules().getModule_author().getFace()).transform(new CircleCrop()).into(avatar);
-            Glide.with(avatar).load(upFeedModel.getModules().getModule_dynamic().getMajor().getArchive().getCover()).transform(new RoundedCorners(12)).into(cover);
+            avatar.setVisibility(View.GONE);
+            Glide.with(avatar).load(upFeedModel.getPic()).transform(new RoundedCorners(12)).into(cover);
 
-            title.setText(upFeedModel.getModules().getModule_dynamic().getMajor().getArchive().getTitle());
-            name.setText(upFeedModel.getModules().getModule_author().getName());
-            time.setText(upFeedModel.getModules().getModule_author().getPub_time());
-            duration.setText(upFeedModel.getModules().getModule_dynamic().getMajor().getArchive().getDuration_text());
+            title.setText(upFeedModel.getTitle());
+            name.setVisibility(View.GONE);
+            time.setText(CommonUtils.formatSeconds(upFeedModel.getCreated()));
+            duration.setText(upFeedModel.getLength());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

@@ -2,1860 +2,373 @@ package com.github.log2c.b1lib1li_tv.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class UpFeedModel implements Serializable {
-    private boolean has_more;
-    private String offset;
-    private String update_baseline;
-    private long update_num;
-    private List<ItemsModel> items;
+    private ListModel list;
+    private PageModel page;
+    private EpisodicButtonModel episodic_button;
+    private Boolean is_risk;
+    private long gaia_res_type;
 
-    public boolean isHas_more() {
-        return has_more;
+    public ListModel getList() {
+        return list;
     }
 
-    public void setHas_more(boolean has_more) {
-        this.has_more = has_more;
+    public void setList(ListModel list) {
+        this.list = list;
     }
 
-    public String getOffset() {
-        return offset;
+    public PageModel getPage() {
+        return page;
     }
 
-    public void setOffset(String offset) {
-        this.offset = offset;
+    public void setPage(PageModel page) {
+        this.page = page;
     }
 
-    public String getUpdate_baseline() {
-        return update_baseline;
+    public EpisodicButtonModel getEpisodic_button() {
+        return episodic_button;
     }
 
-    public void setUpdate_baseline(String update_baseline) {
-        this.update_baseline = update_baseline;
+    public void setEpisodic_button(EpisodicButtonModel episodic_button) {
+        this.episodic_button = episodic_button;
     }
 
-    public long getUpdate_num() {
-        return update_num;
+    public Boolean getIs_risk() {
+        return is_risk;
     }
 
-    public void setUpdate_num(long update_num) {
-        this.update_num = update_num;
+    public void setIs_risk(Boolean is_risk) {
+        this.is_risk = is_risk;
     }
 
-    public List<ItemsModel> getItems() {
-        return items;
+    public long getGaia_res_type() {
+        return gaia_res_type;
     }
 
-    public void setItems(List<ItemsModel> items) {
-        this.items = items;
+    public void setGaia_res_type(long gaia_res_type) {
+        this.gaia_res_type = gaia_res_type;
     }
 
-    public static class ItemsModel implements Serializable {
-        private BasicModel basic;
-        private String id_str;
-        private ModulesModel modules;
-        private String type;
-        private boolean visible;
-        private OrigModel orig;
+    public static class ListModel {
+        private Map<String, TListModel> tlist;
+        private List<VlistModel> vlist;
 
-        public BasicModel getBasic() {
-            return basic;
+        public Map<String, TListModel> getTlist() {
+            return tlist;
         }
 
-        public void setBasic(BasicModel basic) {
-            this.basic = basic;
+        public void setTlist(Map<String, TListModel> tlist) {
+            this.tlist = tlist;
         }
 
-        public String getId_str() {
-            return id_str;
+        public List<VlistModel> getVlist() {
+            return vlist;
         }
 
-        public void setId_str(String id_str) {
-            this.id_str = id_str;
+        public void setVlist(List<VlistModel> vlist) {
+            this.vlist = vlist;
         }
 
-        public ModulesModel getModules() {
-            return modules;
-        }
+        public static class TListModel {
+            private long tid;
+            private long count;
+            private String name;
 
-        public void setModules(ModulesModel modules) {
-            this.modules = modules;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public boolean isVisible() {
-            return visible;
-        }
-
-        public void setVisible(boolean visible) {
-            this.visible = visible;
-        }
-
-        public OrigModel getOrig() {
-            return orig;
-        }
-
-        public void setOrig(OrigModel orig) {
-            this.orig = orig;
-        }
-
-        public static class BasicModel implements Serializable {
-            private String comment_id_str;
-            private long comment_type;
-            private LikeIconModel like_icon;
-            private String rid_str;
-
-            public String getComment_id_str() {
-                return comment_id_str;
+            public long getTid() {
+                return tid;
             }
 
-            public void setComment_id_str(String comment_id_str) {
-                this.comment_id_str = comment_id_str;
+            public void setTid(long tid) {
+                this.tid = tid;
             }
 
-            public long getComment_type() {
-                return comment_type;
+            public long getCount() {
+                return count;
             }
 
-            public void setComment_type(long comment_type) {
-                this.comment_type = comment_type;
+            public void setCount(long count) {
+                this.count = count;
             }
 
-            public LikeIconModel getLike_icon() {
-                return like_icon;
+            public String getName() {
+                return name;
             }
 
-            public void setLike_icon(LikeIconModel like_icon) {
-                this.like_icon = like_icon;
-            }
-
-            public String getRid_str() {
-                return rid_str;
-            }
-
-            public void setRid_str(String rid_str) {
-                this.rid_str = rid_str;
-            }
-
-            public static class LikeIconModel implements Serializable {
-                private String action_url;
-                private String end_url;
-                private long id;
-                private String start_url;
-
-                public String getAction_url() {
-                    return action_url;
-                }
-
-                public void setAction_url(String action_url) {
-                    this.action_url = action_url;
-                }
-
-                public String getEnd_url() {
-                    return end_url;
-                }
-
-                public void setEnd_url(String end_url) {
-                    this.end_url = end_url;
-                }
-
-                public long getId() {
-                    return id;
-                }
-
-                public void setId(long id) {
-                    this.id = id;
-                }
-
-                public String getStart_url() {
-                    return start_url;
-                }
-
-                public void setStart_url(String start_url) {
-                    this.start_url = start_url;
-                }
+            public void setName(String name) {
+                this.name = name;
             }
         }
 
-        public static class ModulesModel implements Serializable {
-            private ModuleAuthorModel module_author;
-            private ModuleDynamicModel module_dynamic;
-            private ModuleMoreModel module_more;
-            private ModuleStatModel module_stat;
+        public static class VlistModel {
+            private long comment;
+            private long typeid;
+            private long play;
+            private String pic;
+            private String subtitle;
+            private String description;
+            private String copyright;
+            private String title;
+            private long review;
+            private String author;
+            private long mid;
+            private long created;
+            private String length;
+            private long video_review;
+            private String aid;
+            private String bvid;
+            private Boolean hide_click;
+            private long is_pay;
+            private long is_union_video;
+            private long is_steins_gate;
+            private long is_live_playback;
+            private Object meta;
+            private long is_avoided;
+            private long attribute;
 
-            public ModuleAuthorModel getModule_author() {
-                return module_author;
+            public long getComment() {
+                return comment;
             }
 
-            public void setModule_author(ModuleAuthorModel module_author) {
-                this.module_author = module_author;
+            public void setComment(long comment) {
+                this.comment = comment;
             }
 
-            public ModuleDynamicModel getModule_dynamic() {
-                return module_dynamic;
+            public long getTypeid() {
+                return typeid;
             }
 
-            public void setModule_dynamic(ModuleDynamicModel module_dynamic) {
-                this.module_dynamic = module_dynamic;
+            public void setTypeid(long typeid) {
+                this.typeid = typeid;
             }
 
-            public ModuleMoreModel getModule_more() {
-                return module_more;
+            public long getPlay() {
+                return play;
             }
 
-            public void setModule_more(ModuleMoreModel module_more) {
-                this.module_more = module_more;
+            public void setPlay(long play) {
+                this.play = play;
             }
 
-            public ModuleStatModel getModule_stat() {
-                return module_stat;
+            public String getPic() {
+                return pic;
             }
 
-            public void setModule_stat(ModuleStatModel module_stat) {
-                this.module_stat = module_stat;
+            public void setPic(String pic) {
+                this.pic = pic;
             }
 
-            public static class ModuleAuthorModel implements Serializable {
-                private String face;
-                private boolean face_nft;
-                private boolean following;
-                private String jump_url;
-                private String label;
-                private long mid;
-                private String name;
-                private OfficialVerifyModel official_verify;
-                private PendantModel pendant;
-                private String pub_action;
-                private String pub_location_text;
-                private String pub_time;
-                private long pub_ts;
-                private String type;
-                private VipModel vip;
-
-                public String getFace() {
-                    return face;
-                }
-
-                public void setFace(String face) {
-                    this.face = face;
-                }
-
-                public boolean isFace_nft() {
-                    return face_nft;
-                }
-
-                public void setFace_nft(boolean face_nft) {
-                    this.face_nft = face_nft;
-                }
-
-                public boolean isFollowing() {
-                    return following;
-                }
-
-                public void setFollowing(boolean following) {
-                    this.following = following;
-                }
-
-                public String getJump_url() {
-                    return jump_url;
-                }
-
-                public void setJump_url(String jump_url) {
-                    this.jump_url = jump_url;
-                }
-
-                public String getLabel() {
-                    return label;
-                }
-
-                public void setLabel(String label) {
-                    this.label = label;
-                }
-
-                public long getMid() {
-                    return mid;
-                }
-
-                public void setMid(long mid) {
-                    this.mid = mid;
-                }
-
-                public String getName() {
-                    return name;
-                }
-
-                public void setName(String name) {
-                    this.name = name;
-                }
-
-                public OfficialVerifyModel getOfficial_verify() {
-                    return official_verify;
-                }
-
-                public void setOfficial_verify(OfficialVerifyModel official_verify) {
-                    this.official_verify = official_verify;
-                }
-
-                public PendantModel getPendant() {
-                    return pendant;
-                }
-
-                public void setPendant(PendantModel pendant) {
-                    this.pendant = pendant;
-                }
-
-                public String getPub_action() {
-                    return pub_action;
-                }
-
-                public void setPub_action(String pub_action) {
-                    this.pub_action = pub_action;
-                }
-
-                public String getPub_location_text() {
-                    return pub_location_text;
-                }
-
-                public void setPub_location_text(String pub_location_text) {
-                    this.pub_location_text = pub_location_text;
-                }
-
-                public String getPub_time() {
-                    return pub_time;
-                }
-
-                public void setPub_time(String pub_time) {
-                    this.pub_time = pub_time;
-                }
-
-                public long getPub_ts() {
-                    return pub_ts;
-                }
-
-                public void setPub_ts(long pub_ts) {
-                    this.pub_ts = pub_ts;
-                }
-
-                public String getType() {
-                    return type;
-                }
-
-                public void setType(String type) {
-                    this.type = type;
-                }
-
-                public VipModel getVip() {
-                    return vip;
-                }
-
-                public void setVip(VipModel vip) {
-                    this.vip = vip;
-                }
-
-                public static class OfficialVerifyModel implements Serializable {
-                    private String desc;
-                    private long type;
-
-                    public String getDesc() {
-                        return desc;
-                    }
-
-                    public void setDesc(String desc) {
-                        this.desc = desc;
-                    }
-
-                    public long getType() {
-                        return type;
-                    }
-
-                    public void setType(long type) {
-                        this.type = type;
-                    }
-                }
-
-                public static class PendantModel implements Serializable {
-                    private long expire;
-                    private String image;
-                    private String image_enhance;
-                    private String image_enhance_frame;
-                    private String name;
-                    private long pid;
-
-                    public long getExpire() {
-                        return expire;
-                    }
-
-                    public void setExpire(long expire) {
-                        this.expire = expire;
-                    }
-
-                    public String getImage() {
-                        return image;
-                    }
-
-                    public void setImage(String image) {
-                        this.image = image;
-                    }
-
-                    public String getImage_enhance() {
-                        return image_enhance;
-                    }
-
-                    public void setImage_enhance(String image_enhance) {
-                        this.image_enhance = image_enhance;
-                    }
-
-                    public String getImage_enhance_frame() {
-                        return image_enhance_frame;
-                    }
-
-                    public void setImage_enhance_frame(String image_enhance_frame) {
-                        this.image_enhance_frame = image_enhance_frame;
-                    }
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-
-                    public long getPid() {
-                        return pid;
-                    }
-
-                    public void setPid(long pid) {
-                        this.pid = pid;
-                    }
-                }
-
-                public static class VipModel implements Serializable {
-                    private long avatar_subscript;
-                    private String avatar_subscript_url;
-                    private long due_date;
-                    private LabelModel label;
-                    private String nickname_color;
-                    private long status;
-                    private long theme_type;
-                    private long type;
-
-                    public long getAvatar_subscript() {
-                        return avatar_subscript;
-                    }
-
-                    public void setAvatar_subscript(long avatar_subscript) {
-                        this.avatar_subscript = avatar_subscript;
-                    }
-
-                    public String getAvatar_subscript_url() {
-                        return avatar_subscript_url;
-                    }
-
-                    public void setAvatar_subscript_url(String avatar_subscript_url) {
-                        this.avatar_subscript_url = avatar_subscript_url;
-                    }
-
-                    public long getDue_date() {
-                        return due_date;
-                    }
-
-                    public void setDue_date(long due_date) {
-                        this.due_date = due_date;
-                    }
-
-                    public LabelModel getLabel() {
-                        return label;
-                    }
-
-                    public void setLabel(LabelModel label) {
-                        this.label = label;
-                    }
-
-                    public String getNickname_color() {
-                        return nickname_color;
-                    }
-
-                    public void setNickname_color(String nickname_color) {
-                        this.nickname_color = nickname_color;
-                    }
-
-                    public long getStatus() {
-                        return status;
-                    }
-
-                    public void setStatus(long status) {
-                        this.status = status;
-                    }
-
-                    public long getTheme_type() {
-                        return theme_type;
-                    }
-
-                    public void setTheme_type(long theme_type) {
-                        this.theme_type = theme_type;
-                    }
-
-                    public long getType() {
-                        return type;
-                    }
-
-                    public void setType(long type) {
-                        this.type = type;
-                    }
-
-                    public static class LabelModel implements Serializable {
-                        private String bg_color;
-                        private long bg_style;
-                        private String border_color;
-                        private String img_label_uri_hans;
-                        private String img_label_uri_hans_static;
-                        private String img_label_uri_hant;
-                        private String img_label_uri_hant_static;
-                        private String label_theme;
-                        private String path;
-                        private String text;
-                        private String text_color;
-                        private boolean use_img_label;
-
-                        public String getBg_color() {
-                            return bg_color;
-                        }
-
-                        public void setBg_color(String bg_color) {
-                            this.bg_color = bg_color;
-                        }
-
-                        public long getBg_style() {
-                            return bg_style;
-                        }
-
-                        public void setBg_style(long bg_style) {
-                            this.bg_style = bg_style;
-                        }
-
-                        public String getBorder_color() {
-                            return border_color;
-                        }
-
-                        public void setBorder_color(String border_color) {
-                            this.border_color = border_color;
-                        }
-
-                        public String getImg_label_uri_hans() {
-                            return img_label_uri_hans;
-                        }
-
-                        public void setImg_label_uri_hans(String img_label_uri_hans) {
-                            this.img_label_uri_hans = img_label_uri_hans;
-                        }
-
-                        public String getImg_label_uri_hans_static() {
-                            return img_label_uri_hans_static;
-                        }
-
-                        public void setImg_label_uri_hans_static(String img_label_uri_hans_static) {
-                            this.img_label_uri_hans_static = img_label_uri_hans_static;
-                        }
-
-                        public String getImg_label_uri_hant() {
-                            return img_label_uri_hant;
-                        }
-
-                        public void setImg_label_uri_hant(String img_label_uri_hant) {
-                            this.img_label_uri_hant = img_label_uri_hant;
-                        }
-
-                        public String getImg_label_uri_hant_static() {
-                            return img_label_uri_hant_static;
-                        }
-
-                        public void setImg_label_uri_hant_static(String img_label_uri_hant_static) {
-                            this.img_label_uri_hant_static = img_label_uri_hant_static;
-                        }
-
-                        public String getLabel_theme() {
-                            return label_theme;
-                        }
-
-                        public void setLabel_theme(String label_theme) {
-                            this.label_theme = label_theme;
-                        }
-
-                        public String getPath() {
-                            return path;
-                        }
-
-                        public void setPath(String path) {
-                            this.path = path;
-                        }
-
-                        public String getText() {
-                            return text;
-                        }
-
-                        public void setText(String text) {
-                            this.text = text;
-                        }
-
-                        public String getText_color() {
-                            return text_color;
-                        }
-
-                        public void setText_color(String text_color) {
-                            this.text_color = text_color;
-                        }
-
-                        public boolean isUse_img_label() {
-                            return use_img_label;
-                        }
-
-                        public void setUse_img_label(boolean use_img_label) {
-                            this.use_img_label = use_img_label;
-                        }
-                    }
-                }
+            public String getSubtitle() {
+                return subtitle;
             }
 
-            public static class ModuleDynamicModel implements Serializable {
-                private Object additional;
-                private DescModel desc;
-                private MajorModel major;
-                private TopicModel topic;
-
-                public Object getAdditional() {
-                    return additional;
-                }
-
-                public void setAdditional(Object additional) {
-                    this.additional = additional;
-                }
-
-                public DescModel getDesc() {
-                    return desc;
-                }
-
-                public void setDesc(DescModel desc) {
-                    this.desc = desc;
-                }
-
-                public MajorModel getMajor() {
-                    return major;
-                }
-
-                public void setMajor(MajorModel major) {
-                    this.major = major;
-                }
-
-                public TopicModel getTopic() {
-                    return topic;
-                }
-
-                public void setTopic(TopicModel topic) {
-                    this.topic = topic;
-                }
-
-                public static class DescModel implements Serializable {
-                    private String text;
-                    private List<RichTextNodesModel> rich_text_nodes;
-
-                    public String getText() {
-                        return text;
-                    }
-
-                    public void setText(String text) {
-                        this.text = text;
-                    }
-
-                    public List<RichTextNodesModel> getRich_text_nodes() {
-                        return rich_text_nodes;
-                    }
-
-                    public void setRich_text_nodes(List<RichTextNodesModel> rich_text_nodes) {
-                        this.rich_text_nodes = rich_text_nodes;
-                    }
-
-                    public static class RichTextNodesModel implements Serializable {
-                        private String orig_text;
-                        private String text;
-                        private String type;
-
-                        public String getOrig_text() {
-                            return orig_text;
-                        }
-
-                        public void setOrig_text(String orig_text) {
-                            this.orig_text = orig_text;
-                        }
-
-                        public String getText() {
-                            return text;
-                        }
-
-                        public void setText(String text) {
-                            this.text = text;
-                        }
-
-                        public String getType() {
-                            return type;
-                        }
-
-                        public void setType(String type) {
-                            this.type = type;
-                        }
-                    }
-                }
-
-                public static class MajorModel implements Serializable {
-                    private ArchiveModel archive;
-                    private String type;
-
-                    public ArchiveModel getArchive() {
-                        return archive;
-                    }
-
-                    public void setArchive(ArchiveModel archive) {
-                        this.archive = archive;
-                    }
-
-                    public String getType() {
-                        return type;
-                    }
-
-                    public void setType(String type) {
-                        this.type = type;
-                    }
-
-                    public static class ArchiveModel implements Serializable {
-                        private String aid;
-                        private BadgeModel badge;
-                        private String bvid;
-                        private String cover;
-                        private String desc;
-                        private long disable_preview;
-                        private String duration_text;
-                        private String jump_url;
-                        private StatModel stat;
-                        private String title;
-                        private long type;
-
-                        public String getAid() {
-                            return aid;
-                        }
-
-                        public void setAid(String aid) {
-                            this.aid = aid;
-                        }
-
-                        public BadgeModel getBadge() {
-                            return badge;
-                        }
-
-                        public void setBadge(BadgeModel badge) {
-                            this.badge = badge;
-                        }
-
-                        public String getBvid() {
-                            return bvid;
-                        }
-
-                        public void setBvid(String bvid) {
-                            this.bvid = bvid;
-                        }
-
-                        public String getCover() {
-                            return cover;
-                        }
-
-                        public void setCover(String cover) {
-                            this.cover = cover;
-                        }
-
-                        public String getDesc() {
-                            return desc;
-                        }
-
-                        public void setDesc(String desc) {
-                            this.desc = desc;
-                        }
-
-                        public long getDisable_preview() {
-                            return disable_preview;
-                        }
-
-                        public void setDisable_preview(long disable_preview) {
-                            this.disable_preview = disable_preview;
-                        }
-
-                        public String getDuration_text() {
-                            return duration_text;
-                        }
-
-                        public void setDuration_text(String duration_text) {
-                            this.duration_text = duration_text;
-                        }
-
-                        public String getJump_url() {
-                            return jump_url;
-                        }
-
-                        public void setJump_url(String jump_url) {
-                            this.jump_url = jump_url;
-                        }
-
-                        public StatModel getStat() {
-                            return stat;
-                        }
-
-                        public void setStat(StatModel stat) {
-                            this.stat = stat;
-                        }
-
-                        public String getTitle() {
-                            return title;
-                        }
-
-                        public void setTitle(String title) {
-                            this.title = title;
-                        }
-
-                        public long getType() {
-                            return type;
-                        }
-
-                        public void setType(long type) {
-                            this.type = type;
-                        }
-
-                        public static class BadgeModel implements Serializable {
-                            private String bg_color;
-                            private String color;
-                            private String text;
-
-                            public String getBg_color() {
-                                return bg_color;
-                            }
-
-                            public void setBg_color(String bg_color) {
-                                this.bg_color = bg_color;
-                            }
-
-                            public String getColor() {
-                                return color;
-                            }
-
-                            public void setColor(String color) {
-                                this.color = color;
-                            }
-
-                            public String getText() {
-                                return text;
-                            }
-
-                            public void setText(String text) {
-                                this.text = text;
-                            }
-                        }
-
-                        public static class StatModel implements Serializable {
-                            private String danmaku;
-                            private String play;
-
-                            public String getDanmaku() {
-                                return danmaku;
-                            }
-
-                            public void setDanmaku(String danmaku) {
-                                this.danmaku = danmaku;
-                            }
-
-                            public String getPlay() {
-                                return play;
-                            }
-
-                            public void setPlay(String play) {
-                                this.play = play;
-                            }
-                        }
-                    }
-                }
-
-                public static class TopicModel implements Serializable {
-                    private long id;
-                    private String jump_url;
-                    private String name;
-
-                    public long getId() {
-                        return id;
-                    }
-
-                    public void setId(long id) {
-                        this.id = id;
-                    }
-
-                    public String getJump_url() {
-                        return jump_url;
-                    }
-
-                    public void setJump_url(String jump_url) {
-                        this.jump_url = jump_url;
-                    }
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-                }
+            public void setSubtitle(String subtitle) {
+                this.subtitle = subtitle;
             }
 
-            public static class ModuleMoreModel implements Serializable {
-                private List<ThreePointItemsModel> three_point_items;
-
-                public List<ThreePointItemsModel> getThree_point_items() {
-                    return three_point_items;
-                }
-
-                public void setThree_point_items(List<ThreePointItemsModel> three_point_items) {
-                    this.three_point_items = three_point_items;
-                }
-
-                public static class ThreePointItemsModel implements Serializable {
-                    private String label;
-                    private String type;
-
-                    public String getLabel() {
-                        return label;
-                    }
-
-                    public void setLabel(String label) {
-                        this.label = label;
-                    }
-
-                    public String getType() {
-                        return type;
-                    }
-
-                    public void setType(String type) {
-                        this.type = type;
-                    }
-                }
+            public String getDescription() {
+                return description;
             }
 
-            public static class ModuleStatModel implements Serializable {
-                private CommentModel comment;
-                private ForwardModel forward;
-                private LikeModel like;
+            public void setDescription(String description) {
+                this.description = description;
+            }
 
-                public CommentModel getComment() {
-                    return comment;
-                }
+            public String getCopyright() {
+                return copyright;
+            }
 
-                public void setComment(CommentModel comment) {
-                    this.comment = comment;
-                }
+            public void setCopyright(String copyright) {
+                this.copyright = copyright;
+            }
 
-                public ForwardModel getForward() {
-                    return forward;
-                }
+            public String getTitle() {
+                return title;
+            }
 
-                public void setForward(ForwardModel forward) {
-                    this.forward = forward;
-                }
+            public void setTitle(String title) {
+                this.title = title;
+            }
 
-                public LikeModel getLike() {
-                    return like;
-                }
+            public long getReview() {
+                return review;
+            }
 
-                public void setLike(LikeModel like) {
-                    this.like = like;
-                }
+            public void setReview(long review) {
+                this.review = review;
+            }
 
-                public static class CommentModel implements Serializable {
-                    private long count;
-                    private boolean forbidden;
+            public String getAuthor() {
+                return author;
+            }
 
-                    public long getCount() {
-                        return count;
-                    }
+            public void setAuthor(String author) {
+                this.author = author;
+            }
 
-                    public void setCount(long count) {
-                        this.count = count;
-                    }
+            public long getMid() {
+                return mid;
+            }
 
-                    public boolean isForbidden() {
-                        return forbidden;
-                    }
+            public void setMid(long mid) {
+                this.mid = mid;
+            }
 
-                    public void setForbidden(boolean forbidden) {
-                        this.forbidden = forbidden;
-                    }
-                }
+            public long getCreated() {
+                return created;
+            }
 
-                public static class ForwardModel implements Serializable {
-                    private long count;
-                    private boolean forbidden;
+            public void setCreated(long created) {
+                this.created = created;
+            }
 
-                    public long getCount() {
-                        return count;
-                    }
+            public String getLength() {
+                return length;
+            }
 
-                    public void setCount(long count) {
-                        this.count = count;
-                    }
+            public void setLength(String length) {
+                this.length = length;
+            }
 
-                    public boolean isForbidden() {
-                        return forbidden;
-                    }
+            public long getVideo_review() {
+                return video_review;
+            }
 
-                    public void setForbidden(boolean forbidden) {
-                        this.forbidden = forbidden;
-                    }
-                }
+            public void setVideo_review(long video_review) {
+                this.video_review = video_review;
+            }
 
-                public static class LikeModel implements Serializable {
-                    private long count;
-                    private boolean forbidden;
-                    private boolean status;
+            public String getAid() {
+                return aid;
+            }
 
-                    public long getCount() {
-                        return count;
-                    }
+            public void setAid(String aid) {
+                this.aid = aid;
+            }
 
-                    public void setCount(long count) {
-                        this.count = count;
-                    }
+            public String getBvid() {
+                return bvid;
+            }
 
-                    public boolean isForbidden() {
-                        return forbidden;
-                    }
+            public void setBvid(String bvid) {
+                this.bvid = bvid;
+            }
 
-                    public void setForbidden(boolean forbidden) {
-                        this.forbidden = forbidden;
-                    }
+            public Boolean getHide_click() {
+                return hide_click;
+            }
 
-                    public boolean isStatus() {
-                        return status;
-                    }
+            public void setHide_click(Boolean hide_click) {
+                this.hide_click = hide_click;
+            }
 
-                    public void setStatus(boolean status) {
-                        this.status = status;
-                    }
-                }
+            public long getIs_pay() {
+                return is_pay;
+            }
+
+            public void setIs_pay(long is_pay) {
+                this.is_pay = is_pay;
+            }
+
+            public long getIs_union_video() {
+                return is_union_video;
+            }
+
+            public void setIs_union_video(long is_union_video) {
+                this.is_union_video = is_union_video;
+            }
+
+            public long getIs_steins_gate() {
+                return is_steins_gate;
+            }
+
+            public void setIs_steins_gate(long is_steins_gate) {
+                this.is_steins_gate = is_steins_gate;
+            }
+
+            public long getIs_live_playback() {
+                return is_live_playback;
+            }
+
+            public void setIs_live_playback(long is_live_playback) {
+                this.is_live_playback = is_live_playback;
+            }
+
+            public Object getMeta() {
+                return meta;
+            }
+
+            public void setMeta(Object meta) {
+                this.meta = meta;
+            }
+
+            public long getIs_avoided() {
+                return is_avoided;
+            }
+
+            public void setIs_avoided(long is_avoided) {
+                this.is_avoided = is_avoided;
+            }
+
+            public long getAttribute() {
+                return attribute;
+            }
+
+            public void setAttribute(long attribute) {
+                this.attribute = attribute;
             }
         }
-
-        public static class OrigModel implements Serializable {
-            private BasicModelX basic;
-            private String id_str;
-            private ModulesModelX modules;
-            private String type;
-            private boolean visible;
-
-            public BasicModelX getBasic() {
-                return basic;
-            }
-
-            public void setBasic(BasicModelX basic) {
-                this.basic = basic;
-            }
-
-            public String getId_str() {
-                return id_str;
-            }
-
-            public void setId_str(String id_str) {
-                this.id_str = id_str;
-            }
-
-            public ModulesModelX getModules() {
-                return modules;
-            }
-
-            public void setModules(ModulesModelX modules) {
-                this.modules = modules;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public boolean isVisible() {
-                return visible;
-            }
-
-            public void setVisible(boolean visible) {
-                this.visible = visible;
-            }
-
-            public static class BasicModelX implements Serializable {
-                private String comment_id_str;
-                private long comment_type;
-                private LikeIconModelX like_icon;
-                private String rid_str;
-
-                public String getComment_id_str() {
-                    return comment_id_str;
-                }
-
-                public void setComment_id_str(String comment_id_str) {
-                    this.comment_id_str = comment_id_str;
-                }
-
-                public long getComment_type() {
-                    return comment_type;
-                }
-
-                public void setComment_type(long comment_type) {
-                    this.comment_type = comment_type;
-                }
-
-                public LikeIconModelX getLike_icon() {
-                    return like_icon;
-                }
-
-                public void setLike_icon(LikeIconModelX like_icon) {
-                    this.like_icon = like_icon;
-                }
-
-                public String getRid_str() {
-                    return rid_str;
-                }
-
-                public void setRid_str(String rid_str) {
-                    this.rid_str = rid_str;
-                }
-
-                public static class LikeIconModelX implements Serializable {
-                    private String action_url;
-                    private String end_url;
-                    private long id;
-                    private String start_url;
-
-                    public String getAction_url() {
-                        return action_url;
-                    }
-
-                    public void setAction_url(String action_url) {
-                        this.action_url = action_url;
-                    }
-
-                    public String getEnd_url() {
-                        return end_url;
-                    }
-
-                    public void setEnd_url(String end_url) {
-                        this.end_url = end_url;
-                    }
-
-                    public long getId() {
-                        return id;
-                    }
-
-                    public void setId(long id) {
-                        this.id = id;
-                    }
-
-                    public String getStart_url() {
-                        return start_url;
-                    }
-
-                    public void setStart_url(String start_url) {
-                        this.start_url = start_url;
-                    }
-                }
-            }
-
-            public static class ModulesModelX implements Serializable {
-                private ModuleAuthorModelX module_author;
-                private ModuleDynamicModelX module_dynamic;
-
-                public ModuleAuthorModelX getModule_author() {
-                    return module_author;
-                }
-
-                public void setModule_author(ModuleAuthorModelX module_author) {
-                    this.module_author = module_author;
-                }
-
-                public ModuleDynamicModelX getModule_dynamic() {
-                    return module_dynamic;
-                }
-
-                public void setModule_dynamic(ModuleDynamicModelX module_dynamic) {
-                    this.module_dynamic = module_dynamic;
-                }
-
-                public static class ModuleAuthorModelX implements Serializable {
-                    private String face;
-                    private boolean face_nft;
-                    private boolean following;
-                    private String jump_url;
-                    private String label;
-                    private long mid;
-                    private String name;
-                    private OfficialVerifyModelX official_verify;
-                    private PendantModelX pendant;
-                    private String pub_action;
-                    private String pub_time;
-                    private long pub_ts;
-                    private String type;
-                    private VipModelX vip;
-
-                    public String getFace() {
-                        return face;
-                    }
-
-                    public void setFace(String face) {
-                        this.face = face;
-                    }
-
-                    public boolean isFace_nft() {
-                        return face_nft;
-                    }
-
-                    public void setFace_nft(boolean face_nft) {
-                        this.face_nft = face_nft;
-                    }
-
-                    public boolean isFollowing() {
-                        return following;
-                    }
-
-                    public void setFollowing(boolean following) {
-                        this.following = following;
-                    }
-
-                    public String getJump_url() {
-                        return jump_url;
-                    }
-
-                    public void setJump_url(String jump_url) {
-                        this.jump_url = jump_url;
-                    }
-
-                    public String getLabel() {
-                        return label;
-                    }
-
-                    public void setLabel(String label) {
-                        this.label = label;
-                    }
-
-                    public long getMid() {
-                        return mid;
-                    }
-
-                    public void setMid(long mid) {
-                        this.mid = mid;
-                    }
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-
-                    public OfficialVerifyModelX getOfficial_verify() {
-                        return official_verify;
-                    }
-
-                    public void setOfficial_verify(OfficialVerifyModelX official_verify) {
-                        this.official_verify = official_verify;
-                    }
-
-                    public PendantModelX getPendant() {
-                        return pendant;
-                    }
-
-                    public void setPendant(PendantModelX pendant) {
-                        this.pendant = pendant;
-                    }
-
-                    public String getPub_action() {
-                        return pub_action;
-                    }
-
-                    public void setPub_action(String pub_action) {
-                        this.pub_action = pub_action;
-                    }
-
-                    public String getPub_time() {
-                        return pub_time;
-                    }
-
-                    public void setPub_time(String pub_time) {
-                        this.pub_time = pub_time;
-                    }
-
-                    public long getPub_ts() {
-                        return pub_ts;
-                    }
-
-                    public void setPub_ts(long pub_ts) {
-                        this.pub_ts = pub_ts;
-                    }
-
-                    public String getType() {
-                        return type;
-                    }
-
-                    public void setType(String type) {
-                        this.type = type;
-                    }
-
-                    public VipModelX getVip() {
-                        return vip;
-                    }
-
-                    public void setVip(VipModelX vip) {
-                        this.vip = vip;
-                    }
-
-                    public static class OfficialVerifyModelX implements Serializable {
-                        private String desc;
-                        private long type;
-
-                        public String getDesc() {
-                            return desc;
-                        }
-
-                        public void setDesc(String desc) {
-                            this.desc = desc;
-                        }
-
-                        public long getType() {
-                            return type;
-                        }
-
-                        public void setType(long type) {
-                            this.type = type;
-                        }
-                    }
-
-                    public static class PendantModelX implements Serializable {
-                        private long expire;
-                        private String image;
-                        private String image_enhance;
-                        private String image_enhance_frame;
-                        private String name;
-                        private long pid;
-
-                        public long getExpire() {
-                            return expire;
-                        }
-
-                        public void setExpire(long expire) {
-                            this.expire = expire;
-                        }
-
-                        public String getImage() {
-                            return image;
-                        }
-
-                        public void setImage(String image) {
-                            this.image = image;
-                        }
-
-                        public String getImage_enhance() {
-                            return image_enhance;
-                        }
-
-                        public void setImage_enhance(String image_enhance) {
-                            this.image_enhance = image_enhance;
-                        }
-
-                        public String getImage_enhance_frame() {
-                            return image_enhance_frame;
-                        }
-
-                        public void setImage_enhance_frame(String image_enhance_frame) {
-                            this.image_enhance_frame = image_enhance_frame;
-                        }
-
-                        public String getName() {
-                            return name;
-                        }
-
-                        public void setName(String name) {
-                            this.name = name;
-                        }
-
-                        public long getPid() {
-                            return pid;
-                        }
-
-                        public void setPid(long pid) {
-                            this.pid = pid;
-                        }
-                    }
-
-                    public static class VipModelX implements Serializable {
-                        private long avatar_subscript;
-                        private String avatar_subscript_url;
-                        private long due_date;
-                        private LabelModelX label;
-                        private String nickname_color;
-                        private long status;
-                        private long theme_type;
-                        private long type;
-
-                        public long getAvatar_subscript() {
-                            return avatar_subscript;
-                        }
-
-                        public void setAvatar_subscript(long avatar_subscript) {
-                            this.avatar_subscript = avatar_subscript;
-                        }
-
-                        public String getAvatar_subscript_url() {
-                            return avatar_subscript_url;
-                        }
-
-                        public void setAvatar_subscript_url(String avatar_subscript_url) {
-                            this.avatar_subscript_url = avatar_subscript_url;
-                        }
-
-                        public long getDue_date() {
-                            return due_date;
-                        }
-
-                        public void setDue_date(long due_date) {
-                            this.due_date = due_date;
-                        }
-
-                        public LabelModelX getLabel() {
-                            return label;
-                        }
-
-                        public void setLabel(LabelModelX label) {
-                            this.label = label;
-                        }
-
-                        public String getNickname_color() {
-                            return nickname_color;
-                        }
-
-                        public void setNickname_color(String nickname_color) {
-                            this.nickname_color = nickname_color;
-                        }
-
-                        public long getStatus() {
-                            return status;
-                        }
-
-                        public void setStatus(long status) {
-                            this.status = status;
-                        }
-
-                        public long getTheme_type() {
-                            return theme_type;
-                        }
-
-                        public void setTheme_type(long theme_type) {
-                            this.theme_type = theme_type;
-                        }
-
-                        public long getType() {
-                            return type;
-                        }
-
-                        public void setType(long type) {
-                            this.type = type;
-                        }
-
-                        public static class LabelModelX implements Serializable {
-                            private String bg_color;
-                            private long bg_style;
-                            private String border_color;
-                            private String img_label_uri_hans;
-                            private String img_label_uri_hans_static;
-                            private String img_label_uri_hant;
-                            private String img_label_uri_hant_static;
-                            private String label_theme;
-                            private String path;
-                            private String text;
-                            private String text_color;
-                            private boolean use_img_label;
-
-                            public String getBg_color() {
-                                return bg_color;
-                            }
-
-                            public void setBg_color(String bg_color) {
-                                this.bg_color = bg_color;
-                            }
-
-                            public long getBg_style() {
-                                return bg_style;
-                            }
-
-                            public void setBg_style(long bg_style) {
-                                this.bg_style = bg_style;
-                            }
-
-                            public String getBorder_color() {
-                                return border_color;
-                            }
-
-                            public void setBorder_color(String border_color) {
-                                this.border_color = border_color;
-                            }
-
-                            public String getImg_label_uri_hans() {
-                                return img_label_uri_hans;
-                            }
-
-                            public void setImg_label_uri_hans(String img_label_uri_hans) {
-                                this.img_label_uri_hans = img_label_uri_hans;
-                            }
-
-                            public String getImg_label_uri_hans_static() {
-                                return img_label_uri_hans_static;
-                            }
-
-                            public void setImg_label_uri_hans_static(String img_label_uri_hans_static) {
-                                this.img_label_uri_hans_static = img_label_uri_hans_static;
-                            }
-
-                            public String getImg_label_uri_hant() {
-                                return img_label_uri_hant;
-                            }
-
-                            public void setImg_label_uri_hant(String img_label_uri_hant) {
-                                this.img_label_uri_hant = img_label_uri_hant;
-                            }
-
-                            public String getImg_label_uri_hant_static() {
-                                return img_label_uri_hant_static;
-                            }
-
-                            public void setImg_label_uri_hant_static(String img_label_uri_hant_static) {
-                                this.img_label_uri_hant_static = img_label_uri_hant_static;
-                            }
-
-                            public String getLabel_theme() {
-                                return label_theme;
-                            }
-
-                            public void setLabel_theme(String label_theme) {
-                                this.label_theme = label_theme;
-                            }
-
-                            public String getPath() {
-                                return path;
-                            }
-
-                            public void setPath(String path) {
-                                this.path = path;
-                            }
-
-                            public String getText() {
-                                return text;
-                            }
-
-                            public void setText(String text) {
-                                this.text = text;
-                            }
-
-                            public String getText_color() {
-                                return text_color;
-                            }
-
-                            public void setText_color(String text_color) {
-                                this.text_color = text_color;
-                            }
-
-                            public boolean isUse_img_label() {
-                                return use_img_label;
-                            }
-
-                            public void setUse_img_label(boolean use_img_label) {
-                                this.use_img_label = use_img_label;
-                            }
-                        }
-                    }
-                }
-
-                public static class ModuleDynamicModelX implements Serializable {
-                    private Object additional;
-                    private DescModelX desc;
-                    private MajorModelX major;
-                    private Object topic;
-
-                    public Object getAdditional() {
-                        return additional;
-                    }
-
-                    public void setAdditional(Object additional) {
-                        this.additional = additional;
-                    }
-
-                    public DescModelX getDesc() {
-                        return desc;
-                    }
-
-                    public void setDesc(DescModelX desc) {
-                        this.desc = desc;
-                    }
-
-                    public MajorModelX getMajor() {
-                        return major;
-                    }
-
-                    public void setMajor(MajorModelX major) {
-                        this.major = major;
-                    }
-
-                    public Object getTopic() {
-                        return topic;
-                    }
-
-                    public void setTopic(Object topic) {
-                        this.topic = topic;
-                    }
-
-                    public static class DescModelX implements Serializable {
-                        private String text;
-                        private List<RichTextNodesModelX> rich_text_nodes;
-
-                        public String getText() {
-                            return text;
-                        }
-
-                        public void setText(String text) {
-                            this.text = text;
-                        }
-
-                        public List<RichTextNodesModelX> getRich_text_nodes() {
-                            return rich_text_nodes;
-                        }
-
-                        public void setRich_text_nodes(List<RichTextNodesModelX> rich_text_nodes) {
-                            this.rich_text_nodes = rich_text_nodes;
-                        }
-
-                        public static class RichTextNodesModelX implements Serializable {
-                            private String orig_text;
-                            private String text;
-                            private String type;
-
-                            public String getOrig_text() {
-                                return orig_text;
-                            }
-
-                            public void setOrig_text(String orig_text) {
-                                this.orig_text = orig_text;
-                            }
-
-                            public String getText() {
-                                return text;
-                            }
-
-                            public void setText(String text) {
-                                this.text = text;
-                            }
-
-                            public String getType() {
-                                return type;
-                            }
-
-                            public void setType(String type) {
-                                this.type = type;
-                            }
-                        }
-                    }
-
-                    public static class MajorModelX implements Serializable {
-                        private ArchiveModelX archive;
-                        private String type;
-
-                        public ArchiveModelX getArchive() {
-                            return archive;
-                        }
-
-                        public void setArchive(ArchiveModelX archive) {
-                            this.archive = archive;
-                        }
-
-                        public String getType() {
-                            return type;
-                        }
-
-                        public void setType(String type) {
-                            this.type = type;
-                        }
-
-                        public static class ArchiveModelX implements Serializable {
-                            private String aid;
-                            private BadgeModelX badge;
-                            private String bvid;
-                            private String cover;
-                            private String desc;
-                            private long disable_preview;
-                            private String duration_text;
-                            private String jump_url;
-                            private StatModelX stat;
-                            private String title;
-                            private long type;
-
-                            public String getAid() {
-                                return aid;
-                            }
-
-                            public void setAid(String aid) {
-                                this.aid = aid;
-                            }
-
-                            public BadgeModelX getBadge() {
-                                return badge;
-                            }
-
-                            public void setBadge(BadgeModelX badge) {
-                                this.badge = badge;
-                            }
-
-                            public String getBvid() {
-                                return bvid;
-                            }
-
-                            public void setBvid(String bvid) {
-                                this.bvid = bvid;
-                            }
-
-                            public String getCover() {
-                                return cover;
-                            }
-
-                            public void setCover(String cover) {
-                                this.cover = cover;
-                            }
-
-                            public String getDesc() {
-                                return desc;
-                            }
-
-                            public void setDesc(String desc) {
-                                this.desc = desc;
-                            }
-
-                            public long getDisable_preview() {
-                                return disable_preview;
-                            }
-
-                            public void setDisable_preview(long disable_preview) {
-                                this.disable_preview = disable_preview;
-                            }
-
-                            public String getDuration_text() {
-                                return duration_text;
-                            }
-
-                            public void setDuration_text(String duration_text) {
-                                this.duration_text = duration_text;
-                            }
-
-                            public String getJump_url() {
-                                return jump_url;
-                            }
-
-                            public void setJump_url(String jump_url) {
-                                this.jump_url = jump_url;
-                            }
-
-                            public StatModelX getStat() {
-                                return stat;
-                            }
-
-                            public void setStat(StatModelX stat) {
-                                this.stat = stat;
-                            }
-
-                            public String getTitle() {
-                                return title;
-                            }
-
-                            public void setTitle(String title) {
-                                this.title = title;
-                            }
-
-                            public long getType() {
-                                return type;
-                            }
-
-                            public void setType(long type) {
-                                this.type = type;
-                            }
-
-                            public static class BadgeModelX implements Serializable {
-                                private String bg_color;
-                                private String color;
-                                private String text;
-
-                                public String getBg_color() {
-                                    return bg_color;
-                                }
-
-                                public void setBg_color(String bg_color) {
-                                    this.bg_color = bg_color;
-                                }
-
-                                public String getColor() {
-                                    return color;
-                                }
-
-                                public void setColor(String color) {
-                                    this.color = color;
-                                }
-
-                                public String getText() {
-                                    return text;
-                                }
-
-                                public void setText(String text) {
-                                    this.text = text;
-                                }
-                            }
-
-                            public static class StatModelX implements Serializable {
-                                private String danmaku;
-                                private String play;
-
-                                public String getDanmaku() {
-                                    return danmaku;
-                                }
-
-                                public void setDanmaku(String danmaku) {
-                                    this.danmaku = danmaku;
-                                }
-
-                                public String getPlay() {
-                                    return play;
-                                }
-
-                                public void setPlay(String play) {
-                                    this.play = play;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    }
+
+    public static class PageModel {
+        private long pn;
+        private long ps;
+        private long count;
+
+        public long getPn() {
+            return pn;
+        }
+
+        public void setPn(long pn) {
+            this.pn = pn;
+        }
+
+        public long getPs() {
+            return ps;
+        }
+
+        public void setPs(long ps) {
+            this.ps = ps;
+        }
+
+        public long getCount() {
+            return count;
+        }
+
+        public void setCount(long count) {
+            this.count = count;
+        }
+    }
+
+    public static class EpisodicButtonModel {
+        private String text;
+        private String uri;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getUri() {
+            return uri;
+        }
+
+        public void setUri(String uri) {
+            this.uri = uri;
         }
     }
 }

@@ -16,5 +16,5 @@ public interface UserRepository {
 
     Observable<String> history();
 
-    Observable<String> getUpFeed(String hostMid, int page, String offset);
+    Observable<String> getUpFeed(String hostMid, int page, int pageSize);
 }

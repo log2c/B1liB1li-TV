@@ -3,6 +3,7 @@ package com.github.log2c.b1lib1li_tv.ui.upfeed;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.github.log2c.base.base.BaseCoreActivity;
 import java.util.ArrayList;
 
 public class UpFeedActivity extends BaseCoreActivity<UpFeedViewModel, ActivityUpFeedBinding> implements OnItemClickListener {
+    private static final String TAG = UpFeedActivity.class.getSimpleName();
     private UpFeedAdapter mAdapter;
     public static final String INTENT_HOST_MID = "hostMid";
 
@@ -53,18 +55,19 @@ public class UpFeedActivity extends BaseCoreActivity<UpFeedViewModel, ActivityUp
                 mAdapter.getLoadMoreModule().loadMoreFail();
                 return;
             }
-            mAdapter.addData(feedModel.getItems());
+            mAdapter.addData(feedModel.getList().getVlist());
             mAdapter.getLoadMoreModule().loadMoreComplete();
-            mAdapter.getLoadMoreModule().setEnableLoadMore(feedModel.isHas_more());
+            boolean hasMore = feedModel.getList().getVlist().size() == UpFeedViewModel.PAGE_SIZE;
+            Log.i(TAG, "initView: hasMore: " + hasMore);
+            mAdapter.getLoadMoreModule().setEnableLoadMore(hasMore);
         });
         viewModel.refreshEvent.observe(this, s -> mAdapter.setNewInstance(new ArrayList<>()));
     }
 
     @Override
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-        final UpFeedModel.ItemsModel model = mAdapter.getData().get(position);
-        final UpFeedModel.ItemsModel.ModulesModel.ModuleDynamicModel.MajorModel.ArchiveModel archive = model.getModules().getModule_dynamic().getMajor().getArchive();
-        DetailActivity.showActivity(this, archive.getBvid(), archive.getAid());
+        final UpFeedModel.ListModel.VlistModel model = mAdapter.getData().get(position);
+        DetailActivity.showActivity(this, model.getBvid(), model.getAid());
     }
 
     public static void showActivity(Activity context, String hostMid) {
