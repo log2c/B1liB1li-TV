@@ -11,7 +11,6 @@ public class UpFeedViewModel extends BaseCoreViewModel {
     private final UserRepository userRepository;
     public static final int PAGE_SIZE = 30;
     private int page = 1;
-    //    private String offset = "";
     public String hostMid;
     final public SingleLiveEvent<UpFeedModel> feedModelEvent = new SingleLiveEvent<>();
     final public SingleLiveEvent<String> refreshEvent = new SingleLiveEvent<>();
@@ -26,8 +25,6 @@ public class UpFeedViewModel extends BaseCoreViewModel {
             @Override
             public void onSuccess(UpFeedModel model) {
                 page++;
-//                offset = model.getOffset();
-//                CollectionUtils.filter(model.getItems(), item -> Constants.DYNAMIC_TYPE_AV.equals(item.getType()));
                 feedModelEvent.postValue(model);
             }
 

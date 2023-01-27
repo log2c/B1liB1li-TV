@@ -8,13 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
-import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
 
 public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ListModel.VlistModel, BaseViewHolder> implements LoadMoreModule {
@@ -53,7 +53,7 @@ public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ListModel.VlistM
 
             title.setText(upFeedModel.getTitle());
             name.setVisibility(View.GONE);
-            time.setText(CommonUtils.formatSeconds(upFeedModel.getCreated()));
+            time.setText(TimeUtils.millis2String(upFeedModel.getCreated() * 1000L, "yyyy-MM-dd"));
             duration.setText(upFeedModel.getLength());
         } catch (NullPointerException e) {
             e.printStackTrace();
