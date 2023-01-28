@@ -5,4 +5,9 @@
     <string name="un_login">未登录</string>
     <string name="tip_un_login">账号未登录或登录已失效!</string>
     <string name="tip_already_logout">登录信息已失效</string>
+    <string name="toggle_danmu">弹幕开关</string>
+    <string name="resolution">清晰度</string>
+    <string name="video_codec">视频编码</string>
+    <string name="danmu_off">关</string>
+    <string name="danmu_on">开</string>
 </resources>

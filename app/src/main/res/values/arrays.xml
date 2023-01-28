@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="danmu_toggle">
+        <item>开</item>
+        <item>关</item>
+    </string-array>
+    <string-array name="video_codec">
+        <item>H.265</item>
+        <item>H.264</item>
+    </string-array>
+</resources>

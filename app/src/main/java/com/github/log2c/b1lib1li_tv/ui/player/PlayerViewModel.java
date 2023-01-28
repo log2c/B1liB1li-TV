@@ -18,6 +18,7 @@ import com.github.log2c.base.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -58,11 +59,11 @@ public class PlayerViewModel extends BaseCoreViewModel {
         return getFinalPlayModel(model) instanceof List;
     }
 
-    public List<Integer> getCurrentSupportResolution() {
+    public ArrayList<Integer> getCurrentSupportResolution() {
         if (playUrlModelEvent.getValue() == null) {
             return new ArrayList<>();
         }
-        final List<Integer> resolutions = new ArrayList<>();
+        final ArrayList<Integer> resolutions = new ArrayList<>();
         final Object model = getFinalPlayModel(playUrlModelEvent.getValue());
         if (model instanceof List) {
             for (PlayUrlModel.DashModel.VideoModel video : playUrlModelEvent.getValue().getDash().getVideo()) {
@@ -71,7 +72,9 @@ public class PlayerViewModel extends BaseCoreViewModel {
         } else {
             resolutions.add(playUrlModelEvent.getValue().getQuality());
         }
-        return resolutions;
+        ArrayList<Integer> list = new ArrayList<>(new HashSet<>(resolutions));
+        Collections.reverse(list);
+        return list;
     }
 
     @SuppressWarnings("unchecked")

@@ -8,10 +8,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -24,9 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
-import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.github.log2c.b1lib1li_tv.R;
@@ -34,6 +28,7 @@ import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
+import com.github.log2c.b1lib1li_tv.ui.fragments.PlayerSettingDialogFragment;
 import com.github.log2c.base.base.BaseCoreActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -49,10 +44,8 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
@@ -385,90 +378,32 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private void showMenuPopup() {
-        final String[] menu = new String[]{"视频清晰度", "弹幕开关", "视频编码"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
-        builder.setTitle("选择").setItems(menu, (dialog, which) -> {
-            if (which == 0) {
-                showResolutionSetting();
-            } else if (which == 1) {
-                showDanmuSetting();
-            } else if (which == 2) {
-                showCodecSetting();
-            }
-            dialog.dismiss();
-        });
-        builder.create().show();
-    }
-
-    private void showCodecSetting() {
-        final boolean isH265 = AppConfigRepository.getInstance().isH265();
-        String str = isH265 ? "H.265" : "H.264";
-        String btnStr = isH265 ? "H.264" : "H.265";
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
-
-        SpannableStringBuilder spannableString = new SpannableStringBuilder();
-        spannableString.append("当前编码: \t").append(str);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(com.github.log2c.base.R.color.colorDanger));
-
-        spannableString.setSpan(colorSpan, spannableString.length() - str.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        spannableString.setSpan(new AbsoluteSizeSpan(ConvertUtils.sp2px(28)), spannableString.length() - str.length(), spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        builder.setTitle("编码选择").setMessage(spannableString).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setNegativeButton(btnStr, (dialog, which) -> {
-            if (isH265) {
-                AppConfigRepository.getInstance().setDefaultH264Codec();
-            } else {
-                AppConfigRepository.getInstance().setDefaultH265Codec();
-            }
-            loadVideo(viewModel.playUrlModelEvent.getValue());
-        }).create().show();
-    }
-
-    private void showDanmuSetting() {
-        final boolean enable = AppConfigRepository.getInstance().fetchDanmakuToggle();
-        String str = enable ? "开" : "关";
-        String btnStr = enable ? "关" : "开";
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
-
-        SpannableStringBuilder spannableString = new SpannableStringBuilder();
-        spannableString.append("当前弹幕状态: \t").append(str);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(com.github.log2c.base.R.color.colorDanger));
-
-        spannableString.setSpan(colorSpan, spannableString.length() - 1, spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        spannableString.setSpan(new AbsoluteSizeSpan(ConvertUtils.sp2px(28)), spannableString.length() - 1, spannableString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        builder.setTitle("弹幕开关").setMessage(spannableString).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setNegativeButton(btnStr, (dialog, which) -> {
-            final boolean toToggle = !enable;
-            AppConfigRepository.getInstance().storeDanmakuToggle(toToggle);
-            mBinding.player.setDanmakuShow(toToggle);
-            if (toToggle) {
-                viewModel.fetchDanmuku();
-            }
-        }).create().show();
-    }
-
-    private void showResolutionSetting() {
+        if (viewModel.playUrlModelEvent.getValue() == null) {
+            return;
+        }
         final PlayUrlModel model = viewModel.playUrlModelEvent.getValue();
         if (model == null) {
             return;
         }
-        final List<String> items = new ArrayList<>();
-        List<Integer> supported = viewModel.getCurrentSupportResolution();
-        final List<Integer> resolutions = new ArrayList<>(Constants.Resolution.ITEMS.keySet());
-        for (Integer quality : resolutions) {
-            String str = "";
-            if (!supported.contains(quality)) {
-                str = "  (当前视频不支持)";
-            }
-            items.add(Constants.Resolution.ITEMS.get(quality) + str);
-        }
-        String[] menus = new String[items.size()];
-        items.toArray(menus);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, com.github.log2c.base.R.style.AppTheme_Dialog);
-        builder.setTitle("请选择分辨率").setItems(menus, (dialog, which) -> {
-            AppConfigRepository.getInstance().storeResolution(resolutions.get(which));
-            loadVideo(viewModel.playUrlModelEvent.getValue());
+        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(viewModel.getCurrentSupportResolution(), viewModel.playUrlModelEvent.getValue().getQuality());
+        dialogFragment.setConfigChangeCallback(new PlayerSettingDialogFragment.ConfigChangeCallback() {
+            @Override
+            public void onDanmuToggleChange() {
+                final boolean toToggle = AppConfigRepository.getInstance().fetchDanmakuToggle();
+                AppConfigRepository.getInstance().storeDanmakuToggle(toToggle);
+                mBinding.player.setDanmakuShow(toToggle);
+                if (toToggle) {
+                    viewModel.fetchDanmuku();
+                }
+            }
+
+            @Override
+            public void onNeedReloadChange() {
+                loadVideo(viewModel.playUrlModelEvent.getValue());
+            }
         });
-        builder.create().show();
+        dialogFragment.show(getSupportFragmentManager(), PlayerSettingDialogFragment.class.getSimpleName());
     }
+
 }
