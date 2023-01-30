@@ -14,6 +14,8 @@ public class Constants {
     public static final String SP_DEFAULT_RESOLUTION = "default_resolution";
     public static final String SP_DANMAKU_TOGGLE = "danmaku";
     public static final String SP_DEFAULT_CODEC = "default_codec";
+    public static final float SP_DEFAULT_DANMU_SIZE = 1f;
+    public static final String SP_DANMU_SIZE = "danmu_size";
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清
     public static final int DEFAULT_DYNAMIC_SPAN_COUNT = 3;
     public static final String REFERER = "https://www.bilibili.com";

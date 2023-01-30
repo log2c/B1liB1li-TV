@@ -96,4 +96,51 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="135dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:text="@string/danmu_size"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_40"
+            android:paddingEnd="@dimen/dp_40"
+            android:text="@string/tip_modify_danmu_config"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_danmu"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:stepSize="0.1"
+            android:theme="@style/WD_Slider"
+            android:value="1.0"
+            android:valueFrom="0.1"
+            android:valueTo="3.0"
+            android:valueType="floatType"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toStartOf="@id/textView3_1"
+            app:layout_constraintStart_toEndOf="@id/textView3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbColor="@color/colorDangerDark"
+            app:trackColorActive="@color/colorPrimary"
+            app:trackColorInactive="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

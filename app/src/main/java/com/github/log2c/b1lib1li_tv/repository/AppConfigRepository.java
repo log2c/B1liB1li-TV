@@ -112,4 +112,12 @@ public class AppConfigRepository {
     public String fetchCsrf() {
         return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_CSRF);
     }
+
+    public void storeDanmuSize(float size) {
+        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_DANMU_SIZE, size);
+    }
+
+    public float fetchDanmuSize() {
+        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getFloat(Constants.SP_DANMU_SIZE, Constants.SP_DEFAULT_DANMU_SIZE);
+    }
 }

@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.FileIOUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.DanamakuAdapter;
 import com.github.log2c.b1lib1li_tv.common.BiliDanmukuParser;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
@@ -193,7 +194,7 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
         mDanmakuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
                 .setDuplicateMergingEnabled(false)
                 .setScrollSpeedFactor(1.2f)
-                .setScaleTextSize(3f)
+                .setScaleTextSize(AppConfigRepository.getInstance().fetchDanmuSize())
                 .setCacheStuffer(new SpannedCacheStuffer(), danamakuAdapter) // 图文混排使用SpannedCacheStuffer
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair);

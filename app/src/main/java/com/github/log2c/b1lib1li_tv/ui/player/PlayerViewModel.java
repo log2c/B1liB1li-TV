@@ -74,6 +74,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
         }
         ArrayList<Integer> list = new ArrayList<>(new HashSet<>(resolutions));
         Collections.reverse(list);
+        Collections.sort(list, (o1, o2) -> o2 - o1);
         return list;
     }
 
@@ -88,6 +89,19 @@ public class PlayerViewModel extends BaseCoreViewModel {
             PlayUrlModel.DUrlModel video = (PlayUrlModel.DUrlModel) model;
             Logging.i("最终分辨率: " + Constants.Resolution.ITEMS.get(playModel.getQuality()) + ", 编码: ?");
             return video.getUrl();
+        }
+    }
+
+    public int getPlayResolutionCode() {
+        if (playUrlModelEvent.getValue() == null) {
+            return -1;
+        }
+        final Object model = getFinalPlayModel(playUrlModelEvent.getValue());
+        if (model instanceof List) {
+            List<PlayUrlModel.DashModel.VideoModel> videos = (List<PlayUrlModel.DashModel.VideoModel>) model;
+            return videos.get(0).getId();
+        } else {
+            return playUrlModelEvent.getValue().getQuality();
         }
     }
 

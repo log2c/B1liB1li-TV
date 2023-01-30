@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,12 +17,16 @@ import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.slider.Slider;
 import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
+    private static final String TAG = PlayerSettingDialogFragment.class.getSimpleName();
     private View mView;
     private static final String KEY_DANMU = "danmu";
     private static final String KEY_SUPPORTED_RESOLUTION = "supported_resolution";
@@ -36,6 +41,8 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     private FlowTagLayout resolutionFlowTag;
     private FlowTagLayout codecFlowTag;
 
+    private Slider danmuSlider;
+
     private ConfigChangeCallback mConfigChangeCallback;
 
     @Override
@@ -45,7 +52,16 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         danmuFlowTag = mView.findViewById(R.id.flow_danmu);
         resolutionFlowTag = mView.findViewById(R.id.flow_resolution);
         codecFlowTag = mView.findViewById(R.id.flow_codec);
+        danmuSlider = mView.findViewById(R.id.slider_danmu);
         dialog.setContentView(mView);
+
+        danmuSlider.setValue(AppConfigRepository.getInstance().fetchDanmuSize());
+        danmuSlider.addOnChangeListener((slider, value, fromUser) -> {
+            BigDecimal b = new BigDecimal(value);
+            float size = b.setScale(1, RoundingMode.HALF_UP).floatValue();
+            Log.i(TAG, "onCreateDialog: danmu size: " + size);
+            AppConfigRepository.getInstance().storeDanmuSize(size);
+        });
 
         danmuFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
             AppConfigRepository.getInstance().storeDanmakuToggle(position == 0);
@@ -54,7 +70,9 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
             }
         });
         resolutionFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
-            AppConfigRepository.getInstance().storeResolution(mSupportedResolutions.get(position));
+            final int code = mSupportedResolutions.get(position);
+            Log.i(TAG, "onCreateDialog: 选择的清晰度 code: " + code + ", desc: " + Constants.Resolution.ITEMS.get(code));
+            AppConfigRepository.getInstance().storeResolution(code);
             if (mConfigChangeCallback != null) {
                 mConfigChangeCallback.onNeedReloadChange();
             }

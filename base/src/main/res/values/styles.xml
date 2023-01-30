@@ -63,5 +63,7 @@
     <style name="AppTheme.Button.Common" parent="Widget.AppCompat.Button.Borderless.Colored">
 
     </style>
+    <style name="WD_Slider" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
+    </style>
 </resources>

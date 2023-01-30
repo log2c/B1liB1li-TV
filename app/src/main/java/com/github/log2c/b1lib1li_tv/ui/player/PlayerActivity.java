@@ -386,7 +386,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             return;
         }
 
-        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(viewModel.getCurrentSupportResolution(), viewModel.playUrlModelEvent.getValue().getQuality());
+        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(viewModel.getCurrentSupportResolution(), viewModel.getPlayResolutionCode());
         dialogFragment.setConfigChangeCallback(new PlayerSettingDialogFragment.ConfigChangeCallback() {
             @Override
             public void onDanmuToggleChange() {
@@ -400,7 +400,8 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
             @Override
             public void onNeedReloadChange() {
-                loadVideo(viewModel.playUrlModelEvent.getValue());
+//                loadVideo(viewModel.playUrlModelEvent.getValue());
+                viewModel.parsePlayUrl();
             }
         });
         dialogFragment.show(getSupportFragmentManager(), PlayerSettingDialogFragment.class.getSimpleName());

@@ -28,21 +28,6 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
 
     @Override
     protected void convert(@NonNull BaseViewHolder baseViewHolder, FeedModel.ItemsModel itemsModel) {
-        CardView cv = baseViewHolder.getView(R.id.cv_root);
-        cv.setCardElevation(0f);
-        cv.setOnFocusChangeListener((v, hasFocus) -> {
-            CardView card = (CardView) v;
-            if (hasFocus) {
-                card.setScaleX(1.1f);
-                card.setScaleY(1.1f);
-                card.setCardElevation(ConvertUtils.dp2px(15));
-            } else {
-                card.setCardElevation(0f);
-                card.setScaleX(1f);
-                card.setScaleY(1f);
-            }
-        });
-
         View rootView = baseViewHolder.getView(R.id.item_root);
         ImageView avatar = baseViewHolder.getView(R.id.iv_avatar);
         ImageView cover = baseViewHolder.getView(R.id.iv_cover);
