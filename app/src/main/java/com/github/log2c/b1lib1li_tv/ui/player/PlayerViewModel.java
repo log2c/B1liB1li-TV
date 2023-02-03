@@ -27,6 +27,9 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private final VideoRepository videoRepository;
     public final SingleLiveEvent<PlayUrlModel> playUrlModelEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String> danmukuLoadedEvent = new SingleLiveEvent<>();
+    private static final int DASH_MODE = 16; // H.265 ?
+    private static final int MP4_MODE = 1;  // 仅 H.264 编码
+    private static final int RESOLUTION_4K = 128;   // 需求4K分辨率
     public String bvid;
     public String aid;
     public String cid;
@@ -36,12 +39,11 @@ public class PlayerViewModel extends BaseCoreViewModel {
     }
 
     public void parsePlayUrl() {
-        String qn = "120";
-//        String fnval = isDashMode() ? "16" : "1";
-        String fnval = "16";
+        String qn = "120";  // 	4K 超清
+        int fnval = AppConfigRepository.getInstance().isH265() ? DASH_MODE | RESOLUTION_4K : MP4_MODE | RESOLUTION_4K;
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
-        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval, fnver, fourk).subscribe(new LocalObserver<PlayUrlModel>() {
+        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval + "", fnver, fourk).subscribe(new LocalObserver<PlayUrlModel>() {
             @Override
             public void onSuccess(PlayUrlModel model) {
                 playUrlModelEvent.postValue(model);

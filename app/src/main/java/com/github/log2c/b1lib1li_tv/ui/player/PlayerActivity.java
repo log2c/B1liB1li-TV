@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.StringUtils;
@@ -342,6 +343,16 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         if (StringUtils.isTrimEmpty(audioUrl)) {
             return;
         }
+        setMediaSourceIfExoPlayer(videoUrl, audioUrl);
+
+        mBinding.player.setUp(videoUrl, true, "");
+        videoView.startPlayLogic();
+    }
+
+    private void setMediaSourceIfExoPlayer(String videoUrl, @NonNull String audioUrl) {
+        if (!AppConfigRepository.getInstance().isExoPlayerDefault()) {
+            return;
+        }
         final DataSource.Factory factory = () -> {
             HttpDataSource dataSource = new DefaultHttpDataSource.Factory().setUserAgent(Constants.DEFAULT_USER_AGENT).createDataSource();
             for (String key : Constants.PLAYER_HEADERS.keySet()) {
@@ -372,9 +383,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
                 return factory;
             }
         });
-
-        mBinding.player.setUp(videoUrl, true, "");
-        videoView.startPlayLogic();
     }
 
     private void showMenuPopup() {

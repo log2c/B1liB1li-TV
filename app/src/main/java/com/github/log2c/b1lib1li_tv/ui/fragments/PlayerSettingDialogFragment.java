@@ -40,6 +40,7 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     private FlowTagLayout danmuFlowTag;
     private FlowTagLayout resolutionFlowTag;
     private FlowTagLayout codecFlowTag;
+    private FlowTagLayout mediaPlayerTag;
 
     private Slider danmuSlider;
 
@@ -53,6 +54,7 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         resolutionFlowTag = mView.findViewById(R.id.flow_resolution);
         codecFlowTag = mView.findViewById(R.id.flow_codec);
         danmuSlider = mView.findViewById(R.id.slider_danmu);
+        mediaPlayerTag = mView.findViewById(R.id.flow_media_player);
         dialog.setContentView(mView);
 
         danmuSlider.setValue(AppConfigRepository.getInstance().fetchDanmuSize());
@@ -85,6 +87,12 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
             if (mConfigChangeCallback != null) {
                 mConfigChangeCallback.onNeedReloadChange();
             }
+        });
+        mediaPlayerTag.setOnTagSelectListener((parent, position, selectedList) -> {
+            if (position == 0) {
+                AppConfigRepository.getInstance().setDefaultH265Codec();
+            } else
+                AppConfigRepository.getInstance().setDefaultH265Codec();
         });
         return dialog;
     }
@@ -125,6 +133,8 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
 
         danmuFlowTag.setSelectedPositions(mDanmuToggle);
         codecFlowTag.setSelectedPositions(mCodec);
+
+        mediaPlayerTag.setSelectedPositions(AppConfigRepository.getInstance().isExoPlayerDefault() ? 0 : 1);
 
         final String[] resolutions = new String[mSupportedResolutions.size()];
         int indexResolution = 0;

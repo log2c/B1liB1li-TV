@@ -143,4 +143,32 @@
             app:trackColorInactive="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="135dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:text="@string/video_codec"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.log2c.b1lib1li_tv.widget.LocalFlowTagLayout
+            android:id="@+id/flow_media_player"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:ftl_check_mode="single"
+            app:ftl_entries="@array/media_player"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textView4"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

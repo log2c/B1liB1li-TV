@@ -8,4 +8,8 @@
         <item>H.265</item>
         <item>H.264</item>
     </string-array>
+    <string-array name="media_player">
+        <item>ExoPlayer</item>
+        <item>系统解码器</item>
+    </string-array>
 </resources>

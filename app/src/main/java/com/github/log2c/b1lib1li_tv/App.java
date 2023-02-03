@@ -5,9 +5,10 @@ import android.app.Application;
 import android.os.Build;
 
 import com.github.log2c.b1lib1li_tv.common.CrashHandler;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreApplication;
-import com.github.log2c.base.toast.ToastUtils;
 import com.shuyu.gsyvideoplayer.player.PlayerFactory;
+import com.shuyu.gsyvideoplayer.player.SystemPlayerManager;
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 
 import java.lang.reflect.Constructor;
@@ -28,12 +29,15 @@ public class App extends Application {
     }
 
     private void initCore() {
-        PlayerFactory.setPlayManager(Exo2PlayerManager.class);
-
+        if (AppConfigRepository.getInstance().isExoPlayerDefault()) {
+            PlayerFactory.setPlayManager(Exo2PlayerManager.class);
+        } else {
+            PlayerFactory.setPlayManager(SystemPlayerManager.class);
+        }
         GSYVideoType.enableMediaCodec();
         GSYVideoType.enableMediaCodecTexture();
 
-        ToastUtils.showLong("硬解: " + GSYVideoType.isMediaCodec() + ", 硬解码渲染优化: " + GSYVideoType.isMediaCodecTexture());
+//        ToastUtils.showLong("硬解: " + GSYVideoType.isMediaCodec() + ", 硬解码渲染优化: " + GSYVideoType.isMediaCodecTexture());
     }
 
     private void closeDetectedProblemApiDialog() {
