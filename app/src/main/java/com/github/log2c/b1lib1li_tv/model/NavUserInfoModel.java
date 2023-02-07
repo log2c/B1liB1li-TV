@@ -11,7 +11,7 @@ public class NavUserInfoModel implements Serializable {
     private LevelInfoModel level_info;
     private long mid;
     private long mobile_verified;
-    private long money;
+    private float money;
     private long moral;
     private OfficialModel official;
     private OfficialVerifyModel officialVerify;
@@ -100,11 +100,11 @@ public class NavUserInfoModel implements Serializable {
         this.mobile_verified = mobile_verified;
     }
 
-    public long getMoney() {
+    public float getMoney() {
         return money;
     }
 
-    public void setMoney(long money) {
+    public void setMoney(float money) {
         this.money = money;
     }
 

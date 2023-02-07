@@ -121,11 +121,19 @@ public class AppConfigRepository {
         return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getFloat(Constants.SP_DANMU_SIZE, Constants.SP_DEFAULT_DANMU_SIZE);
     }
 
+    public void setExoPlayerDefault() {
+        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_EXOPLAYER);
+    }
+
     public boolean isExoPlayerDefault() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) == Constants.DEFAULT_DEFAULT_MEDIA_PLAYER;
+        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) == Constants.MEDIA_PLAYER_EXOPLAYER;
     }
 
     public boolean isAndroidMediaCodecDefault() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) != Constants.DEFAULT_DEFAULT_MEDIA_PLAYER;
+        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) != Constants.MEDIA_PLAYER_ANDROID;
+    }
+
+    public void setAndroidMediaCodecDefault() {
+        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_ANDROID);
     }
 }

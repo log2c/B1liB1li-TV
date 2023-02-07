@@ -90,9 +90,9 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         });
         mediaPlayerTag.setOnTagSelectListener((parent, position, selectedList) -> {
             if (position == 0) {
-                AppConfigRepository.getInstance().setDefaultH265Codec();
+                AppConfigRepository.getInstance().setExoPlayerDefault();
             } else
-                AppConfigRepository.getInstance().setDefaultH265Codec();
+                AppConfigRepository.getInstance().setAndroidMediaCodecDefault();
         });
         return dialog;
     }
