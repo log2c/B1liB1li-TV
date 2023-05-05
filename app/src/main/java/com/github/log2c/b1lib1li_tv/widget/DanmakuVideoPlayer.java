@@ -347,4 +347,10 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
     public boolean isDanmakuShow() {
         return mDanmakuShow;
     }
+
+    public void seekTo(long ms) {
+        if (mDanmakuView != null) {
+            mDanmakuView.seekTo(ms);
+        }
+    }
 }
