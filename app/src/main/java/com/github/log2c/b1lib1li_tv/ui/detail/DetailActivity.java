@@ -144,7 +144,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
             viewHolder.itemView.setFocusableInTouchMode(true);
             viewHolder.itemView.requestFocus();
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
