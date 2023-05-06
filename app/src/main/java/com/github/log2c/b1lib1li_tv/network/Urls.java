@@ -18,7 +18,7 @@ public class Urls {
     public static final String HISTORY = "https://api.bilibili.com/x/web-interface/history/cursor";
     public static final String VIDEO_VIEW = "https://api.bilibili.com/x/web-interface/view"; // 获取视频详细信息(web端)
     public static final String DANMUKU = "https://api.bilibili.com/x/v1/dm/list.so"; // https://api.bilibili.com/x/v1/dm/list.so
-    public static final String HISTORY_REPORT = "https://api.bilibili.com/x/v2/history/report"; // 播放记录上传
+    public static final String HISTORY_REPORT = "https://api.bilibili.com/x/click-interface/web/heartbeat"; // 播放记录上传
     public static final String SPACE_SEARCH_VIDEOS = "https://api.bilibili.com/x/space/arc/list"; // 查询用户投稿视频明细
 
 }

@@ -3,6 +3,7 @@ package com.github.log2c.b1lib1li_tv.repository.impl;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
+import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.network.Urls;
@@ -65,14 +66,18 @@ public class VideoRepositoryImpl implements VideoRepository {
 
 
     @Override
-    public Observable<String> historyReport(String aid, String bvid, String cid, String progress) {
-        return RxHttp.get(Urls.HISTORY_REPORT)
-                .addQuery("aid", aid)
-                .addQuery("bvid", bvid)
-                .addQuery("cid", cid)
-                .addQuery("progress", progress)
-                .addQuery("platform", "android")
-                .addQuery("csrf", AppConfigRepository.getInstance().fetchCsrf())
+    public Observable<String> historyReport(String aid, String bvid, String cid, String played_time, String mid) {
+        return RxHttp.postForm(Urls.HISTORY_REPORT)
+                .add("aid", aid)
+                .add("bvid", bvid)
+                .add("refer_url", Constants.REFERER)
+                .add("cid", cid)
+                .add("played_time", played_time)
+                .add("mid", mid)
+                .add("type", 3) // 3：投稿视频
+                .add("play_type", 0)    // 0：播放中 1：开始播放 2：暂停 3：继续播放
+//                .add("platform", "android")
+//                .add("csrf", AppConfigRepository.getInstance().fetchCsrf())
                 .toObservableResponse(String.class);
     }
 }
