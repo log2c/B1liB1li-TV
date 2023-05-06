@@ -66,8 +66,4 @@ dependencies {
     api rootProject.ext.dependencies.QRGen
     api rootProject.ext.dependencies.xpopup
     api rootProject.ext.dependencies.AndroidAutoSize
-
-    api files('libs/httpclient-4.3.6.jar')
-    api files('libs/httpcore-4.3.3.jar')
-    api files('libs/httpmime-4.3.6.jar')
 }

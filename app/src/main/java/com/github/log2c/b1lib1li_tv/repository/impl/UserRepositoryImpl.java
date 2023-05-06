@@ -5,7 +5,6 @@ import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
-import com.github.log2c.b1lib1li_tv.network.NetKit;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 
@@ -18,7 +17,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Observable<String> getUserStat() {
-        return NetKit.getInstance().doGetRx(Urls.NAV_STAT, null, null);
+        return RxHttp.get(Urls.NAV_STAT)
+                .toObservableResponse(String.class);
     }
 
     @Override
@@ -30,7 +30,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Observable<String> getCoin() {
-        return NetKit.getInstance().doGetRx(Urls.GET_COIN, null, null);
+        return RxHttp.get(Urls.GET_COIN)
+                .toObservableResponse(String.class);
+
     }
 
     @Override
@@ -63,6 +65,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Observable<String> history() {
-        return NetKit.getInstance().doGetRx(Urls.HISTORY, null, null);
+        return RxHttp.get(Urls.HISTORY)
+                .toObservableResponse(String.class);
     }
 }

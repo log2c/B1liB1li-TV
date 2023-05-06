@@ -3,7 +3,6 @@ package com.github.log2c.b1lib1li_tv.ui.upfeed;
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
 import com.github.log2c.b1lib1li_tv.network.BackendObserver;
-import com.github.log2c.b1lib1li_tv.network.LocalObserver;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;

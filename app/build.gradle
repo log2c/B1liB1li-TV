@@ -14,8 +14,6 @@ android {
         versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        useLibrary 'org.apache.http.legacy'
-
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a'   //,'armeabi'
         }
@@ -56,9 +54,6 @@ android {
         exclude("META-INF/*.kotlin_module")
         exclude("license/*")
         exclude("mozilla/*")
-        exclude 'org/apache/http/version.properties'
-        exclude 'org/apache/http/client/version.properties'
-        exclude 'org/apache/http/entity/mime/version.properties'
     }
 }
 
