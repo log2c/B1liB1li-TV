@@ -174,6 +174,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         final long duration = mBinding.player.getCurrentPlayer().getCurrentPositionWhenPlaying();
         long time = isForward ? STEP + duration : duration - STEP;
         mBinding.player.getCurrentPlayer().seekTo(time);
+        mBinding.player.seekTo(time);
     }
 
     private void seekByProgressDialog(boolean isForward) {
@@ -308,7 +309,12 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         videoView = mBinding.player;
 
         viewModel.playUrlModelEvent.observe(this, this::loadVideo);
-        viewModel.danmukuLoadedEvent.observe(this, xmlPath -> mBinding.player.setDanmaKuStream(new File(xmlPath)));
+        viewModel.danmukuLoadedEvent.observe(this, xmlPath -> {
+            mBinding.player.setDanmaKuStream(new File(xmlPath));
+            if (mBinding.player.getCurrentPlayer().isInPlayingState()) {
+                mBinding.player.seekTo(mBinding.player.getCurrentPlayer().getCurrentPlayer().getCurrentPositionWhenPlaying());
+            }
+        });
 
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);

@@ -1,14 +1,16 @@
 package com.github.log2c.b1lib1li_tv.network;
 
+import android.net.Uri;
+
 import com.blankj.utilcode.util.RegexUtils;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.utils.Logging;
 
 import org.apache.http.Header;
 import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
+import org.apache.http.impl.client.EntityEnclosingRequestWrapper;
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
@@ -33,8 +35,8 @@ public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
     @Override
     public void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
         try {
-            final String url = ((HttpHost) context.getAttribute("http.target_host")).getHostName();
-            if (Urls.LOGIN.contains(url)) {
+//            final String hostName = ((HttpHost) context.getAttribute("http.target_host")).getHostName();
+            if (Uri.parse(Urls.LOGIN).getPath().equals(((EntityEnclosingRequestWrapper) context.getAttribute("http.request")).getURI().toString())) {
                 Logging.i("Login, Save SESSDATA.");
                 for (Header header : response.getAllHeaders()) {
                     if (header.getName().equals("Set-Cookie")) {
@@ -57,7 +59,7 @@ public class HttpClientResponseInterceptor implements HttpResponseInterceptor {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

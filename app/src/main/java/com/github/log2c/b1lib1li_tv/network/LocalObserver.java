@@ -46,11 +46,16 @@ public abstract class LocalObserver<T> implements Observer<String> {
     public void onNext(String json) {
         TypeToken<?> typeToken = getCompactTypeDynamic();
         if (typeToken != null) {
-            BaseModel<T> model = GsonUtils.fromJson(json, typeToken.getType());
-            if (!isCodeError(model.code())) {
-                onSuccess(model.data());
-            } else if (!ignoreCodeError) {
-                onCodeError(model.getCode(), model.getMessage());
+            try {
+                BaseModel<T> model = GsonUtils.fromJson(json, typeToken.getType());
+                if (!isCodeError(model.code())) {
+                    onSuccess(model.data());
+                } else if (!ignoreCodeError) {
+                    onCodeError(model.getCode(), model.getMessage());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                onException(new BilibiliThrowable("GSON exception."));
             }
         } else {
             onException(new BilibiliThrowable("TypeToken exception."));
