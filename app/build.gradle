@@ -31,6 +31,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        sourceSets {
+            def name = variant.name
+            getByName(name) {  //告知IDE，ksp生成的kotlin代码
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -55,11 +63,5 @@ android {
 
 dependencies {
     implementation project(path: ':base')
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-//    implementation 'androidx.appcompat:appcompat:1.5.1'
-//    implementation 'com.google.android.material:material:1.4.0'
-//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
 }

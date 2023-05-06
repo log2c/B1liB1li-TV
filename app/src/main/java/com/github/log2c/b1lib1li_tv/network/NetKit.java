@@ -5,6 +5,8 @@ import static com.github.log2c.b1lib1li_tv.common.Constants.DEFAULT_USER_AGENT;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.github.log2c.b1lib1li_tv.common.Constants;
 
 import org.apache.http.Header;
@@ -28,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
