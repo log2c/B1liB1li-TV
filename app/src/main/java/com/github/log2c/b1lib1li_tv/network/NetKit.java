@@ -9,8 +9,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.utils.Logging;
 
 import org.apache.http.Header;
@@ -42,9 +44,12 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import rxhttp.RxHttpPlugins;
 import rxhttp.wrapper.cookie.CookieStore;
+import rxhttp.wrapper.cookie.ICookieJar;
 
 public class NetKit {
     private static final String TAG = NetKit.class.getSimpleName();
@@ -299,5 +304,32 @@ public class NetKit {
                 httpMessage.setHeader(key, headers.get(key));
             }
         }
+    }
+
+    public String exportCookie() {
+        List<String> cookieStr = new ArrayList<>();
+        for (Cookie cookie : AppConfigRepository.getInstance().fetchCookies()) {
+            cookieStr.add(cookie.toString());
+        }
+        return GsonUtils.toJson(cookieStr);
+    }
+
+    public void importCookie(String json) {
+        ICookieJar iCookieJar = (ICookieJar) RxHttpPlugins.getOkHttpClient().cookieJar();
+
+        final String[] cookieStringArrays = GsonUtils.fromJson(json, String[].class);
+        List<Cookie> cookies = new ArrayList<>();
+        HttpUrl httpUrl = HttpUrl.parse(Urls.LOGIN_DOMAIN);
+        for (String s : cookieStringArrays) {
+            cookies.add(Cookie.parse(httpUrl, s));
+        }
+        iCookieJar.saveCookie(httpUrl, cookies);
+
+        for (String domain : Urls.OTHER_DOMAIN_LIST) {
+            httpUrl = HttpUrl.parse(domain);
+            iCookieJar.saveCookie(httpUrl, cookies);
+        }
+
+        AppConfigRepository.getInstance().processCookie();
     }
 }

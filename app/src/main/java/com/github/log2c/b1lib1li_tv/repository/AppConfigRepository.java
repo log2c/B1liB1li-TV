@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.network.Urls;
+import com.github.log2c.base.utils.Logging;
 
 import java.util.List;
 
@@ -153,5 +154,15 @@ public class AppConfigRepository {
 
     public void setAndroidMediaCodecDefault() {
         SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_ANDROID);
+    }
+
+    public void processCookie() {
+        ICookieJar iCookieJar = (ICookieJar) RxHttpPlugins.getOkHttpClient().cookieJar();
+        final List<Cookie> cookies = AppConfigRepository.getInstance().fetchCookies();
+        for (String domain : Urls.OTHER_DOMAIN_LIST) {
+            final HttpUrl httpUrl = HttpUrl.parse(domain);
+            iCookieJar.saveCookie(httpUrl, cookies);
+        }
+        Logging.i("Cookie跨域处理完成");
     }
 }

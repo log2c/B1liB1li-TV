@@ -103,19 +103,10 @@ public class LoginViewModel extends BaseCoreViewModel {
     }
 
     private void onLoginSuccess() {
-        processCookie();
+        AppConfigRepository.getInstance().processCookie();
 
         showSuccessToast(R.string.tip_login_success);
         ActivityUtils.getTopActivity().finish();
     }
 
-    private void processCookie() {
-        ICookieJar iCookieJar = (ICookieJar) RxHttpPlugins.getOkHttpClient().cookieJar();
-        final List<Cookie> cookies = AppConfigRepository.getInstance().fetchCookies();
-        for (String domain : Urls.OTHER_DOMAIN_LIST) {
-            final HttpUrl httpUrl = HttpUrl.parse(domain);
-            iCookieJar.saveCookie(httpUrl, cookies);
-        }
-        Logging.i("Cookie跨域处理完成");
-    }
 }

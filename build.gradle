@@ -4,3 +4,5 @@ plugins {
     id 'com.android.library' version '7.3.1' apply false
 }
 apply from: "config.gradle"
+
+ext.kotlin_version = "1.8.0"
