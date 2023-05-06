@@ -3,7 +3,7 @@ package com.github.log2c.b1lib1li_tv.ui.detail;
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
-import com.github.log2c.b1lib1li_tv.network.LocalObserver;
+import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
@@ -24,7 +24,7 @@ public class DetailViewModel extends BaseCoreViewModel {
             showErrorToast("Aid 与 Bvid 不能同时为空！");
             return;
         }
-        videoRepository.videoView(aid, bvid).subscribe(new LocalObserver<VideoViewModel>() {
+        videoRepository.videoView(aid, bvid).subscribe(new BackendObserver<VideoViewModel>() {
             @Override
             public void onSuccess(VideoViewModel model) {
                 viewModelLiveEvent.postValue(model);
@@ -32,7 +32,13 @@ public class DetailViewModel extends BaseCoreViewModel {
             }
 
             @Override
-            public void onException(Throwable e) {
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
                 viewModelLiveEvent.postValue(null);
             }
         });

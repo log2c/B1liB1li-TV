@@ -10,13 +10,15 @@ import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.GenerateModel;
 import com.github.log2c.b1lib1li_tv.model.LoginModel;
-import com.github.log2c.b1lib1li_tv.network.BilibiliThrowable;
-import com.github.log2c.b1lib1li_tv.network.LocalObserver;
+import com.github.log2c.b1lib1li_tv.network.BackendObserver;
+import com.github.log2c.b1lib1li_tv.network.Urls;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.LoginRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.LoginRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
 import com.github.log2c.base.utils.Logging;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +26,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
+import rxhttp.RxHttpPlugins;
+import rxhttp.wrapper.cookie.ICookieJar;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class LoginViewModel extends BaseCoreViewModel {
@@ -45,23 +51,19 @@ public class LoginViewModel extends BaseCoreViewModel {
     }
 
     public void genQrcode() {
-        mLoginRepository.getQrcode().subscribe(new LocalObserver<GenerateModel>() {
-            @Override
-            public void onSuccess(GenerateModel response) {
-                qrcodeRefreshEvent.setValue(response);
-                startLoginPoll();
-            }
+        mLoginRepository.getQrcode()
+                .subscribe(new BackendObserver<GenerateModel>() {
+                    @Override
+                    public void onSuccess(GenerateModel model) {
+                        qrcodeRefreshEvent.postValue(model);
+                        startLoginPoll();
+                    }
 
-            @Override
-            public void onException(Throwable e) {
-                stopLoginPoll();
-                if (e instanceof BilibiliThrowable) {
-                    showErrorToast(e.getMessage());
-                } else {
-                    showErrorToast(e.toString());
-                }
-            }
-        });
+                    @Override
+                    public void onFinish() {
+
+                    }
+                });
     }
 
     private void stopLoginPoll() {
@@ -81,31 +83,39 @@ public class LoginViewModel extends BaseCoreViewModel {
 
     public void loginPoll() {
         mLoginRepository.loginPoll(Objects.requireNonNull(qrcodeRefreshEvent.getValue()).getQrcodeKey())
-                .subscribe(new LocalObserver<LoginModel>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BackendObserver<LoginModel>() {
                     @Override
-                    public void onSuccess(LoginModel response) {
-                        Logging.i("检查扫码状态: " + response.getCode());
-                        qrcodeCodeEvent.postValue(response.getCode());
-                        if (response.getCode() == Constants.Login.PASS) {
+                    public void onSuccess(LoginModel model) {
+                        Logging.i("检查扫码状态: " + model.getCode());
+                        qrcodeCodeEvent.setValue(model.getCode());
+                        if (model.getCode() == Constants.Login.PASS) {
                             stopLoginPoll();
-                            onLoginSuccess(response);
+                            onLoginSuccess();
                         }
                     }
 
                     @Override
-                    public void onException(Throwable e) {
-                        stopLoginPoll();
-                        if (e instanceof BilibiliThrowable) {
-                            showErrorToast(e.getMessage());
-                        } else {
-                            showErrorToast(e.toString());
-                        }
+                    public void onFinish() {
+
                     }
                 });
     }
 
-    private void onLoginSuccess(LoginModel response) {
+    private void onLoginSuccess() {
+        processCookie();
+
         showSuccessToast(R.string.tip_login_success);
         ActivityUtils.getTopActivity().finish();
+    }
+
+    private void processCookie() {
+        ICookieJar iCookieJar = (ICookieJar) RxHttpPlugins.getOkHttpClient().cookieJar();
+        final List<Cookie> cookies = AppConfigRepository.getInstance().fetchCookies();
+        for (String domain : Urls.OTHER_DOMAIN_LIST) {
+            final HttpUrl httpUrl = HttpUrl.parse(domain);
+            iCookieJar.saveCookie(httpUrl, cookies);
+        }
+        Logging.i("Cookie跨域处理完成");
     }
 }

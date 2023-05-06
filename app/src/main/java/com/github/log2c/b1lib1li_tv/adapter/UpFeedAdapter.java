@@ -5,9 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
-import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -15,15 +13,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
 
-public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ListModel.VlistModel, BaseViewHolder> implements LoadMoreModule {
+public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ArchivesBean, BaseViewHolder> implements LoadMoreModule {
     public UpFeedAdapter() {
         super(R.layout.item_glance_dynamic);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder baseViewHolder, UpFeedModel.ListModel.VlistModel upFeedModel) {
+    protected void convert(@NonNull BaseViewHolder baseViewHolder, UpFeedModel.ArchivesBean upFeedModel) {
         View rootView = baseViewHolder.getView(R.id.item_root);
         ImageView avatar = baseViewHolder.getView(R.id.iv_avatar);
         ImageView cover = baseViewHolder.getView(R.id.iv_cover);
@@ -38,8 +37,8 @@ public class UpFeedAdapter extends BaseQuickAdapter<UpFeedModel.ListModel.VlistM
 
             title.setText(upFeedModel.getTitle());
             name.setVisibility(View.GONE);
-            time.setText(TimeUtils.millis2String(upFeedModel.getCreated() * 1000L, "yyyy-MM-dd"));
-            duration.setText(upFeedModel.getLength());
+            time.setText(TimeUtils.millis2String(upFeedModel.getPubdate() * 1000L, "yyyy-MM-dd"));
+            duration.setText(CommonUtils.formatSeconds(upFeedModel.getDuration()));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

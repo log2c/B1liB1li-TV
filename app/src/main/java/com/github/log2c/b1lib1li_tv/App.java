@@ -5,6 +5,7 @@ import android.app.Application;
 import android.os.Build;
 
 import com.github.log2c.b1lib1li_tv.common.CrashHandler;
+import com.github.log2c.b1lib1li_tv.network.NetKit;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreApplication;
 import com.shuyu.gsyvideoplayer.player.PlayerFactory;
@@ -21,6 +22,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        NetKit.getInstance().init();
         closeDetectedProblemApiDialog();
         BaseCoreApplication.init(this, BuildConfig.DEBUG);
         initCore();

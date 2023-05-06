@@ -1,9 +1,6 @@
 plugins {
     id 'com.android.library'
 }
-plugins {
-    id 'com.google.devtools.ksp' version '1.8.0-1.0.9'
-}
 
 android {
     namespace 'com.github.log2c.base'
@@ -48,9 +45,7 @@ android {
 configurations.all {
     exclude group: "io.coil-kt", module: "coil"
 }
-ksp {
-    arg("rxhttp_rxjava", "2.2.2")
-}
+
 dependencies {
     api rootProject.ext.androidxs
     api rootProject.ext.danmukus
@@ -75,10 +70,4 @@ dependencies {
     api files('libs/httpclient-4.3.6.jar')
     api files('libs/httpcore-4.3.3.jar')
     api files('libs/httpmime-4.3.6.jar')
-
-    def rxhttp_version = '3.0.3'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation "com.github.liujingxing.rxhttp:rxhttp:$rxhttp_version"
-    ksp "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
-    implementation 'com.github.liujingxing.rxlife:rxlife-rxjava2:2.2.2' //管理RxJava2生命周期，页面销毁，关闭请求
 }

@@ -49,7 +49,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
             }
             mAdapter.addData(feedModel.getItems());
             mAdapter.getLoadMoreModule().loadMoreComplete();
-            mAdapter.getLoadMoreModule().setEnableLoadMore(feedModel.isHas_more());
+            mAdapter.getLoadMoreModule().setEnableLoadMore(feedModel.getHas_more());
         });
         viewModel.refreshEvent.observe(this, s -> {
             mAdapter.setNewInstance(new ArrayList<>());
@@ -60,7 +60,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
 
     @Override
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-        final FeedModel.ItemsModel model = mAdapter.getData().get(position);
-        DetailActivity.showActivity(this, model.getModules().getModule_dynamic().getMajor().getArchive().getBvid(), model.getModules().getModule_dynamic().getMajor().getArchive().getAid());
+        final FeedModel.ItemsBean model = mAdapter.getData().get(position);
+        DetailActivity.showActivity(this, model.getBvid(), model.getAid());
     }
 }

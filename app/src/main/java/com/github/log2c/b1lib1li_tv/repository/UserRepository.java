@@ -1,20 +1,25 @@
 package com.github.log2c.b1lib1li_tv.repository;
 
+import com.github.log2c.b1lib1li_tv.model.FeedModel;
+import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
+import com.github.log2c.b1lib1li_tv.model.ToViewModel;
+import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
+
 import io.reactivex.Observable;
 
 public interface UserRepository {
 
     Observable<String> getUserStat();
 
-    Observable<String> getNavUserInfo();
+    Observable<NavUserInfoModel> getNavUserInfo();
 
     Observable<String> getCoin();
 
-    Observable<String> getFeed(String type, int page, String offset);
+    Observable<FeedModel> getFeed(String type, int page, String offset);
 
-    Observable<String> toView();
+    Observable<ToViewModel> toView();
 
     Observable<String> history();
 
-    Observable<String> getUpFeed(String hostMid, int page, int pageSize);
+    Observable<UpFeedModel> getUpFeed(String hostMid, int page, int pageSize);
 }

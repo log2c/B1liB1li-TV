@@ -1,13 +1,17 @@
 package com.github.log2c.b1lib1li_tv.network;
 
 import static com.github.log2c.b1lib1li_tv.common.Constants.DEFAULT_USER_AGENT;
+import static com.github.log2c.b1lib1li_tv.common.Constants.REFERER;
 
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.PathUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.base.utils.Logging;
 
 import org.apache.http.Header;
 import org.apache.http.HttpMessage;
@@ -23,6 +27,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -37,6 +42,9 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import rxhttp.RxHttpPlugins;
+import rxhttp.wrapper.cookie.CookieStore;
 
 public class NetKit {
     private static final String TAG = NetKit.class.getSimpleName();
@@ -49,11 +57,25 @@ public class NetKit {
     }
 
     private NetKit() {
-        init();
+
     }
 
-    private void init() {
+    public void init() {
         mHttpClient = getHttpClient();
+        final String networkCacheDir = PathUtils.join(PathUtils.getInternalAppCachePath(), "network");
+        boolean orExistsDir = FileUtils.createOrExistsDir(networkCacheDir);
+        final File cookiePath = FileUtils.getFileByPath(networkCacheDir);
+        Logging.i("缓存目录状态: %1$s, %2$s", networkCacheDir, orExistsDir);
+        RxHttpPlugins.init(new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .cookieJar(new CookieStore(cookiePath, false))
+                .addInterceptor(new UnzippingInterceptor())
+                .build()
+        ).setOnParamAssembly(param -> param.addHeader("User-Agent", DEFAULT_USER_AGENT)
+                .addHeader("origin", REFERER)
+                .addHeader("referer", REFERER));
     }
 
     public static NetKit getInstance() {

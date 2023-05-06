@@ -2,7 +2,7 @@ package com.github.log2c.b1lib1li_tv.ui.toview;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
-import com.github.log2c.b1lib1li_tv.network.LocalObserver;
+import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
@@ -20,7 +20,7 @@ public class ToviewViewModel extends BaseCoreViewModel {
     public void fetchToview() {
         getDefUI().getShowDialog().call();
         userRepository.toView()
-                .subscribe(new LocalObserver<ToViewModel>() {
+                .subscribe(new BackendObserver<ToViewModel>() {
                     @Override
                     public void onSuccess(ToViewModel model) {
                         if (model.getList() != null) {
@@ -29,13 +29,7 @@ public class ToviewViewModel extends BaseCoreViewModel {
                     }
 
                     @Override
-                    public void onException(Throwable e) {
-
-                    }
-
-                    @Override
                     public void onFinish() {
-                        super.onFinish();
                         getDefUI().getDismissDialog().call();
                     }
                 });

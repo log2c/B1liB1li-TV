@@ -5,9 +5,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
-import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -15,9 +14,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 
-public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseViewHolder> implements LoadMoreModule {
+public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsBean, BaseViewHolder> implements LoadMoreModule {
     public FeedAdapter() {
         this(R.layout.item_glance_dynamic);
     }
@@ -27,7 +27,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder baseViewHolder, FeedModel.ItemsModel itemsModel) {
+    protected void convert(@NonNull BaseViewHolder baseViewHolder, FeedModel.ItemsBean itemsModel) {
         View rootView = baseViewHolder.getView(R.id.item_root);
         ImageView avatar = baseViewHolder.getView(R.id.iv_avatar);
         ImageView cover = baseViewHolder.getView(R.id.iv_cover);
@@ -37,13 +37,13 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsModel, BaseView
         TextView duration = baseViewHolder.getView(R.id.tv_duration);
 
         try {
-            Glide.with(avatar).load(itemsModel.getModules().getModule_author().getFace()).transform(new CircleCrop()).into(avatar);
-            Glide.with(avatar).load(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getCover()).transform(new RoundedCorners(12)).into(cover);
+            Glide.with(avatar).load(itemsModel.getOwner().getFace()).transform(new CircleCrop()).into(avatar);
+            Glide.with(avatar).load(itemsModel.getPic()).transform(new RoundedCorners(12)).into(cover);
 
-            title.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getTitle());
-            name.setText(itemsModel.getModules().getModule_author().getName());
-            time.setText(itemsModel.getModules().getModule_author().getPub_time());
-            duration.setText(itemsModel.getModules().getModule_dynamic().getMajor().getArchive().getDuration_text());
+            title.setText(itemsModel.getTitle());
+            name.setText(itemsModel.getOwner().getName());
+            time.setText(TimeUtils.millis2String(itemsModel.getPubdate(), "MM-dd HH:mm"));
+            duration.setText(CommonUtils.formatSeconds(itemsModel.getDuration()));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

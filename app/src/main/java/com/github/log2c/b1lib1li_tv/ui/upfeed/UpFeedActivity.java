@@ -55,9 +55,9 @@ public class UpFeedActivity extends BaseCoreActivity<UpFeedViewModel, ActivityUp
                 mAdapter.getLoadMoreModule().loadMoreFail();
                 return;
             }
-            mAdapter.addData(feedModel.getList().getVlist());
+            mAdapter.addData(feedModel.getArchives());
             mAdapter.getLoadMoreModule().loadMoreComplete();
-            boolean hasMore = feedModel.getList().getVlist().size() == UpFeedViewModel.PAGE_SIZE;
+            boolean hasMore = feedModel.getArchives().size() == UpFeedViewModel.PAGE_SIZE;
             Log.i(TAG, "initView: hasMore: " + hasMore);
             mAdapter.getLoadMoreModule().setEnableLoadMore(hasMore);
         });
@@ -66,7 +66,7 @@ public class UpFeedActivity extends BaseCoreActivity<UpFeedViewModel, ActivityUp
 
     @Override
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-        final UpFeedModel.ListModel.VlistModel model = mAdapter.getData().get(position);
+        final UpFeedModel.ArchivesBean model = mAdapter.getData().get(position);
         DetailActivity.showActivity(this, model.getBvid(), model.getAid());
     }
 

@@ -4,17 +4,33 @@ import java.util.List;
 
 public class FeedModel {
     private boolean has_more;
+    private Integer update_num;
+    private List<ItemsBean> items;
     private String offset;
     private String update_baseline;
-    private long update_num;
-    private List<ItemsModel> items;
 
-    public boolean isHas_more() {
+    public boolean getHas_more() {
         return has_more;
     }
 
-    public void setHas_more(boolean has_more) {
+    public void setHas_more(Boolean has_more) {
         this.has_more = has_more;
+    }
+
+    public Integer getUpdate_num() {
+        return update_num;
+    }
+
+    public void setUpdate_num(Integer update_num) {
+        this.update_num = update_num;
+    }
+
+    public List<ItemsBean> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemsBean> items) {
+        this.items = items;
     }
 
     public String getOffset() {
@@ -33,1119 +49,239 @@ public class FeedModel {
         this.update_baseline = update_baseline;
     }
 
-    public long getUpdate_num() {
-        return update_num;
-    }
+    public static class ItemsBean {
+        private String bvid;
+        private RightsBean rights;
+        private OwnerBean owner;
+        private Integer cid;
+        private String desc;
+        private String pic;
+        private String title;
+        private long ctime;
+        private StatBean stat;
+        private long duration;
+        private String aid;
+        private long pubdate;
 
-    public void setUpdate_num(long update_num) {
-        this.update_num = update_num;
-    }
-
-    public List<ItemsModel> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemsModel> items) {
-        this.items = items;
-    }
-
-    public static class ItemsModel {
-        private BasicModel basic;
-        private String id_str;
-        private ModulesModel modules;
-        private String type;
-        private boolean visible;
-
-        public BasicModel getBasic() {
-            return basic;
+        public String getBvid() {
+            return bvid;
         }
 
-        public void setBasic(BasicModel basic) {
-            this.basic = basic;
+        public void setBvid(String bvid) {
+            this.bvid = bvid;
         }
 
-        public String getId_str() {
-            return id_str;
+        public RightsBean getRights() {
+            return rights;
         }
 
-        public void setId_str(String id_str) {
-            this.id_str = id_str;
+        public void setRights(RightsBean rights) {
+            this.rights = rights;
         }
 
-        public ModulesModel getModules() {
-            return modules;
+        public OwnerBean getOwner() {
+            return owner;
         }
 
-        public void setModules(ModulesModel modules) {
-            this.modules = modules;
+        public void setOwner(OwnerBean owner) {
+            this.owner = owner;
         }
 
-        public String getType() {
-            return type;
+        public Integer getCid() {
+            return cid;
         }
 
-        public void setType(String type) {
-            this.type = type;
+        public void setCid(Integer cid) {
+            this.cid = cid;
         }
 
-        public boolean isVisible() {
-            return visible;
+        public String getDesc() {
+            return desc;
         }
 
-        public void setVisible(boolean visible) {
-            this.visible = visible;
+        public void setDesc(String desc) {
+            this.desc = desc;
         }
 
-        public static class BasicModel {
-            private String comment_id_str;
-            private long comment_type;
-            private LikeIconModel like_icon;
-            private String rid_str;
+        public String getPic() {
+            return pic;
+        }
 
-            public String getComment_id_str() {
-                return comment_id_str;
+        public void setPic(String pic) {
+            this.pic = pic;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public long getCtime() {
+            return ctime;
+        }
+
+        public void setCtime(long ctime) {
+            this.ctime = ctime;
+        }
+
+        public StatBean getStat() {
+            return stat;
+        }
+
+        public void setStat(StatBean stat) {
+            this.stat = stat;
+        }
+
+        public long getDuration() {
+            return duration;
+        }
+
+        public void setDuration(long duration) {
+            this.duration = duration;
+        }
+
+        public String getAid() {
+            return aid;
+        }
+
+        public void setAid(String aid) {
+            this.aid = aid;
+        }
+
+        public long getPubdate() {
+            return pubdate;
+        }
+
+        public void setPubdate(long pubdate) {
+            this.pubdate = pubdate;
+        }
+
+        public static class RightsBean {
+            private Integer is_cooperation;
+            private Integer autoplay;
+
+            public Integer getIs_cooperation() {
+                return is_cooperation;
             }
 
-            public void setComment_id_str(String comment_id_str) {
-                this.comment_id_str = comment_id_str;
+            public void setIs_cooperation(Integer is_cooperation) {
+                this.is_cooperation = is_cooperation;
             }
 
-            public long getComment_type() {
-                return comment_type;
+            public Integer getAutoplay() {
+                return autoplay;
             }
 
-            public void setComment_type(long comment_type) {
-                this.comment_type = comment_type;
-            }
-
-            public LikeIconModel getLike_icon() {
-                return like_icon;
-            }
-
-            public void setLike_icon(LikeIconModel like_icon) {
-                this.like_icon = like_icon;
-            }
-
-            public String getRid_str() {
-                return rid_str;
-            }
-
-            public void setRid_str(String rid_str) {
-                this.rid_str = rid_str;
-            }
-
-            public static class LikeIconModel {
-                private String action_url;
-                private String end_url;
-                private long id;
-                private String start_url;
-
-                public String getAction_url() {
-                    return action_url;
-                }
-
-                public void setAction_url(String action_url) {
-                    this.action_url = action_url;
-                }
-
-                public String getEnd_url() {
-                    return end_url;
-                }
-
-                public void setEnd_url(String end_url) {
-                    this.end_url = end_url;
-                }
-
-                public long getId() {
-                    return id;
-                }
-
-                public void setId(long id) {
-                    this.id = id;
-                }
-
-                public String getStart_url() {
-                    return start_url;
-                }
-
-                public void setStart_url(String start_url) {
-                    this.start_url = start_url;
-                }
+            public void setAutoplay(Integer autoplay) {
+                this.autoplay = autoplay;
             }
         }
 
-        public static class ModulesModel {
-            private ModuleAuthorModel module_author;
-            private ModuleDynamicModel module_dynamic;
-            private ModuleMoreModel module_more;
-            private ModuleStatModel module_stat;
+        public static class OwnerBean {
+            private String face;
+            private String mid;
+            private String name;
 
-            public ModuleAuthorModel getModule_author() {
-                return module_author;
+            public String getFace() {
+                return face;
             }
 
-            public void setModule_author(ModuleAuthorModel module_author) {
-                this.module_author = module_author;
+            public void setFace(String face) {
+                this.face = face;
             }
 
-            public ModuleDynamicModel getModule_dynamic() {
-                return module_dynamic;
+            public String getMid() {
+                return mid;
             }
 
-            public void setModule_dynamic(ModuleDynamicModel module_dynamic) {
-                this.module_dynamic = module_dynamic;
+            public void setMid(String mid) {
+                this.mid = mid;
             }
 
-            public ModuleMoreModel getModule_more() {
-                return module_more;
+            public String getName() {
+                return name;
             }
 
-            public void setModule_more(ModuleMoreModel module_more) {
-                this.module_more = module_more;
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class StatBean {
+            private long vv;
+            private long favorite;
+            private String aid;
+            private Object coin;
+            private long like;
+            private long reply;
+            private long danmaku;
+            private long view;
+
+            public long getVv() {
+                return vv;
             }
 
-            public ModuleStatModel getModule_stat() {
-                return module_stat;
+            public void setVv(long vv) {
+                this.vv = vv;
             }
 
-            public void setModule_stat(ModuleStatModel module_stat) {
-                this.module_stat = module_stat;
+            public long getFavorite() {
+                return favorite;
             }
 
-            public static class ModuleAuthorModel {
-                private DecorateModel decorate;
-                private String face;
-                private boolean face_nft;
-                private boolean following;
-                private String jump_url;
-                private String label;
-                private long mid;
-                private String name;
-                private OfficialVerifyModel official_verify;
-                private PendantModel pendant;
-                private String pub_action;
-                private String pub_location_text;
-                private String pub_time;
-                private long pub_ts;
-                private String type;
-                private VipModel vip;
-
-                public DecorateModel getDecorate() {
-                    return decorate;
-                }
-
-                public void setDecorate(DecorateModel decorate) {
-                    this.decorate = decorate;
-                }
-
-                public String getFace() {
-                    return face;
-                }
-
-                public void setFace(String face) {
-                    this.face = face;
-                }
-
-                public boolean isFace_nft() {
-                    return face_nft;
-                }
-
-                public void setFace_nft(boolean face_nft) {
-                    this.face_nft = face_nft;
-                }
-
-                public boolean isFollowing() {
-                    return following;
-                }
-
-                public void setFollowing(boolean following) {
-                    this.following = following;
-                }
-
-                public String getJump_url() {
-                    return jump_url;
-                }
-
-                public void setJump_url(String jump_url) {
-                    this.jump_url = jump_url;
-                }
-
-                public String getLabel() {
-                    return label;
-                }
-
-                public void setLabel(String label) {
-                    this.label = label;
-                }
-
-                public long getMid() {
-                    return mid;
-                }
-
-                public void setMid(long mid) {
-                    this.mid = mid;
-                }
-
-                public String getName() {
-                    return name;
-                }
-
-                public void setName(String name) {
-                    this.name = name;
-                }
-
-                public OfficialVerifyModel getOfficial_verify() {
-                    return official_verify;
-                }
-
-                public void setOfficial_verify(OfficialVerifyModel official_verify) {
-                    this.official_verify = official_verify;
-                }
-
-                public PendantModel getPendant() {
-                    return pendant;
-                }
-
-                public void setPendant(PendantModel pendant) {
-                    this.pendant = pendant;
-                }
-
-                public String getPub_action() {
-                    return pub_action;
-                }
-
-                public void setPub_action(String pub_action) {
-                    this.pub_action = pub_action;
-                }
-
-                public String getPub_location_text() {
-                    return pub_location_text;
-                }
-
-                public void setPub_location_text(String pub_location_text) {
-                    this.pub_location_text = pub_location_text;
-                }
-
-                public String getPub_time() {
-                    return pub_time;
-                }
-
-                public void setPub_time(String pub_time) {
-                    this.pub_time = pub_time;
-                }
-
-                public long getPub_ts() {
-                    return pub_ts;
-                }
-
-                public void setPub_ts(long pub_ts) {
-                    this.pub_ts = pub_ts;
-                }
-
-                public String getType() {
-                    return type;
-                }
-
-                public void setType(String type) {
-                    this.type = type;
-                }
-
-                public VipModel getVip() {
-                    return vip;
-                }
-
-                public void setVip(VipModel vip) {
-                    this.vip = vip;
-                }
-
-                public static class DecorateModel {
-                    private String card_url;
-                    private FanModel fan;
-                    private long id;
-                    private String jump_url;
-                    private String name;
-                    private long type;
-
-                    public String getCard_url() {
-                        return card_url;
-                    }
-
-                    public void setCard_url(String card_url) {
-                        this.card_url = card_url;
-                    }
-
-                    public FanModel getFan() {
-                        return fan;
-                    }
-
-                    public void setFan(FanModel fan) {
-                        this.fan = fan;
-                    }
-
-                    public long getId() {
-                        return id;
-                    }
-
-                    public void setId(long id) {
-                        this.id = id;
-                    }
-
-                    public String getJump_url() {
-                        return jump_url;
-                    }
-
-                    public void setJump_url(String jump_url) {
-                        this.jump_url = jump_url;
-                    }
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-
-                    public long getType() {
-                        return type;
-                    }
-
-                    public void setType(long type) {
-                        this.type = type;
-                    }
-
-                    public static class FanModel {
-                        private String color;
-                        private boolean is_fan;
-                        private String num_str;
-                        private long number;
-
-                        public String getColor() {
-                            return color;
-                        }
-
-                        public void setColor(String color) {
-                            this.color = color;
-                        }
-
-                        public boolean isIs_fan() {
-                            return is_fan;
-                        }
-
-                        public void setIs_fan(boolean is_fan) {
-                            this.is_fan = is_fan;
-                        }
-
-                        public String getNum_str() {
-                            return num_str;
-                        }
-
-                        public void setNum_str(String num_str) {
-                            this.num_str = num_str;
-                        }
-
-                        public long getNumber() {
-                            return number;
-                        }
-
-                        public void setNumber(long number) {
-                            this.number = number;
-                        }
-                    }
-                }
-
-                public static class OfficialVerifyModel {
-                    private String desc;
-                    private long type;
-
-                    public String getDesc() {
-                        return desc;
-                    }
-
-                    public void setDesc(String desc) {
-                        this.desc = desc;
-                    }
-
-                    public long getType() {
-                        return type;
-                    }
-
-                    public void setType(long type) {
-                        this.type = type;
-                    }
-                }
-
-                public static class PendantModel {
-                    private long expire;
-                    private String image;
-                    private String image_enhance;
-                    private String image_enhance_frame;
-                    private String name;
-                    private long pid;
-
-                    public long getExpire() {
-                        return expire;
-                    }
-
-                    public void setExpire(long expire) {
-                        this.expire = expire;
-                    }
-
-                    public String getImage() {
-                        return image;
-                    }
-
-                    public void setImage(String image) {
-                        this.image = image;
-                    }
-
-                    public String getImage_enhance() {
-                        return image_enhance;
-                    }
-
-                    public void setImage_enhance(String image_enhance) {
-                        this.image_enhance = image_enhance;
-                    }
-
-                    public String getImage_enhance_frame() {
-                        return image_enhance_frame;
-                    }
-
-                    public void setImage_enhance_frame(String image_enhance_frame) {
-                        this.image_enhance_frame = image_enhance_frame;
-                    }
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-
-                    public long getPid() {
-                        return pid;
-                    }
-
-                    public void setPid(long pid) {
-                        this.pid = pid;
-                    }
-                }
-
-                public static class VipModel {
-                    private long avatar_subscript;
-                    private String avatar_subscript_url;
-                    private long due_date;
-                    private LabelModel label;
-                    private String nickname_color;
-                    private long status;
-                    private long theme_type;
-                    private long type;
-
-                    public long getAvatar_subscript() {
-                        return avatar_subscript;
-                    }
-
-                    public void setAvatar_subscript(long avatar_subscript) {
-                        this.avatar_subscript = avatar_subscript;
-                    }
-
-                    public String getAvatar_subscript_url() {
-                        return avatar_subscript_url;
-                    }
-
-                    public void setAvatar_subscript_url(String avatar_subscript_url) {
-                        this.avatar_subscript_url = avatar_subscript_url;
-                    }
-
-                    public long getDue_date() {
-                        return due_date;
-                    }
-
-                    public void setDue_date(long due_date) {
-                        this.due_date = due_date;
-                    }
-
-                    public LabelModel getLabel() {
-                        return label;
-                    }
-
-                    public void setLabel(LabelModel label) {
-                        this.label = label;
-                    }
-
-                    public String getNickname_color() {
-                        return nickname_color;
-                    }
-
-                    public void setNickname_color(String nickname_color) {
-                        this.nickname_color = nickname_color;
-                    }
-
-                    public long getStatus() {
-                        return status;
-                    }
-
-                    public void setStatus(long status) {
-                        this.status = status;
-                    }
-
-                    public long getTheme_type() {
-                        return theme_type;
-                    }
-
-                    public void setTheme_type(long theme_type) {
-                        this.theme_type = theme_type;
-                    }
-
-                    public long getType() {
-                        return type;
-                    }
-
-                    public void setType(long type) {
-                        this.type = type;
-                    }
-
-                    public static class LabelModel {
-                        private String bg_color;
-                        private long bg_style;
-                        private String border_color;
-                        private String img_label_uri_hans;
-                        private String img_label_uri_hans_static;
-                        private String img_label_uri_hant;
-                        private String img_label_uri_hant_static;
-                        private String label_theme;
-                        private String path;
-                        private String text;
-                        private String text_color;
-                        private boolean use_img_label;
-
-                        public String getBg_color() {
-                            return bg_color;
-                        }
-
-                        public void setBg_color(String bg_color) {
-                            this.bg_color = bg_color;
-                        }
-
-                        public long getBg_style() {
-                            return bg_style;
-                        }
-
-                        public void setBg_style(long bg_style) {
-                            this.bg_style = bg_style;
-                        }
-
-                        public String getBorder_color() {
-                            return border_color;
-                        }
-
-                        public void setBorder_color(String border_color) {
-                            this.border_color = border_color;
-                        }
-
-                        public String getImg_label_uri_hans() {
-                            return img_label_uri_hans;
-                        }
-
-                        public void setImg_label_uri_hans(String img_label_uri_hans) {
-                            this.img_label_uri_hans = img_label_uri_hans;
-                        }
-
-                        public String getImg_label_uri_hans_static() {
-                            return img_label_uri_hans_static;
-                        }
-
-                        public void setImg_label_uri_hans_static(String img_label_uri_hans_static) {
-                            this.img_label_uri_hans_static = img_label_uri_hans_static;
-                        }
-
-                        public String getImg_label_uri_hant() {
-                            return img_label_uri_hant;
-                        }
-
-                        public void setImg_label_uri_hant(String img_label_uri_hant) {
-                            this.img_label_uri_hant = img_label_uri_hant;
-                        }
-
-                        public String getImg_label_uri_hant_static() {
-                            return img_label_uri_hant_static;
-                        }
-
-                        public void setImg_label_uri_hant_static(String img_label_uri_hant_static) {
-                            this.img_label_uri_hant_static = img_label_uri_hant_static;
-                        }
-
-                        public String getLabel_theme() {
-                            return label_theme;
-                        }
-
-                        public void setLabel_theme(String label_theme) {
-                            this.label_theme = label_theme;
-                        }
-
-                        public String getPath() {
-                            return path;
-                        }
-
-                        public void setPath(String path) {
-                            this.path = path;
-                        }
-
-                        public String getText() {
-                            return text;
-                        }
-
-                        public void setText(String text) {
-                            this.text = text;
-                        }
-
-                        public String getText_color() {
-                            return text_color;
-                        }
-
-                        public void setText_color(String text_color) {
-                            this.text_color = text_color;
-                        }
-
-                        public boolean isUse_img_label() {
-                            return use_img_label;
-                        }
-
-                        public void setUse_img_label(boolean use_img_label) {
-                            this.use_img_label = use_img_label;
-                        }
-                    }
-                }
+            public void setFavorite(long favorite) {
+                this.favorite = favorite;
             }
 
-            public static class ModuleDynamicModel {
-                private Object additional;
-                private DescModel desc;
-                private MajorModel major;
-                private TopicModel topic;
-
-                public Object getAdditional() {
-                    return additional;
-                }
-
-                public void setAdditional(Object additional) {
-                    this.additional = additional;
-                }
-
-                public DescModel getDesc() {
-                    return desc;
-                }
-
-                public void setDesc(DescModel desc) {
-                    this.desc = desc;
-                }
-
-                public MajorModel getMajor() {
-                    return major;
-                }
-
-                public void setMajor(MajorModel major) {
-                    this.major = major;
-                }
-
-                public TopicModel getTopic() {
-                    return topic;
-                }
-
-                public void setTopic(TopicModel topic) {
-                    this.topic = topic;
-                }
-
-                public static class DescModel {
-                    private String text;
-                    private List<RichTextNodesModel> rich_text_nodes;
-
-                    public String getText() {
-                        return text;
-                    }
-
-                    public void setText(String text) {
-                        this.text = text;
-                    }
-
-                    public List<RichTextNodesModel> getRich_text_nodes() {
-                        return rich_text_nodes;
-                    }
-
-                    public void setRich_text_nodes(List<RichTextNodesModel> rich_text_nodes) {
-                        this.rich_text_nodes = rich_text_nodes;
-                    }
-
-                    public static class RichTextNodesModel {
-                        private String orig_text;
-                        private String text;
-                        private String type;
-
-                        public String getOrig_text() {
-                            return orig_text;
-                        }
-
-                        public void setOrig_text(String orig_text) {
-                            this.orig_text = orig_text;
-                        }
-
-                        public String getText() {
-                            return text;
-                        }
-
-                        public void setText(String text) {
-                            this.text = text;
-                        }
-
-                        public String getType() {
-                            return type;
-                        }
-
-                        public void setType(String type) {
-                            this.type = type;
-                        }
-                    }
-                }
-
-                public static class MajorModel {
-                    private ArchiveModel archive;
-                    private String type;
-
-                    public ArchiveModel getArchive() {
-                        return archive;
-                    }
-
-                    public void setArchive(ArchiveModel archive) {
-                        this.archive = archive;
-                    }
-
-                    public String getType() {
-                        return type;
-                    }
-
-                    public void setType(String type) {
-                        this.type = type;
-                    }
-
-                    public static class ArchiveModel {
-                        private String aid;
-                        private BadgeModel badge;
-                        private String bvid;
-                        private String cover;
-                        private String desc;
-                        private long disable_preview;
-                        private String duration_text;
-                        private String jump_url;
-                        private StatModel stat;
-                        private String title;
-                        private long type;
-
-                        public String getAid() {
-                            return aid;
-                        }
-
-                        public void setAid(String aid) {
-                            this.aid = aid;
-                        }
-
-                        public BadgeModel getBadge() {
-                            return badge;
-                        }
-
-                        public void setBadge(BadgeModel badge) {
-                            this.badge = badge;
-                        }
-
-                        public String getBvid() {
-                            return bvid;
-                        }
-
-                        public void setBvid(String bvid) {
-                            this.bvid = bvid;
-                        }
-
-                        public String getCover() {
-                            return cover;
-                        }
-
-                        public void setCover(String cover) {
-                            this.cover = cover;
-                        }
-
-                        public String getDesc() {
-                            return desc;
-                        }
-
-                        public void setDesc(String desc) {
-                            this.desc = desc;
-                        }
-
-                        public long getDisable_preview() {
-                            return disable_preview;
-                        }
-
-                        public void setDisable_preview(long disable_preview) {
-                            this.disable_preview = disable_preview;
-                        }
-
-                        public String getDuration_text() {
-                            return duration_text;
-                        }
-
-                        public void setDuration_text(String duration_text) {
-                            this.duration_text = duration_text;
-                        }
-
-                        public String getJump_url() {
-                            return jump_url;
-                        }
-
-                        public void setJump_url(String jump_url) {
-                            this.jump_url = jump_url;
-                        }
-
-                        public StatModel getStat() {
-                            return stat;
-                        }
-
-                        public void setStat(StatModel stat) {
-                            this.stat = stat;
-                        }
-
-                        public String getTitle() {
-                            return title;
-                        }
-
-                        public void setTitle(String title) {
-                            this.title = title;
-                        }
-
-                        public long getType() {
-                            return type;
-                        }
-
-                        public void setType(long type) {
-                            this.type = type;
-                        }
-
-                        public static class BadgeModel {
-                            private String bg_color;
-                            private String color;
-                            private String text;
-
-                            public String getBg_color() {
-                                return bg_color;
-                            }
-
-                            public void setBg_color(String bg_color) {
-                                this.bg_color = bg_color;
-                            }
-
-                            public String getColor() {
-                                return color;
-                            }
-
-                            public void setColor(String color) {
-                                this.color = color;
-                            }
-
-                            public String getText() {
-                                return text;
-                            }
-
-                            public void setText(String text) {
-                                this.text = text;
-                            }
-                        }
-
-                        public static class StatModel {
-                            private String danmaku;
-                            private String play;
-
-                            public String getDanmaku() {
-                                return danmaku;
-                            }
-
-                            public void setDanmaku(String danmaku) {
-                                this.danmaku = danmaku;
-                            }
-
-                            public String getPlay() {
-                                return play;
-                            }
-
-                            public void setPlay(String play) {
-                                this.play = play;
-                            }
-                        }
-                    }
-                }
-
-                public static class TopicModel {
-                    private long id;
-                    private String jump_url;
-                    private String name;
-
-                    public long getId() {
-                        return id;
-                    }
-
-                    public void setId(long id) {
-                        this.id = id;
-                    }
-
-                    public String getJump_url() {
-                        return jump_url;
-                    }
-
-                    public void setJump_url(String jump_url) {
-                        this.jump_url = jump_url;
-                    }
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-                }
+            public String getAid() {
+                return aid;
             }
 
-            public static class ModuleMoreModel {
-                private List<ThreePointItemsModel> three_point_items;
-
-                public List<ThreePointItemsModel> getThree_point_items() {
-                    return three_point_items;
-                }
-
-                public void setThree_point_items(List<ThreePointItemsModel> three_point_items) {
-                    this.three_point_items = three_point_items;
-                }
-
-                public static class ThreePointItemsModel {
-                    private String label;
-                    private String type;
-
-                    public String getLabel() {
-                        return label;
-                    }
-
-                    public void setLabel(String label) {
-                        this.label = label;
-                    }
-
-                    public String getType() {
-                        return type;
-                    }
-
-                    public void setType(String type) {
-                        this.type = type;
-                    }
-                }
+            public void setAid(String aid) {
+                this.aid = aid;
             }
 
-            public static class ModuleStatModel {
-                private CommentModel comment;
-                private ForwardModel forward;
-                private LikeModel like;
+            public Object getCoin() {
+                return coin;
+            }
 
-                public CommentModel getComment() {
-                    return comment;
-                }
+            public void setCoin(Object coin) {
+                this.coin = coin;
+            }
 
-                public void setComment(CommentModel comment) {
-                    this.comment = comment;
-                }
+            public long getLike() {
+                return like;
+            }
 
-                public ForwardModel getForward() {
-                    return forward;
-                }
+            public void setLike(long like) {
+                this.like = like;
+            }
 
-                public void setForward(ForwardModel forward) {
-                    this.forward = forward;
-                }
+            public long getReply() {
+                return reply;
+            }
 
-                public LikeModel getLike() {
-                    return like;
-                }
+            public void setReply(long reply) {
+                this.reply = reply;
+            }
 
-                public void setLike(LikeModel like) {
-                    this.like = like;
-                }
+            public long getDanmaku() {
+                return danmaku;
+            }
 
-                public static class CommentModel {
-                    private long count;
-                    private boolean forbidden;
+            public void setDanmaku(long danmaku) {
+                this.danmaku = danmaku;
+            }
 
-                    public long getCount() {
-                        return count;
-                    }
+            public long getView() {
+                return view;
+            }
 
-                    public void setCount(long count) {
-                        this.count = count;
-                    }
-
-                    public boolean isForbidden() {
-                        return forbidden;
-                    }
-
-                    public void setForbidden(boolean forbidden) {
-                        this.forbidden = forbidden;
-                    }
-                }
-
-                public static class ForwardModel {
-                    private long count;
-                    private boolean forbidden;
-
-                    public long getCount() {
-                        return count;
-                    }
-
-                    public void setCount(long count) {
-                        this.count = count;
-                    }
-
-                    public boolean isForbidden() {
-                        return forbidden;
-                    }
-
-                    public void setForbidden(boolean forbidden) {
-                        this.forbidden = forbidden;
-                    }
-                }
-
-                public static class LikeModel {
-                    private long count;
-                    private boolean forbidden;
-                    private boolean status;
-
-                    public long getCount() {
-                        return count;
-                    }
-
-                    public void setCount(long count) {
-                        this.count = count;
-                    }
-
-                    public boolean isForbidden() {
-                        return forbidden;
-                    }
-
-                    public void setForbidden(boolean forbidden) {
-                        this.forbidden = forbidden;
-                    }
-
-                    public boolean isStatus() {
-                        return status;
-                    }
-
-                    public void setStatus(boolean status) {
-                        this.status = status;
-                    }
-                }
+            public void setView(long view) {
+                this.view = view;
             }
         }
     }

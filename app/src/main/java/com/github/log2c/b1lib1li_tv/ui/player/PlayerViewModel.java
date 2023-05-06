@@ -1,7 +1,6 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.blankj.utilcode.util.CollectionUtils;
@@ -9,7 +8,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.common.VideoUtils;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
-import com.github.log2c.b1lib1li_tv.network.LocalObserver;
+import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PlayerViewModel extends BaseCoreViewModel {
     private static final String TAG = PlayerViewModel.class.getSimpleName();
@@ -43,7 +41,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
         int fnval = AppConfigRepository.getInstance().isH265() ? DASH_MODE | RESOLUTION_4K : MP4_MODE | RESOLUTION_4K;
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
-        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval + "", fnver, fourk).subscribe(new LocalObserver<PlayUrlModel>() {
+        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval + "", fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
             @Override
             public void onSuccess(PlayUrlModel model) {
                 playUrlModelEvent.postValue(model);
@@ -51,8 +49,8 @@ public class PlayerViewModel extends BaseCoreViewModel {
             }
 
             @Override
-            public void onException(Throwable e) {
-                Log.e(TAG, e.getMessage());
+            public void onFinish() {
+
             }
         });
     }
@@ -169,9 +167,9 @@ public class PlayerViewModel extends BaseCoreViewModel {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
     public void updateHistory(long duration) {
-        final long progress = TimeUnit.MILLISECONDS.toSeconds(duration);
-        Logging.i("当前播放进度: " + progress + " 秒");
-        videoRepository.historyReport(aid, bvid, cid, String.valueOf(progress))
-                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), e -> Log.e(TAG, e.getMessage()));
+//        final long progress = TimeUnit.MILLISECONDS.toSeconds(duration);
+//        Logging.i("当前播放进度: " + progress + " 秒");
+//        videoRepository.historyReport(aid, bvid, cid, String.valueOf(progress))
+//                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), e -> Log.e(TAG, e.getMessage()));
     }
 }

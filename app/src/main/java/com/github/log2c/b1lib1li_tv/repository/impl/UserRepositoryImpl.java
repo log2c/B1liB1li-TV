@@ -1,14 +1,18 @@
 package com.github.log2c.b1lib1li_tv.repository.impl;
 
 import com.blankj.utilcode.util.StringUtils;
+import com.github.log2c.b1lib1li_tv.model.FeedModel;
+import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
+import com.github.log2c.b1lib1li_tv.model.ToViewModel;
+import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
 import com.github.log2c.b1lib1li_tv.network.NetKit;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import rxhttp.network.RxHttp;
+import rxhttp.network.RxHttpNoBodyParam;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -18,8 +22,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<String> getNavUserInfo() {
-        return NetKit.getInstance().doGetRx(Urls.NAV_USER_INFO, null, null);
+    public Observable<NavUserInfoModel> getNavUserInfo() {
+        return RxHttp.get(Urls.NAV_USER_INFO)
+                .toObservableResponse(NavUserInfoModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -28,31 +34,31 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<String> getFeed(String type, int page, String offset) {
-        Map<String, String> params = new HashMap<>();
-        params.put("timezone_offset", "-480");
-        params.put("type", type);
-        params.put("page", "" + page);
+    public Observable<FeedModel> getFeed(String type, int page, String offset) {
+        RxHttpNoBodyParam req = RxHttp.get(Urls.FEED_VIDEO)
+                .addQuery("page", page);
         if (!StringUtils.isTrimEmpty(offset)) {
-            params.put("offset", "" + offset);
+            req.addQuery("offset", "" + offset);
         }
-        return NetKit.getInstance().doGetRx(Urls.FEED_ALL, null, params);
+        return req.toObservableResponse(FeedModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Observable<String> getUpFeed(String hostMid, int page, int pageSize) {
-        Map<String, String> params = new HashMap<>();
-        params.put("mid", hostMid);
-        params.put("keyword", "");  // 筛选关键词
-        params.put("tid", "0"); // 默认为0 0：不进行分区筛选 分区tid为所筛选的分区
-        params.put("pn", "" + page);
-        params.put("ps", pageSize + "");
-        return NetKit.getInstance().doGetRx(Urls.SPACE_SEARCH_VIDEOS, null, params);
+    public Observable<UpFeedModel> getUpFeed(String hostMid, int page, int pageSize) {
+        return RxHttp.get(Urls.SPACE_SEARCH_VIDEOS)
+                .addQuery("mid", hostMid)
+                .addQuery("pn", "" + page)
+                .addQuery("ps", pageSize + "")
+                .toObservableResponse(UpFeedModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Observable<String> toView() {
-        return NetKit.getInstance().doGetRx(Urls.TO_VIEW, null, null);
+    public Observable<ToViewModel> toView() {
+        return RxHttp.get(Urls.TO_VIEW)
+                .toObservableResponse(ToViewModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

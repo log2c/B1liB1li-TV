@@ -1,10 +1,9 @@
 package com.github.log2c.b1lib1li_tv.ui.main;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
-import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
-import com.github.log2c.b1lib1li_tv.network.LocalObserver;
+import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
@@ -22,7 +21,7 @@ public class MainViewModel extends BaseCoreViewModel {
 
     public void fetchUserInfo() {
         userRepository.getNavUserInfo()
-                .subscribe(new LocalObserver<NavUserInfoModel>(true) {
+                .subscribe(new BackendObserver<NavUserInfoModel>() {
                     @Override
                     public void onSuccess(NavUserInfoModel model) {
                         if (!model.isIsLogin()) {
@@ -33,7 +32,7 @@ public class MainViewModel extends BaseCoreViewModel {
                     }
 
                     @Override
-                    public void onException(Throwable e) {
+                    public void onFinish() {
 
                     }
                 });
@@ -50,7 +49,7 @@ public class MainViewModel extends BaseCoreViewModel {
     }
 
     public void checkIsLogin() {
-        if (StringUtils.isTrimEmpty(AppConfigRepository.getInstance().fetchSessdata())) {
+        if (!AppConfigRepository.getInstance().isLogin()) {
             unLoginEvent.call();
         }
     }

@@ -7,6 +7,14 @@ import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.network.Urls;
+
+import java.util.List;
+
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
+import rxhttp.RxHttpPlugins;
+import rxhttp.wrapper.cookie.ICookieJar;
 
 @SuppressWarnings("InstantiationOfUtilityClass")
 public class AppConfigRepository {
@@ -22,6 +30,16 @@ public class AppConfigRepository {
             instance = new AppConfigRepository();
         }
         return instance;
+    }
+
+    public List<Cookie> fetchCookies() {
+        ICookieJar iCookieJar = (ICookieJar) RxHttpPlugins.getOkHttpClient().cookieJar();
+        HttpUrl httpUrl = HttpUrl.parse(Urls.LOGIN_DOMAIN);
+        return iCookieJar.loadCookie(httpUrl);
+    }
+
+    public boolean isLogin() {
+        return fetchCookies().size() > 0;
     }
 
     public String getDanmukuCacheDir() {

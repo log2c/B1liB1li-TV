@@ -20,6 +20,15 @@ android {
             abiFilters 'armeabi-v7a', 'arm64-v8a'   //,'armeabi'
         }
         multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        rxhttp_package: 'rxhttp.network',
+                        rxhttp_rxjava : '2.2.2',
+                ]
+            }
+        }
     }
     buildFeatures {
         viewBinding = true
@@ -29,14 +38,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    applicationVariants.all { variant ->
-        sourceSets {
-            def name = variant.name
-            getByName(name) {  //告知IDE，ksp生成的kotlin代码
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
         }
     }
     compileOptions {
@@ -61,7 +62,14 @@ android {
     }
 }
 
+
 dependencies {
     implementation project(path: ':base')
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+
+    def rxhttp_version = '3.0.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation "com.github.liujingxing.rxhttp:rxhttp:$rxhttp_version"
+    implementation 'com.github.liujingxing.rxlife:rxlife-rxjava2:2.2.2'
+    annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
 }
