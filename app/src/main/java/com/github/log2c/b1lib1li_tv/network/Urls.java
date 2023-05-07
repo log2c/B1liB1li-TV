@@ -21,4 +21,6 @@ public class Urls {
     public static final String HISTORY_REPORT = "https://api.bilibili.com/x/click-interface/web/heartbeat"; // 播放记录上传
     public static final String SPACE_SEARCH_VIDEOS = "https://api.bilibili.com/x/space/arc/list"; // 查询用户投稿视频明细
 
+    public static final String RELATED = "https://api.bilibili.com/x/web-interface/archive/related"; // 推荐
+
 }

@@ -2,15 +2,19 @@ package com.github.log2c.b1lib1li_tv.ui.detail;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.blankj.utilcode.util.StringUtils;
+import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
 
+import java.util.List;
+
 public class DetailViewModel extends BaseCoreViewModel {
     private final VideoRepository videoRepository;
     public final SingleLiveEvent<VideoViewModel> viewModelLiveEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<List<FeedModel.ItemsBean>> relatedEvent = new SingleLiveEvent<>();
     public String bvid;
     public String aid;
     public String hostMid;
@@ -42,5 +46,20 @@ public class DetailViewModel extends BaseCoreViewModel {
                 viewModelLiveEvent.postValue(null);
             }
         });
+    }
+
+    public void fetchRelated() {
+        videoRepository.related(bvid, aid)
+                .subscribe(new BackendObserver<List<FeedModel.ItemsBean>>() {
+                    @Override
+                    public void onSuccess(List<FeedModel.ItemsBean> model) {
+                        relatedEvent.setValue(model);
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+                });
     }
 }

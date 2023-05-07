@@ -4,14 +4,19 @@ import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import rxhttp.network.RxHttp;
 
@@ -79,5 +84,15 @@ public class VideoRepositoryImpl implements VideoRepository {
 //                .add("platform", "android")
 //                .add("csrf", AppConfigRepository.getInstance().fetchCsrf())
                 .toObservableResponse(String.class);
+    }
+
+    @Override
+    public Observable<List<FeedModel.ItemsBean>> related(String bvid, String aid) {
+        return RxHttp.get(Urls.RELATED)
+                .addQuery("bvid", bvid)
+                .addQuery("aid", aid)
+                .toObservableResponse(FeedModel.ItemsBean[].class)
+                .map((Function<FeedModel.ItemsBean[], List<FeedModel.ItemsBean>>) Arrays::asList)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

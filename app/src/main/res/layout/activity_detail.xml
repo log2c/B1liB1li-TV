@@ -28,13 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_percent="0.7" />
 
     <ImageView
         android:id="@+id/iv_cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="标题标题标题标题标题标题标题标题标题" />
+        tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题" />
 
     <LinearLayout
         android:id="@+id/ll_up"
@@ -208,8 +208,7 @@
     <TextView
         android:id="@+id/tv_desc"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:minHeight="100dp"
+        android:layout_height="150dp"
         android:padding="@dimen/dp_4"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/barrier_cover"
@@ -230,4 +229,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_desc"
         app:layout_constraintTop_toBottomOf="@id/tv_desc" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/relate_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dp_10"
+        android:descendantFocusability="afterDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
+        tools:itemCount="100"
+        tools:listitem="@layout/item_glance_dynamic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

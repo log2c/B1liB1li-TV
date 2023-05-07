@@ -28,13 +28,16 @@ import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.adapter.FeedAdapter;
 import com.github.log2c.b1lib1li_tv.common.CommonUtils;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityDetailBinding;
+import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.VideoViewModel;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
 import com.github.log2c.b1lib1li_tv.ui.upfeed.UpFeedActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
 
+import java.util.List;
 import java.util.Locale;
 
 public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDetailBinding> implements View.OnClickListener {
@@ -42,6 +45,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     private BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder> adapter;
+    private FeedAdapter mRelateAdapter;
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid) {
         final Intent intent = new Intent(context, DetailActivity.class);
@@ -61,6 +65,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         viewModel.aid = getIntent().getStringExtra(INTENT_AID);
 
         viewModel.getVideoView();
+        viewModel.fetchRelated();
     }
 
     @Override
@@ -91,6 +96,16 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
             final VideoViewModel.PagesModel model = viewModel.getPages().get(position);
             PlayerActivity.showActivity(DetailActivity.this, viewModel.getBvid(), viewModel.getAid() + "", model.getCid() + "");
         });
+        mRelateAdapter = new FeedAdapter(R.layout.item_glance_related);
+        mBinding.relateRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        mBinding.relateRv.setAdapter(mRelateAdapter);
+        mRelateAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<FeedModel.ItemsBean> itemsBeans = DetailActivity.this.viewModel.relatedEvent.getValue();
+            FeedModel.ItemsBean bean = itemsBeans.get(position);
+            showActivity(this, bean.getBvid(), bean.getAid());
+        });
+
+        viewModel.relatedEvent.observe(this, itemsBeans -> mRelateAdapter.addData(itemsBeans));
     }
 
     @SuppressLint("SetTextI18n")
