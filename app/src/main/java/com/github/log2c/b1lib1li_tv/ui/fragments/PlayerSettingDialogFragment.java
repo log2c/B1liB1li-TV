@@ -45,10 +45,15 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     private Slider danmuSlider;
 
     private ConfigChangeCallback mConfigChangeCallback;
+    private LifeCallback mLifeCallback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        if (mLifeCallback != null) {
+            mLifeCallback.onCreateDialog();
+        }
+
         mView = View.inflate(getContext(), R.layout.layout_dialog_setting_player, null);
         danmuFlowTag = mView.findViewById(R.id.flow_danmu);
         resolutionFlowTag = mView.findViewById(R.id.flow_resolution);
@@ -154,6 +159,10 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         mConfigChangeCallback = null;
+        if (mLifeCallback != null) {
+            mLifeCallback.onDismiss();
+        }
+        mLifeCallback = null;
     }
 
     public static PlayerSettingDialogFragment newInstance(ArrayList<Integer> supportedResolutions, int resolution) {
@@ -173,10 +182,24 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         this.mConfigChangeCallback = configChangeCallback;
     }
 
+    public LifeCallback getLifeCallback() {
+        return mLifeCallback;
+    }
+
+    public void setLifeCallback(LifeCallback lifeCallback) {
+        this.mLifeCallback = lifeCallback;
+    }
+
     public interface ConfigChangeCallback {
         void onDanmuToggleChange();
 
         void onNeedReloadChange();
+    }
+
+    public interface LifeCallback {
+        void onCreateDialog();
+
+        void onDismiss();
     }
 
 }

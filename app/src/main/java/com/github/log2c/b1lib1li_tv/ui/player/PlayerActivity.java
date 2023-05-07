@@ -63,6 +63,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     private static final long UPLOAD_HISTORY_TIMER = 15 * 1000;
     private StandardGSYVideoPlayer videoView;
     private Timer timer;
+    private boolean mIsShownDialog = false;
 
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid, @Nullable String cid) {
@@ -145,6 +146,12 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             case KeyEvent.KEYCODE_UNKNOWN:
                 showMenuPopup();
                 return true;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (!mIsShownDialog) {
+                    showMenuPopup();
+                    return true;
+                }
+                break;
 //            case KeyEvent.KEYCODE_DPAD_CENTER:
 //                Log.i(TAG, "onKeyUp: center");
 //                doPauseOrStart();
@@ -416,6 +423,17 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             public void onNeedReloadChange() {
 //                loadVideo(viewModel.playUrlModelEvent.getValue());
                 viewModel.parsePlayUrl();
+            }
+        });
+        dialogFragment.setLifeCallback(new PlayerSettingDialogFragment.LifeCallback() {
+            @Override
+            public void onCreateDialog() {
+                mIsShownDialog = true;
+            }
+
+            @Override
+            public void onDismiss() {
+                mIsShownDialog = false;
             }
         });
         dialogFragment.show(getSupportFragmentManager(), PlayerSettingDialogFragment.class.getSimpleName());

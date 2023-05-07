@@ -84,7 +84,8 @@ public class PlayerViewModel extends BaseCoreViewModel {
         final Object model = getFinalPlayModel(playModel);
         if (model instanceof List) {
             List<PlayUrlModel.DashModel.VideoModel> videos = (List<PlayUrlModel.DashModel.VideoModel>) model;
-            Logging.i("最终分辨率: " + Constants.Resolution.ITEMS.get(videos.get(0).getId()) + ", 编码: " + videos.get(0).getCodecs());
+            PlayUrlModel.DashModel.VideoModel videoModel = videos.get(0);
+            Logging.i("最终分辨率: " + Constants.Resolution.ITEMS.get(videoModel.getId()) + ", 编码: " + videoModel.getCodecs());
             return videos.get(0).getBaseUrl();
         } else {
             PlayUrlModel.DUrlModel video = (PlayUrlModel.DUrlModel) model;
