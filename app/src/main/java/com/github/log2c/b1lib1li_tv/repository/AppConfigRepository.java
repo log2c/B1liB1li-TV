@@ -2,14 +2,17 @@ package com.github.log2c.b1lib1li_tv.repository;
 
 import static com.github.log2c.b1lib1li_tv.common.Constants.SP_NAME_CONFIG;
 
+import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.base.utils.Logging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -164,5 +167,31 @@ public class AppConfigRepository {
             iCookieJar.saveCookie(httpUrl, cookies);
         }
         Logging.i("Cookie跨域处理完成");
+    }
+
+    public void storeVideoParams(int dashVideoId, String codecs) {
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DASH_VIDEO_ID, dashVideoId);
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DASH_CODECS, codecs);
+    }
+
+    public int determinedVideo(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
+        final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 9999);
+        final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DASH_CODECS, "hevc");
+        final List<PlayUrlModel.DashModel.VideoModel> filterList = new ArrayList<>(modelList);
+
+        CollectionUtils.filter(filterList, item -> item.getId() == id);
+
+        if (filterList.size() > 0) {
+            for (PlayUrlModel.DashModel.VideoModel model : filterList) {
+                if (codecs.equalsIgnoreCase(model.getCodecs())) {
+                    return modelList.indexOf(model);
+                }
+            }
+            return modelList.indexOf(filterList.get(0));
+        }
+
+        filterList.addAll(modelList);
+        CollectionUtils.filter(filterList, item -> item.getId() < id);
+        return filterList.size() > 0 ? modelList.indexOf(filterList.get(0)) : 0;
     }
 }

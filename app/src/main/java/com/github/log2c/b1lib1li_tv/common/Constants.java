@@ -17,6 +17,8 @@ public class Constants {
     public static final String SP_DEFAULT_CODEC = "default_codec";
     public static final float SP_DEFAULT_DANMU_SIZE = 1f;
     public static final String SP_DANMU_SIZE = "danmu_size";
+    public static final String SP_DASH_VIDEO_ID = "dash_id";
+    public static final String SP_DASH_CODECS = "dash_codecs";
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清
     public static final int DEFAULT_DYNAMIC_SPAN_COUNT = 3;
     public static final int MEDIA_PLAYER_EXOPLAYER = 0; // ExoPlayer播放器

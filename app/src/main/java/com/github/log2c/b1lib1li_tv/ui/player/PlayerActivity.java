@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -45,8 +46,10 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
@@ -63,7 +66,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     private static final long UPLOAD_HISTORY_TIMER = 15 * 1000;
     private StandardGSYVideoPlayer videoView;
     private Timer timer;
-    private boolean mIsShownDialog = false;
+    private boolean danmuLoaded;
 
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid, @Nullable String cid) {
@@ -84,7 +87,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         viewModel.bvid = getIntent().getStringExtra(INTENT_BVID);
         viewModel.aid = getIntent().getStringExtra(INTENT_AID);
         viewModel.cid = getIntent().getStringExtra(INTENT_CID);
-        viewModel.parsePlayUrl();
+        viewModel.prepareAndStart();
 
         mBinding.player.setDanmakuShow(AppConfigRepository.getInstance().fetchDanmakuToggle());
     }
@@ -106,7 +109,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.i(TAG, "dispatchKeyEvent: " + event.getKeyCode() + ", Event: " + event.getAction());
-        if (getCurrentFocus() instanceof RelativeLayout && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
+        if (!isPadShown() && getCurrentFocus() instanceof RelativeLayout && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 doPauseOrStart();
                 return true;
@@ -115,12 +118,26 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         return super.dispatchKeyEvent(event);
     }
 
+    private boolean isPadShown() {
+        return mBinding.player.findViewById(R.id.layout_bottom).getVisibility() == View.VISIBLE;
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.i(TAG, "onKeyDown: " + keyCode);
         switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (!isPadShown()) {
+//                    ReflectUtils.reflect(mBinding.player).method("changeUiToPlayingShow");
+//                    ReflectUtils.reflect(mBinding.player).method("cancelDismissControlViewTimer");
+                    showMenuPopup();
+                    return true;
+                }
+                break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if (isPadShown()) {
+                    break;
+                }
                 if (videoView.getCurrentState() != CURRENT_STATE_PLAYING) {
                     Log.i(TAG, "On key down but not playing.");
                     return true;
@@ -140,24 +157,12 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.i(TAG, "onKeyUp: " + keyCode);
         switch (keyCode) {
-            case KeyEvent.KEYCODE_MENU:
-            case KeyEvent.KEYCODE_UNKNOWN:
-                showMenuPopup();
-                return true;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                if (!mIsShownDialog) {
-                    showMenuPopup();
-                    return true;
-                }
-                break;
-//            case KeyEvent.KEYCODE_DPAD_CENTER:
-//                Log.i(TAG, "onKeyUp: center");
-//                doPauseOrStart();
-//                return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_DPAD_LEFT:
+                if (isPadShown()) {
+                    break;
+                }
                 if (videoView.getCurrentState() != CURRENT_STATE_PLAYING) {
                     Log.i(TAG, "onKeyUp but not playing.");
                     return true;
@@ -314,18 +319,11 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     public void initView(@Nullable Bundle bundle) {
         videoView = mBinding.player;
-
         viewModel.playUrlModelEvent.observe(this, this::loadVideo);
-        viewModel.danmukuLoadedEvent.observe(this, xmlPath -> {
-            mBinding.player.setDanmaKuStream(new File(xmlPath));
-            if (mBinding.player.getCurrentPlayer().isInPlayingState()) {
-                mBinding.player.seekTo(mBinding.player.getCurrentPlayer().getCurrentPlayer().getCurrentPositionWhenPlaying());
-            }
-        });
-
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);
             if (state == CURRENT_STATE_PLAYING) {   // 播放中
+                loadDanmuku();
                 if (timer != null) {
                     timer.purge();
                     timer.cancel();
@@ -347,9 +345,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
     private void loadVideo(PlayUrlModel playUrlModel) {
         final String videoUrl = viewModel.getPlayUrl(playUrlModel);
-        if (viewModel.isDashMode(playUrlModel)) {
-            playVideo(videoUrl, viewModel.getAudioUrl(playUrlModel));
-        } else playVideo(videoUrl, null);
+        playVideo(videoUrl, viewModel.getAudioUrl(playUrlModel));
     }
 
     private void playVideo(String videoUrl, @Nullable String audioUrl) {
@@ -407,7 +403,14 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             return;
         }
 
-        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(viewModel.getCurrentSupportResolution(), viewModel.getPlayResolutionCode());
+        final List<PlayUrlModel.DashModel.VideoModel> modelList = model.getDash().getVideo();
+        List<String> items = new ArrayList<>();
+        for (PlayUrlModel.DashModel.VideoModel m : modelList) {
+            items.add(m.getWidth() + "x" + m.getHeight() + " fps: " + m.getFrameRate() + " " + m.getCodecs());
+        }
+
+
+        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(items.toArray(new String[items.size()]), AppConfigRepository.getInstance().determinedVideo(modelList));
         dialogFragment.setConfigChangeCallback(new PlayerSettingDialogFragment.ConfigChangeCallback() {
             @Override
             public void onDanmuToggleChange() {
@@ -415,28 +418,40 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
                 AppConfigRepository.getInstance().storeDanmakuToggle(toToggle);
                 mBinding.player.setDanmakuShow(toToggle);
                 if (toToggle) {
-                    viewModel.fetchDanmuku();
+//                    viewModel.fetchDanmuku();
+                    loadDanmuku();
                 }
             }
 
             @Override
             public void onNeedReloadChange() {
 //                loadVideo(viewModel.playUrlModelEvent.getValue());
-                viewModel.parsePlayUrl();
-            }
-        });
-        dialogFragment.setLifeCallback(new PlayerSettingDialogFragment.LifeCallback() {
-            @Override
-            public void onCreateDialog() {
-                mIsShownDialog = true;
+                viewModel.prepareAndStart();
             }
 
             @Override
-            public void onDismiss() {
-                mIsShownDialog = false;
+            public void onResolutionSelectChange(int position) {
+                PlayUrlModel.DashModel.VideoModel videoModel = modelList.get(position);
+                AppConfigRepository.getInstance().storeVideoParams(videoModel.getId(), videoModel.getCodecs());
+                viewModel.prepareAndStart();
             }
         });
         dialogFragment.show(getSupportFragmentManager(), PlayerSettingDialogFragment.class.getSimpleName());
+    }
+
+    private void loadDanmuku() {
+        if (!AppConfigRepository.getInstance().fetchDanmakuToggle()) {
+            return;
+        }
+        if (danmuLoaded) {
+            return;
+        }
+        if (TextUtils.isEmpty(viewModel.danmukuPath)) {
+            return;
+        }
+        mBinding.player.setDanmaKuStream(new File(viewModel.danmukuPath));
+        mBinding.player.getDanmakuView().seekTo(mBinding.player.getCurrentPlayer().getCurrentPositionWhenPlaying());
+        danmuLoaded = true;
     }
 
 }

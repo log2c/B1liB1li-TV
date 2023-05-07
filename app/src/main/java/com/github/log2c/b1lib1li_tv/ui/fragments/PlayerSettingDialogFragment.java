@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.github.log2c.b1lib1li_tv.R;
-import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -22,21 +21,16 @@ import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     private static final String TAG = PlayerSettingDialogFragment.class.getSimpleName();
     private View mView;
     private static final String KEY_DANMU = "danmu";
-    private static final String KEY_SUPPORTED_RESOLUTION = "supported_resolution";
-    private static final String KEY_RESOLUTION = "resolution";
+    private static final String KEY_RESOLUTION_LIST = "resolution_info_list";
+    private static final String KEY_SELECT_RESOLUTION = "select_resolution";
     private static final String KEY_CODEC = "codec";
     private int mDanmuToggle;
-    private List<Integer> mSupportedResolutions;
-    private int mResolution;
     private int mCodec;
-
     private FlowTagLayout danmuFlowTag;
     private FlowTagLayout resolutionFlowTag;
     private FlowTagLayout codecFlowTag;
@@ -46,6 +40,9 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
 
     private ConfigChangeCallback mConfigChangeCallback;
     private LifeCallback mLifeCallback;
+    private String[] mResolutionList;
+    private int mSelectResolutionIndex;
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -77,11 +74,10 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
             }
         });
         resolutionFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
-            final int code = mSupportedResolutions.get(position);
-            Log.i(TAG, "onCreateDialog: 选择的清晰度 code: " + code + ", desc: " + Constants.Resolution.ITEMS.get(code));
-            AppConfigRepository.getInstance().storeResolution(code);
+//            Log.i(TAG, "onCreateDialog: 选择的清晰度 code: " + code + ", desc: " + Constants.Resolution.ITEMS.get(code));
+//            AppConfigRepository.getInstance().storeResolution(code);
             if (mConfigChangeCallback != null) {
-                mConfigChangeCallback.onNeedReloadChange();
+                mConfigChangeCallback.onResolutionSelectChange(position);
             }
         });
         codecFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
@@ -132,8 +128,8 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
             return;
         }
         mDanmuToggle = AppConfigRepository.getInstance().fetchDanmakuToggle() ? 0 : 1;
-        mSupportedResolutions = getArguments().getIntegerArrayList(KEY_SUPPORTED_RESOLUTION);
-        mResolution = getArguments().getInt(KEY_RESOLUTION);
+        mResolutionList = getArguments().getStringArray(KEY_RESOLUTION_LIST);
+        mSelectResolutionIndex = getArguments().getInt(KEY_SELECT_RESOLUTION);
         mCodec = AppConfigRepository.getInstance().isH265() ? 0 : 1;
 
         danmuFlowTag.setSelectedPositions(mDanmuToggle);
@@ -141,18 +137,8 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
 
         mediaPlayerTag.setSelectedPositions(AppConfigRepository.getInstance().isExoPlayerDefault() ? 0 : 1);
 
-        final String[] resolutions = new String[mSupportedResolutions.size()];
-        int indexResolution = 0;
-        for (int i = 0; i < mSupportedResolutions.size(); i++) {
-            int code = mSupportedResolutions.get(i);
-            String desc = Constants.Resolution.ITEMS.get(code);
-            resolutions[i] = desc;
-            if (mResolution == code) {
-                indexResolution = i;
-            }
-        }
-        resolutionFlowTag.setItems(resolutions);
-        resolutionFlowTag.setSelectedPositions(indexResolution);
+        resolutionFlowTag.setItems(mResolutionList);
+        resolutionFlowTag.setSelectedPositions(mSelectResolutionIndex);
     }
 
     @Override
@@ -165,10 +151,10 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         mLifeCallback = null;
     }
 
-    public static PlayerSettingDialogFragment newInstance(ArrayList<Integer> supportedResolutions, int resolution) {
+    public static PlayerSettingDialogFragment newInstance(String[] resolutionArrays, int selectedIndex) {
         Bundle bundle = new Bundle();
-        bundle.putIntegerArrayList(KEY_SUPPORTED_RESOLUTION, supportedResolutions);
-        bundle.putInt(KEY_RESOLUTION, resolution);
+        bundle.putStringArray(KEY_RESOLUTION_LIST, resolutionArrays);
+        bundle.putInt(KEY_SELECT_RESOLUTION, selectedIndex);
         PlayerSettingDialogFragment fragment = new PlayerSettingDialogFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -194,6 +180,8 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         void onDanmuToggleChange();
 
         void onNeedReloadChange();
+
+        void onResolutionSelectChange(int position);
     }
 
     public interface LifeCallback {

@@ -12,7 +12,6 @@ import com.github.log2c.b1lib1li_tv.adapter.DanamakuAdapter;
 import com.github.log2c.b1lib1li_tv.common.BiliDanmukuParser;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 
@@ -33,7 +32,7 @@ import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 
-public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
+public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
     private BaseDanmakuParser mParser;
     private IDanmakuView mDanmakuView;
     private DanmakuContext mDanmakuContext;
@@ -52,12 +51,6 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
     public DanmakuVideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.danmaku_layout;
-    }
-
 
     @Override
     protected void init(Context context) {
@@ -174,7 +167,7 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
 
     public void setDanmaKuStream(File is) {
         mDanmakuFile = is;
-        if (!getDanmakuView().isPrepared()) {
+        if (getDanmakuView() != null && !getDanmakuView().isPrepared()) {
             onPrepareDanmaku((DanmakuVideoPlayer) getCurrentPlayer());
         }
     }

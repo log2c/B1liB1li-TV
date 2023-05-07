@@ -1,7 +1,7 @@
 ext {
     android = [
-            compileSdk       : 32,
-            buildToolsVersion: "32.0.0",
+            compileSdk       : 33,
+            buildToolsVersion: "33.0.1",
             applicationId    : "com.github.log2c.b1lib1li_tv",
             minSdk           : 21,
             targetSdk        : 24,
@@ -34,7 +34,9 @@ ext {
             annotation           : "androidx.annotation:annotation:${versions['annotation']}",
             percentlayout        : 'androidx.percentlayout:percentlayout:1.0.0',
             multidex             : "androidx.multidex:multidex:2.0.1",
-            palette              : "androidx.palette:palette:1.0.0"
+            palette              : "androidx.palette:palette:1.0.0",
+            leanback             : "androidx.leanback:leanback:1.2.0-alpha02",
+            leanback_pre         : "androidx.leanback:leanback-preference:1.2.0-alpha02"
     ]
 
     test = [
@@ -97,12 +99,12 @@ ext {
             ndkbitmap         : 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
     ]
     GSYVideoPlayer = [
-            gsyVideoPlayer: 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.4-release-jitpack',
+            gsyVideoPlayer: 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack',
             //是否需要ExoPlayer模式
-            exo2          : 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v8.3.4-release-jitpack',
+            exo2          : 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v8.3.5-release-jitpack',
 
-            arm64         : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.4-release-jitpack',
-            armv7a        : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.4-release-jitpack'
+            arm64         : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack',
+            armv7a        : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.5-release-jitpack'
     ]
 
     androidxs = androidx.values()
