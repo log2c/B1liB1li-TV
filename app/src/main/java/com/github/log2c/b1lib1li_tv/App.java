@@ -9,6 +9,7 @@ import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreApplication;
 import com.github.log2c.base.toast.ToastUtils;
 import com.shuyu.gsyvideoplayer.cache.CacheFactory;
+import com.shuyu.gsyvideoplayer.player.IjkPlayerManager;
 import com.shuyu.gsyvideoplayer.player.PlayerFactory;
 import com.shuyu.gsyvideoplayer.player.SystemPlayerManager;
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
@@ -33,10 +34,10 @@ public class App extends Application {
     }
 
     private void initCore() {
-        if (AppConfigRepository.getInstance().isExoPlayerDefault()) {
+        if (AppConfigRepository.getInstance().isUseExoPlayer()) {
             PlayerFactory.setPlayManager(Exo2PlayerManager.class);
         } else {
-            PlayerFactory.setPlayManager(SystemPlayerManager.class);
+            PlayerFactory.setPlayManager(IjkPlayerManager.class);
         }
         GSYVideoType.enableMediaCodec();
         GSYVideoType.enableMediaCodecTexture();

@@ -147,16 +147,16 @@ public class AppConfigRepository {
         SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_EXOPLAYER);
     }
 
-    public boolean isExoPlayerDefault() {
+    public boolean isUseExoPlayer() {
         return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) == Constants.MEDIA_PLAYER_EXOPLAYER;
     }
 
-    public boolean isAndroidMediaCodecDefault() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) != Constants.MEDIA_PLAYER_ANDROID;
+    public boolean isUseIjkPlayer() {
+        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) != Constants.MEDIA_PLAYER_IJKPLAYER;
     }
 
-    public void setAndroidMediaCodecDefault() {
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_ANDROID);
+    public void setIjkPlayerDefault() {
+        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_IJKPLAYER);
     }
 
     public void processCookie() {
@@ -174,7 +174,7 @@ public class AppConfigRepository {
         SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DASH_CODECS, codecs);
     }
 
-    public int determinedVideo(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
+    public int determinedVideoInExoMode(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
         final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 9999);
         final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DASH_CODECS, "hevc");
         final List<PlayUrlModel.DashModel.VideoModel> filterList = new ArrayList<>(modelList);
@@ -194,4 +194,22 @@ public class AppConfigRepository {
         CollectionUtils.filter(filterList, item -> item.getId() < id);
         return filterList.size() > 0 ? modelList.indexOf(filterList.get(0)) : 0;
     }
+
+//    public String[] determinedVideoInIjkMode(final List<PlayUrlModel.DUrlModel> modelList) {
+//        String[] urls = new String[modelList.size()];
+//        for (int i = 0; i < modelList.size(); i++) {
+//            urls[i] = modelList.get(i).getUrl();
+//        }
+//        return urls;
+//    }
+    public int determinedVideoInIjkMode(PlayUrlModel model) {
+        return model.getAccept_quality().indexOf(model.getQuality());
+    }
+
+//    public int determinedVideo(final PlayUrlModel model) {
+//        if (isUseExoPlayer()) {
+//            return determinedVideoInExoMode(model.getDash().getVideo());
+//        }
+//        return determinedVideoInIjkMode(model.getDurl());
+//    }
 }

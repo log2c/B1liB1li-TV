@@ -10,6 +10,6 @@
     </string-array>
     <string-array name="media_player">
         <item>ExoPlayer</item>
-        <item>系统解码器</item>
+        <item>IJKPlayer</item>
     </string-array>
 </resources>

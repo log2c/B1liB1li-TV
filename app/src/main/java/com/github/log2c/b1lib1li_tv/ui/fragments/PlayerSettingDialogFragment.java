@@ -93,7 +93,7 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
             if (position == 0) {
                 AppConfigRepository.getInstance().setExoPlayerDefault();
             } else
-                AppConfigRepository.getInstance().setAndroidMediaCodecDefault();
+                AppConfigRepository.getInstance().setIjkPlayerDefault();
         });
         return dialog;
     }
@@ -135,7 +135,7 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         danmuFlowTag.setSelectedPositions(mDanmuToggle);
         codecFlowTag.setSelectedPositions(mCodec);
 
-        mediaPlayerTag.setSelectedPositions(AppConfigRepository.getInstance().isExoPlayerDefault() ? 0 : 1);
+        mediaPlayerTag.setSelectedPositions(AppConfigRepository.getInstance().isUseExoPlayer() ? 0 : 1);
 
         resolutionFlowTag.setItems(mResolutionList);
         resolutionFlowTag.setSelectedPositions(mSelectResolutionIndex);

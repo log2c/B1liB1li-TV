@@ -8,6 +8,7 @@
     <string name="toggle_danmu">弹幕开关</string>
     <string name="resolution">清晰度</string>
     <string name="video_codec">视频编码</string>
+    <string name="player">播放器</string>
     <string name="danmu_off">关</string>
     <string name="danmu_on">开</string>
     <string name="danmu_size">弹幕字号</string>

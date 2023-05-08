@@ -22,7 +22,7 @@ public class Constants {
     public static final int DEFAULT_RESOLUTION = 80;    // 1080P高清
     public static final int DEFAULT_DYNAMIC_SPAN_COUNT = 3;
     public static final int MEDIA_PLAYER_EXOPLAYER = 0; // ExoPlayer播放器
-    public static final int MEDIA_PLAYER_ANDROID = 1; // 系统默认
+    public static final int MEDIA_PLAYER_IJKPLAYER = 1; // IJK播放器
     public static final int DEFAULT_DEFAULT_MEDIA_PLAYER = MEDIA_PLAYER_EXOPLAYER;
     public static final String REFERER = "https://www.bilibili.com";
     public static final Map<String, String> PLAYER_HEADERS = new HashMap<>();

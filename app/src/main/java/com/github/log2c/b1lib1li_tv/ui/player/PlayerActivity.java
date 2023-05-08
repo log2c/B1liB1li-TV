@@ -23,8 +23,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.UriUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
@@ -32,6 +34,7 @@ import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.fragments.PlayerSettingDialogFragment;
 import com.github.log2c.base.base.BaseCoreActivity;
+import com.github.log2c.base.toast.ToastUtils;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -320,6 +323,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public void initView(@Nullable Bundle bundle) {
         videoView = mBinding.player;
         viewModel.playUrlModelEvent.observe(this, this::loadVideo);
+        viewModel.concatEvent.observe(this, this::onConcatGenerated);
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);
             if (state == CURRENT_STATE_PLAYING) {   // 播放中
@@ -343,23 +347,49 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         });
     }
 
-    private void loadVideo(PlayUrlModel playUrlModel) {
-        final String videoUrl = viewModel.getPlayUrl(playUrlModel);
-        playVideo(videoUrl, viewModel.getAudioUrl(playUrlModel));
+    /**
+     * IJK模式下, 生成完Concat文件
+     *
+     * @param file Concat文件
+     */
+    private void onConcatGenerated(File file) {
+        mBinding.player.setUp(UriUtils.file2Uri(file).toString(), true, "");
+        videoView.startPlayLogic();
     }
 
-    private void playVideo(String videoUrl, @Nullable String audioUrl) {
-        if (StringUtils.isTrimEmpty(audioUrl)) {
-            return;
+    private void loadVideo(PlayUrlModel playUrlModel) {
+        if (AppConfigRepository.getInstance().isUseExoPlayer()) {
+            int idx = AppConfigRepository.getInstance().determinedVideoInExoMode(playUrlModel.getDash().getVideo());
+            final String videoUrl = playUrlModel.getDash().getVideo().get(idx).getBaseUrl();
+            final String audioUrl = playUrlModel.getDash().getAudio().get(0).getBaseUrl();
+            playVideo(videoUrl, audioUrl);
+        } else {
+            String[] urls = new String[playUrlModel.getDurl().size()];
+            for (int i = 0; i < playUrlModel.getDurl().size(); i++) {
+                urls[i] = playUrlModel.getDurl().get(i).getUrl();
+            }
+            playVideo(urls);
         }
-        setMediaSourceIfExoPlayer(videoUrl, audioUrl);
+    }
 
+    private void playVideo(String videoUrl, String audioUrl) {
+        setMediaSourceIfExoPlayer(videoUrl, audioUrl);
         mBinding.player.setUp(videoUrl, true, "");
         videoView.startPlayLogic();
     }
 
+    private void playVideo(String[] urls) {
+        if (urls.length > 1) {
+            ToastUtils.error("当前为分段视频,IJK播放器暂不支持,建议使用EXOPlayer播放器.");
+            viewModel.processConcatVideo();
+            return;
+        }
+        mBinding.player.setUp(urls[0], true, "");
+        videoView.startPlayLogic();
+    }
+
     private void setMediaSourceIfExoPlayer(String videoUrl, @NonNull String audioUrl) {
-        if (!AppConfigRepository.getInstance().isExoPlayerDefault()) {
+        if (!AppConfigRepository.getInstance().isUseExoPlayer()) {
             return;
         }
         final DataSource.Factory factory = () -> {
@@ -403,14 +433,21 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             return;
         }
 
-        final List<PlayUrlModel.DashModel.VideoModel> modelList = model.getDash().getVideo();
         List<String> items = new ArrayList<>();
-        for (PlayUrlModel.DashModel.VideoModel m : modelList) {
-            items.add(m.getWidth() + "x" + m.getHeight() + " fps: " + m.getFrameRate() + " " + m.getCodecs());
+        int selectIndex;
+
+        if (AppConfigRepository.getInstance().isUseExoPlayer()) {
+            for (PlayUrlModel.DashModel.VideoModel m : model.getDash().getVideo()) {
+                items.add(m.getWidth() + "x" + m.getHeight() + " fps: " + m.getFrameRate() + " " + m.getCodecs());
+            }
+            selectIndex = AppConfigRepository.getInstance().determinedVideoInExoMode(model.getDash().getVideo());
+        } else {
+            items.addAll(model.getAccept_description());
+            selectIndex = AppConfigRepository.getInstance().determinedVideoInIjkMode(model);
         }
 
 
-        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(items.toArray(new String[items.size()]), AppConfigRepository.getInstance().determinedVideo(modelList));
+        PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(items.toArray(new String[items.size()]), selectIndex);
         dialogFragment.setConfigChangeCallback(new PlayerSettingDialogFragment.ConfigChangeCallback() {
             @Override
             public void onDanmuToggleChange() {
@@ -431,8 +468,14 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
             @Override
             public void onResolutionSelectChange(int position) {
-                PlayUrlModel.DashModel.VideoModel videoModel = modelList.get(position);
-                AppConfigRepository.getInstance().storeVideoParams(videoModel.getId(), videoModel.getCodecs());
+                if (AppConfigRepository.getInstance().isUseExoPlayer()) {
+                    PlayUrlModel.DashModel.VideoModel videoModel = model.getDash().getVideo().get(position);
+                    AppConfigRepository.getInstance().storeVideoParams(videoModel.getId(), videoModel.getCodecs());
+                } else {
+                    int id = model.getAccept_quality().get(position);
+                    AppConfigRepository.getInstance().storeVideoParams(id, "");
+                }
+
                 viewModel.prepareAndStart();
             }
         });

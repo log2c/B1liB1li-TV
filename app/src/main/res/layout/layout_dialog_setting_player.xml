@@ -155,7 +155,7 @@
             android:layout_width="135dp"
             android:layout_height="45dp"
             android:gravity="center_vertical"
-            android:text="@string/video_codec"
+            android:text="@string/player"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
