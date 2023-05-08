@@ -40,8 +40,6 @@ public class MainViewModel extends BaseCoreViewModel {
 
     private void doLogout() {
         ToastUtils.warning(R.string.tip_already_logout);
-        AppConfigRepository.getInstance().storeSessdata("");
-        AppConfigRepository.getInstance().storeDedeUserId("");
     }
 
     private void storeUserInfo(NavUserInfoModel model) {

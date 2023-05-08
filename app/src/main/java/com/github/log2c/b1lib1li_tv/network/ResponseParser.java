@@ -23,10 +23,9 @@ public class ResponseParser<T> extends TypeParser<T> {
 
     @Override
     public T onParse(okhttp3.Response response) throws IOException {
-        //将okhttp3.Response转换为自定义的Response对象
         BaseModel<T> data = Converter.convertTo(response, BaseModel.class, types);
         T t = data.getData();
-        if (data.getCode() != 0 || t == null) {
+        if (data.getCode() != 0) {
             throw new ParseException(String.valueOf(data.getCode()), data.getMessage(), response);
         }
         return t;

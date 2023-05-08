@@ -1,6 +1,5 @@
 package com.github.log2c.b1lib1li_tv.ui.player;
 
-import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PAUSE;
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING;
 
 import android.app.Activity;
@@ -23,8 +22,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.UriUtils;
 import com.github.log2c.b1lib1li_tv.R;
@@ -55,8 +52,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener;
 import tv.danmaku.ijk.media.exo2.ExoSourceManager;
@@ -66,9 +61,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
-    private static final long UPLOAD_HISTORY_TIMER = 15 * 1000;
     private StandardGSYVideoPlayer videoView;
-    private Timer timer;
     private boolean danmuLoaded;
 
 
@@ -294,10 +287,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     protected void onPause() {
         super.onPause();
         GSYVideoManager.onPause();
-        if (timer != null) {
-            timer.purge();
-            timer.cancel();
-        }
     }
 
     @Override
@@ -324,25 +313,12 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         videoView = mBinding.player;
         viewModel.playUrlModelEvent.observe(this, this::loadVideo);
         viewModel.concatEvent.observe(this, this::onConcatGenerated);
+        viewModel.historyReportEvent.observe(this, s -> viewModel.updateHistory(videoView.getCurrentPlayer().getCurrentPositionWhenPlaying()));
         videoView.setGSYStateUiListener(state -> {
             Log.i(TAG, "GSYStateUiListener: " + state);
-            if (state == CURRENT_STATE_PLAYING) {   // 播放中
+            viewModel.playerState = state;
+            if (state == CURRENT_STATE_PLAYING) {
                 loadDanmuku();
-                if (timer != null) {
-                    timer.purge();
-                    timer.cancel();
-                }
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(() -> viewModel.updateHistory(videoView.getCurrentPlayer().getCurrentPositionWhenPlaying()));
-                    }
-                }, 0, UPLOAD_HISTORY_TIMER);
-            } else if (state == CURRENT_STATE_PAUSE) {//暂停
-                if (timer != null) {
-                    timer.cancel();
-                }
             }
         });
     }
@@ -353,7 +329,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
      * @param file Concat文件
      */
     private void onConcatGenerated(File file) {
-        mBinding.player.setUp(UriUtils.file2Uri(file).toString(), true, "");
+        mBinding.player.setUp(UriUtils.file2Uri(file).toString(), true, AppConfigRepository.getInstance().getIjkCacheFile(), Constants.PLAYER_HEADERS, "");
         videoView.startPlayLogic();
     }
 
@@ -384,7 +360,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             viewModel.processConcatVideo();
             return;
         }
-        mBinding.player.setUp(urls[0], true, "");
+        mBinding.player.setUp(urls[0], true, AppConfigRepository.getInstance().getIjkCacheFile(), Constants.PLAYER_HEADERS, "");
         videoView.startPlayLogic();
     }
 

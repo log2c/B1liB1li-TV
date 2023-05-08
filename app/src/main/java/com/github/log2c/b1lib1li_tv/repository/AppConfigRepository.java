@@ -6,12 +6,12 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.StringUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.base.utils.Logging;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,17 +56,6 @@ public class AppConfigRepository {
         return SPUtils.getInstance(Constants.SP_NAME_CONFIG).getInt(Constants.SP_DYNAMIC_SPAN_COUNT, Constants.DEFAULT_DYNAMIC_SPAN_COUNT);
     }
 
-    public void storeSessdata(String data) {
-        mSessdata = data;
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_BILIBILI_API_SESSDATA, data);
-    }
-
-    public String fetchSessdata() {
-        if (StringUtils.isTrimEmpty(mSessdata)) {
-            mSessdata = SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_API_SESSDATA, "");
-        }
-        return mSessdata;
-    }
 
     public void storeUserMid(String mid) {
         SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_BILIBILI_MID, mid);
@@ -74,25 +63,6 @@ public class AppConfigRepository {
 
     public String fetchUserMid() {
         return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_MID, "");
-    }
-
-    public void storeDedeUserId(String dedeUserId) {
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_BILIBILI_API_DEDEUSERID, dedeUserId);
-    }
-
-    public String fetchDedeUserId() {
-        if (StringUtils.isTrimEmpty(mDedeUserId)) {
-            mDedeUserId = SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_API_DEDEUSERID, "");
-        }
-        return mDedeUserId;
-    }
-
-    public void storeResolution(int quality) {
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DEFAULT_RESOLUTION, quality);
-    }
-
-    public int fetchDefaultResolution() {
-        return SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DEFAULT_RESOLUTION, Constants.DEFAULT_RESOLUTION);
     }
 
     public void storeDanmakuToggle(boolean toggle) {
@@ -127,13 +97,6 @@ public class AppConfigRepository {
         return Constants.CODEC_H264.equals(fetchDefaultCodec());
     }
 
-    public void storeCsrf(String csrf) {
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_BILIBILI_CSRF, csrf);
-    }
-
-    public String fetchCsrf() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getString(Constants.SP_BILIBILI_CSRF);
-    }
 
     public void storeDanmuSize(float size) {
         SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_DANMU_SIZE, size);
@@ -174,6 +137,10 @@ public class AppConfigRepository {
         SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DASH_CODECS, codecs);
     }
 
+    public int fetchVideoId() {
+        return SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 120);
+    }
+
     public int determinedVideoInExoMode(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
         final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 9999);
         final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DASH_CODECS, "hevc");
@@ -195,7 +162,7 @@ public class AppConfigRepository {
         return filterList.size() > 0 ? modelList.indexOf(filterList.get(0)) : 0;
     }
 
-//    public String[] determinedVideoInIjkMode(final List<PlayUrlModel.DUrlModel> modelList) {
+    //    public String[] determinedVideoInIjkMode(final List<PlayUrlModel.DUrlModel> modelList) {
 //        String[] urls = new String[modelList.size()];
 //        for (int i = 0; i < modelList.size(); i++) {
 //            urls[i] = modelList.get(i).getUrl();
@@ -212,4 +179,10 @@ public class AppConfigRepository {
 //        }
 //        return determinedVideoInIjkMode(model.getDurl());
 //    }
+
+    public File getIjkCacheFile(){
+        final String dir = PathUtils.join(PathUtils.getInternalAppCachePath(), "ijk_video_cache");
+        FileUtils.createOrExistsDir(dir);
+        return FileUtils.getFileByPath(dir);
+    }
 }

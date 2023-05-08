@@ -17,6 +17,7 @@ import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
 import com.github.log2c.base.toast.ToastUtils;
 import com.github.log2c.base.utils.Logging;
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoView;
 
 import java.io.File;
 import java.util.List;
@@ -33,6 +34,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private final VideoRepository videoRepository;
     public final SingleLiveEvent<PlayUrlModel> playUrlModelEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<File> concatEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<String> historyReportEvent = new SingleLiveEvent<>();
     private static final int DASH_MODE = 16; // H.265 ?
     private static final int MP4_MODE = 1;  // 仅 H.264 编码
     private static final int RESOLUTION_4K = 128;   // 需求4K分辨率
@@ -40,7 +42,8 @@ public class PlayerViewModel extends BaseCoreViewModel {
     public String aid;
     public String cid;
     public String danmukuPath;
-    private Disposable mHistorySubscribe;
+    public int playerState = GSYVideoView.CURRENT_STATE_PREPAREING; // 播放器状态
+    private Disposable historyReportSubscribe;
 
     public PlayerViewModel() {
         videoRepository = new VideoRepositoryImpl();
@@ -49,10 +52,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
         super.onDestroy(owner);
-        try {
-            mHistorySubscribe.dispose();
-        } catch (Exception ignore) {
-        }
+        cancelHistoryReportTimer();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -65,6 +65,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
                 .subscribe(s -> {
                     danmukuPath = s;
                     parsePlayUrl();
+                    startHistoryReportTimer();
                 }, e -> {
                     ToastUtils.error("弹幕加载失败.");
                     parsePlayUrl();
@@ -74,7 +75,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private void parsePlayUrl() {
         String qn = "120";  // 	4K 超清
         if (AppConfigRepository.getInstance().isUseIjkPlayer()) {   // IJK 不支持dash,Exo 忽略qn
-            qn = AppConfigRepository.getInstance().fetchDedeUserId();
+            qn = String.valueOf(AppConfigRepository.getInstance().fetchVideoId());
         }
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
@@ -98,11 +99,12 @@ public class PlayerViewModel extends BaseCoreViewModel {
         return MP4_MODE | RESOLUTION_4K;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("CheckResult")
     public void updateHistory(long duration) {
         final long playedTime = TimeUnit.MILLISECONDS.toSeconds(duration);
-        Logging.i("当前播放进度: " + playedTime + " 秒");
-        mHistorySubscribe = videoRepository.historyReport(aid, bvid, cid, String.valueOf(playedTime), AppConfigRepository.getInstance().fetchUserMid())
-                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), e -> Logging.e(TAG, e.getMessage()));
+        videoRepository.historyReport(aid, bvid, cid, String.valueOf(playedTime), AppConfigRepository.getInstance().fetchUserMid())
+                .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), Throwable::printStackTrace);
     }
 
     /**
@@ -129,6 +131,20 @@ public class PlayerViewModel extends BaseCoreViewModel {
                     return FileUtils.getFileByPath(path);
                 }).subscribeOn(Schedulers.io())
                 .subscribe(concatEvent::postValue, Throwable::printStackTrace);
+    }
 
+    private void startHistoryReportTimer() {
+        historyReportSubscribe = Observable.interval(15, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .filter(aLong -> playerState == GSYVideoView.CURRENT_STATE_PLAYING)
+                .subscribe(s -> historyReportEvent.postValue(String.valueOf(s)), Throwable::printStackTrace);
+    }
+
+    private void cancelHistoryReportTimer() {
+        try {
+            historyReportSubscribe.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
