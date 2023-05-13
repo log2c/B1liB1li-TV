@@ -42,30 +42,28 @@
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:orientation="horizontal">
+        android:layout_marginBottom="@dimen/dp_10">
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/textView4"
             android:layout_width="135dp"
             android:layout_height="45dp"
             android:gravity="center_vertical"
-            android:text="@string/resolution"
+            android:text="@string/player"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.github.log2c.b1lib1li_tv.widget.LocalFlowTagLayout
-            android:id="@+id/flow_resolution"
+            android:id="@+id/flow_media_player"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:nextFocusDown="@id/flow_codec"
             app:ftl_check_mode="single"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:ftl_entries="@array/media_player"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textView1"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ftl_entries="@array/danmu_toggle" />
+            app:layout_constraintStart_toEndOf="@id/textView4"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,28 +146,31 @@
         android:id="@+id/ll4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_10">
+        android:layout_marginBottom="@dimen/dp_10"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textView1"
             android:layout_width="135dp"
             android:layout_height="45dp"
             android:gravity="center_vertical"
-            android:text="@string/player"
+            android:text="@string/resolution"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.github.log2c.b1lib1li_tv.widget.LocalFlowTagLayout
-            android:id="@+id/flow_media_player"
+            android:id="@+id/flow_resolution"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:nextFocusDown="@id/flow_codec"
             app:ftl_check_mode="single"
-            app:ftl_entries="@array/media_player"
-            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textView4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/textView1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ftl_entries="@array/danmu_toggle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </LinearLayout>

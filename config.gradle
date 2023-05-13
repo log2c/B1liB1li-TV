@@ -83,7 +83,8 @@ ext {
             xxpermissions        : 'com.hjq:xxpermissions:16.2',
             QRGen                : "com.github.kenglxn.QRGen:android:3.0.1",
             xpopup               : 'com.github.li-xiaojun:XPopup:2.9.16',
-            AndroidAutoSize      : 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
+            AndroidAutoSize      : 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1',
+            'commons-text'       : "org.apache.commons:commons-text:1.10.0",
     ]
 
     dkplayer_lib = [

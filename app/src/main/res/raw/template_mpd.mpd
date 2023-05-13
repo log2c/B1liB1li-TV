@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MPD id="0564e940-122b-42bb-9d56-98f3def67247" profiles="urn:mpeg:dash:profile:isoff-main:2011" type="static" availabilityStartTime="2023-01-14T09:30:35.000Z" publishTime="2010-01-01T00:00:00.000Z" mediaPresentationDuration="${mediaPresentationDuration}" minBufferTime="${minBufferTime}" bitmovin:version="1.6.0"
+    xmlns:ns2="http://www.w3.org/1999/xlink"
+    xmlns="urn:mpeg:dash:schema:mpd:2011"
+    xmlns:bitmovin="http://www.bitmovin.net/mpd/2015">
+    <BaseURL>https://www.bilibili.com/</BaseURL>
+    <Period id="p0" start="PT0S">
+        <AdaptationSet contentType="video" mimeType="${video_mimeType}" codecs="${video_codecs}" segmentAlignment="true" startWithSAP="1">
+            <SegmentTemplate media="${video_media}" duration="${video_duration}" startNumber="0" timescale="30000"/>
+            <Representation id="${video_id}" bandwidth="${video_bandwidth}" width="${video_width}" height="${video_height}" frameRate="${video_frameRate}"/>
+        </AdaptationSet>
+        <AdaptationSet contentType="audio" lang="en" mimeType="${audio_mimeType}" codecs="${audio_codecs}" segmentAlignment="true" startWithSAP="1">
+            <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+            <SegmentTemplate media="${audio_media}" duration="${audio_duration}" startNumber="0" timescale="48000"/>
+            <Representation id="${audio_id}" bandwidth="${audio_bandwidth}" audioSamplingRate="48000"/>
+        </AdaptationSet>
+    </Period>
+</MPD>

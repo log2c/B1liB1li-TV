@@ -6,34 +6,35 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
-import com.blankj.utilcode.util.FileIOUtils;
-import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.PathUtils;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
+import com.github.log2c.b1lib1li_tv.utils.MPDUtil;
 import com.github.log2c.base.base.BaseCoreViewModel;
 import com.github.log2c.base.toast.ToastUtils;
 import com.github.log2c.base.utils.Logging;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.File;
-import java.util.List;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class PlayerViewModel extends BaseCoreViewModel {
     private static final String TAG = PlayerViewModel.class.getSimpleName();
     private final VideoRepository videoRepository;
-    public final SingleLiveEvent<PlayUrlModel> playUrlModelEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<File> concatEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<String[]> playUrlEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String> historyReportEvent = new SingleLiveEvent<>();
     private static final int DASH_MODE = 16; // H.265 ?
     private static final int MP4_MODE = 1;  // 仅 H.264 编码
@@ -44,6 +45,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     public String danmukuPath;
     public int playerState = GSYVideoView.CURRENT_STATE_PREPAREING; // 播放器状态
     private Disposable historyReportSubscribe;
+    public PlayUrlModel mPlayUrlModel;
 
     public PlayerViewModel() {
         videoRepository = new VideoRepositoryImpl();
@@ -74,29 +76,83 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
     private void parsePlayUrl() {
         String qn = "120";  // 	4K 超清
-        if (AppConfigRepository.getInstance().isUseIjkPlayer()) {   // IJK 不支持dash,Exo 忽略qn
-            qn = String.valueOf(AppConfigRepository.getInstance().fetchVideoId());
-        }
+//        if (AppConfigRepository.getInstance().isUseIjkPlayer()) {   // IJK 不支持dash,Exo 忽略qn
+//            qn = String.valueOf(AppConfigRepository.getInstance().fetchVideoId());
+//        }
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
-        videoRepository.getPlayUrl(aid, bvid, cid, qn, getFnVal() + "", fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
+        videoRepository.getPlayUrl(aid, bvid, cid, qn, (DASH_MODE | RESOLUTION_4K) + "", fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
             @Override
             public void onSuccess(PlayUrlModel model) {
-                playUrlModelEvent.postValue(model);
+//                playUrlModelEvent.postValue(model);
+                mPlayUrlModel = model;
+                loadPlayResource();
             }
 
             @Override
             public void onFinish() {
 
             }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                ToastUtils.error(e.toString());
+            }
         });
     }
 
-    private int getFnVal() {
+    @SuppressLint("CheckResult")
+    public void loadPlayResource() {
+        int idx = AppConfigRepository.getInstance().determinedVideoInDashMode(mPlayUrlModel.getDash().getVideo());
+        final PlayUrlModel.DashModel.VideoModel videoModel = mPlayUrlModel.getDash().getVideo().get(idx);
+        final PlayUrlModel.DashModel.AudioModel audioModel = mPlayUrlModel.getDash().getAudio().get(0);
+        final String videoUrl = videoModel.getBaseUrl();
+        final String audioUrl = audioModel.getBaseUrl();
+
         if (AppConfigRepository.getInstance().isUseExoPlayer()) {
-            return DASH_MODE | RESOLUTION_4K;
+            playUrlEvent.postValue(new String[]{videoUrl, audioUrl});
+            return;
         }
-        return MP4_MODE | RESOLUTION_4K;
+
+        String mediaPresentationDuration = Duration.of(mPlayUrlModel.getTimelength(), ChronoUnit.MILLIS).toString();
+        String minBufferTime = Duration.of((long) Math.floor(mPlayUrlModel.getDash().getMin_buffer_time() + 0.5), ChronoUnit.SECONDS).toString();
+        String video_mimeType = videoModel.getMimeType();
+        String video_codecs = videoModel.getCodecs();
+        String video_media = StringEscapeUtils.escapeXml10(videoModel.getBaseUrl());
+        String audio_media = StringEscapeUtils.escapeXml10(audioUrl);
+        String video_duration = mPlayUrlModel.getTimelength() / 1000 + "";
+        String video_id = videoModel.getId() + "";
+        String video_bandwidth = videoModel.getBandwidth() + "";
+        String video_width = videoModel.getWidth() + "";
+        String video_height = videoModel.getHeight() + "";
+        String video_frameRate = videoModel.getFrameRate() + "";
+        String audio_mimeType = audioModel.getMimeType();
+        String audio_codecs = audioModel.getCodecs();
+        String audio_duration = mPlayUrlModel.getTimelength() / 1000 + "";
+        String audio_id = audioModel.getId() + "";
+        String audio_bandwidth = audioModel.getBandwidth() + "";
+
+        MPDUtil.genMpdText(bvid,
+                        mediaPresentationDuration,
+                        minBufferTime,
+                        video_codecs,
+                        video_media,
+                        video_duration,
+                        video_mimeType,
+                        video_id,
+                        video_bandwidth,
+                        video_width,
+                        video_height,
+                        video_frameRate,
+                        audio_mimeType,
+                        audio_codecs,
+                        audio_duration,
+                        audio_id,
+                        audio_bandwidth,
+                        audio_media)
+                .observeOn(Schedulers.io())
+                .subscribe(s -> playUrlEvent.postValue(new String[]{s}), e -> Logging.e(e, "MPD构建异常."));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -105,32 +161,6 @@ public class PlayerViewModel extends BaseCoreViewModel {
         final long playedTime = TimeUnit.MILLISECONDS.toSeconds(duration);
         videoRepository.historyReport(aid, bvid, cid, String.valueOf(playedTime), AppConfigRepository.getInstance().fetchUserMid())
                 .subscribe(s -> Logging.i("播放进度上传完成! \t" + s), Throwable::printStackTrace);
-    }
-
-    /**
-     * 处理生成IJK的多端Concat文件
-     */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("CheckResult")
-    public void processConcatVideo() {
-        List<PlayUrlModel.DUrlModel> durl = playUrlModelEvent.getValue().getDurl();
-        final String LINE_TEMPLATE = "file '%1$s'\nduration %2$s\n";
-        final String HEADER = "ffconcat version 1.0\n";
-
-        final StringBuilder sb = new StringBuilder(HEADER);
-        for (PlayUrlModel.DUrlModel model : durl) {
-            float seconds = ((float) model.getLength()) / 1000f;
-            sb.append(String.format(LINE_TEMPLATE, model.getUrl(), seconds + ""));
-        }
-        Observable.just(sb.toString())
-                .map((Function<String, File>) text -> {
-                    final String concatCacheDir = PathUtils.join(PathUtils.getInternalAppCachePath(), "concat");
-                    FileUtils.createOrExistsDir(concatCacheDir);
-                    String path = PathUtils.join(concatCacheDir, bvid + ".concat");
-                    FileIOUtils.writeFileFromString(path, text);
-                    return FileUtils.getFileByPath(path);
-                }).subscribeOn(Schedulers.io())
-                .subscribe(concatEvent::postValue, Throwable::printStackTrace);
     }
 
     private void startHistoryReportTimer() {

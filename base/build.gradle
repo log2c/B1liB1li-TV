@@ -66,4 +66,5 @@ dependencies {
     api rootProject.ext.dependencies.QRGen
     api rootProject.ext.dependencies.xpopup
     api rootProject.ext.dependencies.AndroidAutoSize
+    api rootProject.ext.dependencies['commons-text']
 }

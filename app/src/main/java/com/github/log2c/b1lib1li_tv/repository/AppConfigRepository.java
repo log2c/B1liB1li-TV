@@ -141,7 +141,7 @@ public class AppConfigRepository {
         return SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 120);
     }
 
-    public int determinedVideoInExoMode(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
+    public int determinedVideoInDashMode(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
         final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 9999);
         final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DASH_CODECS, "hevc");
         final List<PlayUrlModel.DashModel.VideoModel> filterList = new ArrayList<>(modelList);

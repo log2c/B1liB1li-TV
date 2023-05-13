@@ -47,12 +47,13 @@ public class App extends Application {
         GSYVideoType.enableMediaCodec();
         GSYVideoType.enableMediaCodecTexture();
         ToastUtils.showLong("硬解: " + GSYVideoType.isMediaCodec() + ", 硬解码渲染优化: " + GSYVideoType.isMediaCodecTexture());
-
         List<VideoOptionModel> listVideoOptionModel = new ArrayList<>();
         VideoOptionModel videoOptionModel = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "safe", 0);
         VideoOptionModel videoOptionModel2 =
                 new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist",
                         "rtmp,concat,ffconcat,file,subfile,http,https,tls,rtp,tcp,udp,crypto");
+        listVideoOptionModel.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec_all_videos", 1));
+        listVideoOptionModel.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec_mpeg2", 1));
         listVideoOptionModel.add(videoOptionModel);
         listVideoOptionModel.add(videoOptionModel2);
         GSYVideoManager.instance().setOptionModelList(listVideoOptionModel);

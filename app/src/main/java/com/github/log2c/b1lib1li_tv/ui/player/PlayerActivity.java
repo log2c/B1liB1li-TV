@@ -31,7 +31,6 @@ import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.fragments.PlayerSettingDialogFragment;
 import com.github.log2c.base.base.BaseCoreActivity;
-import com.github.log2c.base.toast.ToastUtils;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -311,7 +310,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     public void initView(@Nullable Bundle bundle) {
         videoView = mBinding.player;
-        viewModel.playUrlModelEvent.observe(this, this::loadVideo);
+        viewModel.playUrlEvent.observe(this, this::onPlayUrlChange);
         viewModel.concatEvent.observe(this, this::onConcatGenerated);
         viewModel.historyReportEvent.observe(this, s -> viewModel.updateHistory(videoView.getCurrentPlayer().getCurrentPositionWhenPlaying()));
         videoView.setGSYStateUiListener(state -> {
@@ -333,35 +332,24 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         videoView.startPlayLogic();
     }
 
-    private void loadVideo(PlayUrlModel playUrlModel) {
-        if (AppConfigRepository.getInstance().isUseExoPlayer()) {
-            int idx = AppConfigRepository.getInstance().determinedVideoInExoMode(playUrlModel.getDash().getVideo());
-            final String videoUrl = playUrlModel.getDash().getVideo().get(idx).getBaseUrl();
-            final String audioUrl = playUrlModel.getDash().getAudio().get(0).getBaseUrl();
-            playVideo(videoUrl, audioUrl);
+    private void onPlayUrlChange(String[] urls) {
+        if (urls.length == 2) {   // EXOPlayer模式
+            setMediaSourceIfExoPlayer(urls[0], urls[1]);
+            mBinding.player.setUp(urls[0], true, "");
+            videoView.startPlayLogic();
         } else {
-            String[] urls = new String[playUrlModel.getDurl().size()];
-            for (int i = 0; i < playUrlModel.getDurl().size(); i++) {
-                urls[i] = playUrlModel.getDurl().get(i).getUrl();
-            }
-            playVideo(urls);
+            final boolean isCache = !urls[0].endsWith(".mpd");
+            mBinding.player.setUp(urls[0], isCache, AppConfigRepository.getInstance().getIjkCacheFile(), Constants.PLAYER_HEADERS, "");
+            videoView.startPlayLogic();
         }
     }
 
     private void playVideo(String videoUrl, String audioUrl) {
-        setMediaSourceIfExoPlayer(videoUrl, audioUrl);
-        mBinding.player.setUp(videoUrl, true, "");
-        videoView.startPlayLogic();
+
     }
 
     private void playVideo(String[] urls) {
-        if (urls.length > 1) {
-            ToastUtils.error("当前为分段视频,IJK播放器暂不支持,建议使用EXOPlayer播放器.");
-            viewModel.processConcatVideo();
-            return;
-        }
-        mBinding.player.setUp(urls[0], true, AppConfigRepository.getInstance().getIjkCacheFile(), Constants.PLAYER_HEADERS, "");
-        videoView.startPlayLogic();
+
     }
 
     private void setMediaSourceIfExoPlayer(String videoUrl, @NonNull String audioUrl) {
@@ -401,26 +389,23 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private void showMenuPopup() {
-        if (viewModel.playUrlModelEvent.getValue() == null) {
+        if (viewModel.playUrlEvent.getValue() == null || viewModel.mPlayUrlModel == null) {
             return;
         }
-        final PlayUrlModel model = viewModel.playUrlModelEvent.getValue();
-        if (model == null) {
-            return;
-        }
+        final PlayUrlModel model = viewModel.mPlayUrlModel;
 
         List<String> items = new ArrayList<>();
         int selectIndex;
 
-        if (AppConfigRepository.getInstance().isUseExoPlayer()) {
-            for (PlayUrlModel.DashModel.VideoModel m : model.getDash().getVideo()) {
-                items.add(m.getWidth() + "x" + m.getHeight() + " fps: " + m.getFrameRate() + " " + m.getCodecs());
-            }
-            selectIndex = AppConfigRepository.getInstance().determinedVideoInExoMode(model.getDash().getVideo());
-        } else {
-            items.addAll(model.getAccept_description());
-            selectIndex = AppConfigRepository.getInstance().determinedVideoInIjkMode(model);
+//        if (AppConfigRepository.getInstance().isUseExoPlayer()) {
+        for (PlayUrlModel.DashModel.VideoModel m : model.getDash().getVideo()) {
+            items.add(m.getWidth() + "x" + m.getHeight() + " fps: " + m.getFrameRate() + " " + m.getCodecs());
         }
+        selectIndex = AppConfigRepository.getInstance().determinedVideoInDashMode(model.getDash().getVideo());
+//        } else {
+//            items.addAll(model.getAccept_description());
+//            selectIndex = AppConfigRepository.getInstance().determinedVideoInIjkMode(model);
+//        }
 
 
         PlayerSettingDialogFragment dialogFragment = PlayerSettingDialogFragment.newInstance(items.toArray(new String[items.size()]), selectIndex);
@@ -444,13 +429,13 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
             @Override
             public void onResolutionSelectChange(int position) {
-                if (AppConfigRepository.getInstance().isUseExoPlayer()) {
-                    PlayUrlModel.DashModel.VideoModel videoModel = model.getDash().getVideo().get(position);
-                    AppConfigRepository.getInstance().storeVideoParams(videoModel.getId(), videoModel.getCodecs());
-                } else {
-                    int id = model.getAccept_quality().get(position);
-                    AppConfigRepository.getInstance().storeVideoParams(id, "");
-                }
+//                if (AppConfigRepository.getInstance().isUseExoPlayer()) {
+                PlayUrlModel.DashModel.VideoModel videoModel = model.getDash().getVideo().get(position);
+                AppConfigRepository.getInstance().storeVideoParams(videoModel.getId(), videoModel.getCodecs());
+//                } else {
+//                    int id = model.getAccept_quality().get(position);
+//                    AppConfigRepository.getInstance().storeVideoParams(id, "");
+//                }
 
                 viewModel.prepareAndStart();
             }
