@@ -103,8 +103,8 @@ ext {
             //是否需要ExoPlayer模式
             exo2          : 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v8.3.5-release-jitpack',
 
-            arm64         : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack',
-            armv7a        : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.5-release-jitpack'
+//            arm64         : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack',
+//            armv7a        : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.5-release-jitpack'
     ]
 
     androidxs = androidx.values()
