@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.UriUtils;
@@ -101,25 +102,23 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     protected TextView mDialogTotalTime;
     protected ImageView mDialogIcon;
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        Log.i(TAG, "dispatchKeyEvent: " + event.getKeyCode() + ", Event: " + event.getAction());
-        if (!isPadShown() && getCurrentFocus() instanceof RelativeLayout && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
-            if (event.getAction() == KeyEvent.ACTION_UP) {
-                doPauseOrStart();
-                return true;
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
     private boolean isPadShown() {
-        return mBinding.player.findViewById(R.id.layout_bottom).getVisibility() == View.VISIBLE;
+//        return mBinding.player.findViewById(R.id.layout_bottom).getVisibility() == View.VISIBLE;
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(PlayerSettingDialogFragment.class.getSimpleName());
+        return fragment != null && fragment.isVisible();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                if (getCurrentFocus() instanceof RelativeLayout && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                        doPauseOrStart();
+                        return true;
+                    }
+                }
+                break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 if (!isPadShown()) {
 //                    ReflectUtils.reflect(mBinding.player).method("changeUiToPlayingShow");

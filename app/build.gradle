@@ -73,5 +73,5 @@ dependencies {
     implementation 'com.github.liujingxing.rxlife:rxlife-rxjava2:2.2.2'
     annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.3'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 }
