@@ -6,6 +6,8 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.Utils;
+import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.Urls;
@@ -53,7 +55,7 @@ public class AppConfigRepository {
     }
 
     public int getDynamicSpanCount() {
-        return SPUtils.getInstance(Constants.SP_NAME_CONFIG).getInt(Constants.SP_DYNAMIC_SPAN_COUNT, Constants.DEFAULT_DYNAMIC_SPAN_COUNT);
+        return SPUtils.getInstance(Constants.SP_NAME_CONFIG).getInt(Utils.getApp().getString(R.string.pre_key_dynamic_span_count), Constants.DEFAULT_DYNAMIC_SPAN_COUNT);
     }
 
 
@@ -66,60 +68,36 @@ public class AppConfigRepository {
     }
 
     public void storeDanmakuToggle(boolean toggle) {
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DANMAKU_TOGGLE, toggle);
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_danmu_toggle), toggle);
     }
 
     public boolean fetchDanmakuToggle() {
-        return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Constants.SP_DANMAKU_TOGGLE, true);
-    }
-
-    private void storeDefaultCodec(String codec) {
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DEFAULT_CODEC, codec);
-    }
-
-    public void setDefaultH265Codec() {
-        storeDefaultCodec(Constants.CODEC_H265);
-    }
-
-    public void setDefaultH264Codec() {
-        storeDefaultCodec(Constants.CODEC_H264);
+        return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_danmu_toggle), true);
     }
 
     public String fetchDefaultCodec() {
-        return SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DEFAULT_CODEC, Constants.DEFAULT_CODEC);
-    }
-
-    public boolean isH265() {
-        return Constants.CODEC_H265.equals(fetchDefaultCodec());
-    }
-
-    public boolean isH264() {
-        return Constants.CODEC_H264.equals(fetchDefaultCodec());
-    }
-
-
-    public void storeDanmuSize(float size) {
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_DANMU_SIZE, size);
+        return SPUtils.getInstance(SP_NAME_CONFIG).getString(
+                Utils.getApp().getString(R.string.pre_key_codecs), Constants.DEFAULT_CODEC);
     }
 
     public float fetchDanmuSize() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getFloat(Constants.SP_DANMU_SIZE, Constants.SP_DEFAULT_DANMU_SIZE);
-    }
-
-    public void setExoPlayerDefault() {
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_EXOPLAYER);
+        return Float.parseFloat(SPUtils.getInstance(Constants.SP_NAME_CONFIG).getString(Utils.getApp().getString(R.string.pre_key_danmu_size), Constants.DEFAULT_DANMU_SIZE + ""));
     }
 
     public boolean isUseExoPlayer() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) == Constants.MEDIA_PLAYER_EXOPLAYER;
+        return SPUtils.getInstance(Constants.SP_NAME_CONFIG)
+                .getString(
+                        Utils.getApp().getString(R.string.pre_key_media_player),
+                        Utils.getApp().getString(R.string.pre_value_exo_player))
+                .equals(Utils.getApp().getString(R.string.pre_value_exo_player));
+    }
+
+    public boolean isHardwareDecoding() {
+        return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_hardware_decoding), true);
     }
 
     public boolean isUseIjkPlayer() {
-        return SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).getInt(Constants.SP_MEDIA_PLAYER, Constants.DEFAULT_DEFAULT_MEDIA_PLAYER) != Constants.MEDIA_PLAYER_IJKPLAYER;
-    }
-
-    public void setIjkPlayerDefault() {
-        SPUtils.getInstance(Constants.SP_NAME_BILIBILI_API).put(Constants.SP_MEDIA_PLAYER, Constants.MEDIA_PLAYER_IJKPLAYER);
+        return !isUseExoPlayer();
     }
 
     public void processCookie() {
@@ -133,17 +111,17 @@ public class AppConfigRepository {
     }
 
     public void storeVideoParams(int dashVideoId, String codecs) {
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DASH_VIDEO_ID, dashVideoId);
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Constants.SP_DASH_CODECS, codecs);
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_video_id), dashVideoId);
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_codecs), codecs);
     }
 
     public int fetchVideoId() {
-        return SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 120);
+        return SPUtils.getInstance(SP_NAME_CONFIG).getInt(Utils.getApp().getString(R.string.pre_key_video_id), 120);
     }
 
     public int determinedVideoInDashMode(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
-        final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Constants.SP_DASH_VIDEO_ID, 9999);
-        final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Constants.SP_DASH_CODECS, "hevc");
+        final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Utils.getApp().getString(R.string.pre_key_video_id), 9999);
+        final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Utils.getApp().getString(R.string.pre_key_codecs), "hevc");
         final List<PlayUrlModel.DashModel.VideoModel> filterList = new ArrayList<>(modelList);
 
         CollectionUtils.filter(filterList, item -> item.getId() == id);
@@ -180,7 +158,7 @@ public class AppConfigRepository {
 //        return determinedVideoInIjkMode(model.getDurl());
 //    }
 
-    public File getIjkCacheFile(){
+    public File getIjkCacheFile() {
         final String dir = PathUtils.join(PathUtils.getInternalAppCachePath(), "ijk_video_cache");
         FileUtils.createOrExistsDir(dir);
         return FileUtils.getFileByPath(dir);

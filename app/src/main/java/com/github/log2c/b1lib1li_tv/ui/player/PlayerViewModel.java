@@ -79,12 +79,14 @@ public class PlayerViewModel extends BaseCoreViewModel {
 //        if (AppConfigRepository.getInstance().isUseIjkPlayer()) {   // IJK 不支持dash,Exo 忽略qn
 //            qn = String.valueOf(AppConfigRepository.getInstance().fetchVideoId());
 //        }
+        String fnval = (DASH_MODE | RESOLUTION_4K) + "";
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
-        videoRepository.getPlayUrl(aid, bvid, cid, qn, (DASH_MODE | RESOLUTION_4K) + "", fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
+        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval, fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
             @Override
             public void onSuccess(PlayUrlModel model) {
 //                playUrlModelEvent.postValue(model);
+                playUrlEvent.postValue(new String[0]);
                 mPlayUrlModel = model;
                 loadPlayResource();
             }

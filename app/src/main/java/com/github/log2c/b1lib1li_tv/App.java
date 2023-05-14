@@ -7,7 +7,6 @@ import android.os.Build;
 import com.github.log2c.b1lib1li_tv.network.NetKit;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreApplication;
-import com.github.log2c.base.toast.ToastUtils;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.cache.CacheFactory;
 import com.shuyu.gsyvideoplayer.model.VideoOptionModel;
@@ -44,9 +43,11 @@ public class App extends Application {
         } else {
             PlayerFactory.setPlayManager(IjkPlayerManager.class);
         }
-        GSYVideoType.enableMediaCodec();
-        GSYVideoType.enableMediaCodecTexture();
-        ToastUtils.showLong("硬解: " + GSYVideoType.isMediaCodec() + ", 硬解码渲染优化: " + GSYVideoType.isMediaCodecTexture());
+        if (AppConfigRepository.getInstance().isHardwareDecoding()) {
+            GSYVideoType.enableMediaCodec();
+            GSYVideoType.enableMediaCodecTexture();
+        }
+//        ToastUtils.showLong("硬解: " + GSYVideoType.isMediaCodec() + ", 硬解码渲染优化: " + GSYVideoType.isMediaCodecTexture());
         List<VideoOptionModel> listVideoOptionModel = new ArrayList<>();
         VideoOptionModel videoOptionModel = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "safe", 0);
         VideoOptionModel videoOptionModel2 =

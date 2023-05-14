@@ -63,7 +63,16 @@
     <style name="AppTheme.Button.Common" parent="Widget.AppCompat.Button.Borderless.Colored">
 
     </style>
+
     <style name="WD_Slider" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
+    </style>
+
+    <style name="AppTheme.LeanSetting" parent="AppTheme.Fullscreen">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
     </style>
 </resources>

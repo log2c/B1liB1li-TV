@@ -12,4 +12,24 @@
         <item>ExoPlayer</item>
         <item>IJKPlayer</item>
     </string-array>
+    <string-array name="media_player_value">
+        <item>@string/pre_value_exo_player</item>
+        <item>@string/pre_value_ijk_player</item>
+    </string-array>
+    <string-array name="danmu_size">
+        <item>@string/small</item>
+        <item>@string/medium</item>
+        <item>@string/large</item>
+        <item>@string/x_large</item>
+        <item>@string/xx_large</item>
+    </string-array>
+    <string-array name="danmu_size_value">
+        <item>0.8</item>
+        <item>1.0</item>
+        <item>1.2</item>
+        <item>1.5</item>
+        <item>2.0</item>
+    </string-array>
+    <string name="pre_value_exo_player">pre_value_exo_player</string>
+    <string name="pre_value_ijk_player">pre_value_ijk_player</string>
 </resources>

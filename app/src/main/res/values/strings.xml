@@ -11,6 +11,25 @@
     <string name="player">播放器</string>
     <string name="danmu_off">关</string>
     <string name="danmu_on">开</string>
-    <string name="danmu_size">弹幕字号</string>
+    <string name="danmu_size">弹幕大小</string>
     <string name="tip_modify_danmu_config">下次打开播放页时生效</string>
+    <string name="hardware_decoding">硬件解码</string>
+    <string name="player_core">播放器内核</string>
+    <string name="setting">设置</string>
+    <string name="small">小</string>
+    <string name="medium">中等</string>
+    <string name="large">大</string>
+    <string name="x_large">加大</string>
+    <string name="xx_large">加大</string>
+    <string name="etc">其它</string>
+    <string name="relaunch">重启App</string>
+    <string name="pre_key_media_player">pre_key_media_player</string>
+    <string name="pre_key_hardware_decoding">pre_key_hardware_decoding</string>
+    <string name="pre_key_relaunch">pre_key_relaunch</string>
+    <string name="pre_key_danmu_size">pre_key_danmu_size</string>
+    <string name="pre_key_danmu_toggle">pre_key_danmu_toggle</string>
+    <string name="player_about">播放器相关</string>
+    <string name="pre_key_codecs">pre_key_codecs</string>
+    <string name="pre_key_video_id">pre_key_video_id</string>
+    <string name="pre_key_dynamic_span_count">pre_key_dynamic_span_count</string>
 </resources>

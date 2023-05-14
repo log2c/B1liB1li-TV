@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingLeanbackLauncher">
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -18,12 +26,18 @@
         android:theme="@style/AppTheme.Fullscreen"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.setting.SettingsActivity"
+            android:theme="@style/AppTheme.LeanSetting"
+            android:exported="false" />
+
         <meta-data
             android:name="design_width_in_dp"
-            android:value="1080"/>
+            android:value="1080" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="1920"/>
+            android:value="1920" />
+
         <activity
             android:name=".ui.upfeed.UpFeedActivity"
             android:exported="false"

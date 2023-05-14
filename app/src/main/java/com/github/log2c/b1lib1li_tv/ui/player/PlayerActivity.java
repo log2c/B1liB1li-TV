@@ -272,7 +272,8 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         if (isPlaying()) {
             mBinding.player.getCurrentPlayer().onVideoPause();
         } else {
-            mBinding.player.getCurrentPlayer().onVideoResume();
+            boolean isSeek = !AppConfigRepository.getInstance().isUseIjkPlayer();
+            mBinding.player.getCurrentPlayer().onVideoResume(isSeek);
         }
     }
 
@@ -334,10 +335,11 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     private void onPlayUrlChange(String[] urls) {
         if (urls.length == 2) {   // EXOPlayer模式
             setMediaSourceIfExoPlayer(urls[0], urls[1]);
-            mBinding.player.setUp(urls[0], true, "");
+            mBinding.player.setUp(urls[0], false, "");
             videoView.startPlayLogic();
-        } else {
-            final boolean isCache = !urls[0].endsWith(".mpd");
+        } else if (urls.length == 1) {
+//            final boolean isCache = !urls[0].endsWith(".mpd");
+            final boolean isCache = false;
             mBinding.player.setUp(urls[0], isCache, AppConfigRepository.getInstance().getIjkCacheFile(), Constants.PLAYER_HEADERS, "");
             videoView.startPlayLogic();
         }

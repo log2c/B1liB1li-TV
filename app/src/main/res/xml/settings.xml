@@ -1,0 +1,44 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/setting">
+
+    <PreferenceCategory
+        android:title="@string/player_about"
+        app:iconSpaceReserved="false">
+        <ListPreference
+            android:defaultValue="@string/pre_value_exo_player"
+            android:entries="@array/media_player"
+            android:entryValues="@array/media_player_value"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_media_player"
+            app:title="@string/player_core" />
+
+        <SwitchPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_hardware_decoding"
+            app:title="@string/hardware_decoding" />
+        <SwitchPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_danmu_toggle"
+            app:title="@string/toggle_danmu" />
+
+        <ListPreference
+            android:defaultValue="1.0"
+            android:entries="@array/danmu_size"
+            android:entryValues="@array/danmu_size_value"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_danmu_size"
+            app:title="@string/danmu_size" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/etc">
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_relaunch"
+            app:title="@string/relaunch" />
+    </PreferenceCategory>
+</PreferenceScreen>

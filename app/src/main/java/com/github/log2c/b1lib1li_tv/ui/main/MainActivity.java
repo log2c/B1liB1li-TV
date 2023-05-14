@@ -15,6 +15,7 @@ import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityMainBinding;
 import com.github.log2c.b1lib1li_tv.ui.dynamic.DynamicActivity;
 import com.github.log2c.b1lib1li_tv.ui.login.LoginActivity;
+import com.github.log2c.b1lib1li_tv.ui.setting.SettingsActivity;
 import com.github.log2c.b1lib1li_tv.ui.toview.ToviewActivity;
 
 public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBinding> implements View.OnFocusChangeListener {
@@ -42,6 +43,7 @@ public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBind
         Glide.with(this).load(R.drawable.ic_avatar_bilibili).transform(new CircleCrop()).into(mBinding.ivAvatar);
 
         mBinding.btLogin.setOnClickListener(v -> navLogin());
+        mBinding.btnSetting.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
         mBinding.cvDynamic.setOnClickListener(v -> startActivity(new Intent(this, DynamicActivity.class)));
         mBinding.cvToview.setOnClickListener(v -> startActivity(new Intent(this, ToviewActivity.class)));
 

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,11 +15,7 @@ import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.slider.Slider;
 import com.xuexiang.xui.widget.flowlayout.FlowTagLayout;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     private static final String TAG = PlayerSettingDialogFragment.class.getSimpleName();
@@ -30,14 +25,8 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
     private static final String KEY_SELECT_RESOLUTION = "select_resolution";
     private static final String KEY_CODEC = "codec";
     private int mDanmuToggle;
-    private int mCodec;
     private FlowTagLayout danmuFlowTag;
     private FlowTagLayout resolutionFlowTag;
-    private FlowTagLayout codecFlowTag;
-    private FlowTagLayout mediaPlayerTag;
-
-    private Slider danmuSlider;
-
     private ConfigChangeCallback mConfigChangeCallback;
     private LifeCallback mLifeCallback;
     private String[] mResolutionList;
@@ -54,18 +43,7 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         mView = View.inflate(getContext(), R.layout.layout_dialog_setting_player, null);
         danmuFlowTag = mView.findViewById(R.id.flow_danmu);
         resolutionFlowTag = mView.findViewById(R.id.flow_resolution);
-        codecFlowTag = mView.findViewById(R.id.flow_codec);
-        danmuSlider = mView.findViewById(R.id.slider_danmu);
-        mediaPlayerTag = mView.findViewById(R.id.flow_media_player);
         dialog.setContentView(mView);
-
-        danmuSlider.setValue(AppConfigRepository.getInstance().fetchDanmuSize());
-        danmuSlider.addOnChangeListener((slider, value, fromUser) -> {
-            BigDecimal b = new BigDecimal(value);
-            float size = b.setScale(1, RoundingMode.HALF_UP).floatValue();
-            Log.i(TAG, "onCreateDialog: danmu size: " + size);
-            AppConfigRepository.getInstance().storeDanmuSize(size);
-        });
 
         danmuFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
             AppConfigRepository.getInstance().storeDanmakuToggle(position == 0);
@@ -74,26 +52,9 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
             }
         });
         resolutionFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
-//            Log.i(TAG, "onCreateDialog: 选择的清晰度 code: " + code + ", desc: " + Constants.Resolution.ITEMS.get(code));
-//            AppConfigRepository.getInstance().storeResolution(code);
             if (mConfigChangeCallback != null) {
                 mConfigChangeCallback.onResolutionSelectChange(position);
             }
-        });
-        codecFlowTag.setOnTagSelectListener((parent, position, selectedList) -> {
-            if (position == 0) {
-                AppConfigRepository.getInstance().setDefaultH265Codec();
-            } else
-                AppConfigRepository.getInstance().setDefaultH265Codec();
-            if (mConfigChangeCallback != null) {
-                mConfigChangeCallback.onNeedReloadChange();
-            }
-        });
-        mediaPlayerTag.setOnTagSelectListener((parent, position, selectedList) -> {
-            if (position == 0) {
-                AppConfigRepository.getInstance().setExoPlayerDefault();
-            } else
-                AppConfigRepository.getInstance().setIjkPlayerDefault();
         });
         return dialog;
     }
@@ -130,13 +91,7 @@ public class PlayerSettingDialogFragment extends BottomSheetDialogFragment {
         mDanmuToggle = AppConfigRepository.getInstance().fetchDanmakuToggle() ? 0 : 1;
         mResolutionList = getArguments().getStringArray(KEY_RESOLUTION_LIST);
         mSelectResolutionIndex = getArguments().getInt(KEY_SELECT_RESOLUTION);
-        mCodec = AppConfigRepository.getInstance().isH265() ? 0 : 1;
-
         danmuFlowTag.setSelectedPositions(mDanmuToggle);
-        codecFlowTag.setSelectedPositions(mCodec);
-
-        mediaPlayerTag.setSelectedPositions(AppConfigRepository.getInstance().isUseExoPlayer() ? 0 : 1);
-
         resolutionFlowTag.setItems(mResolutionList);
         resolutionFlowTag.setSelectedPositions(mSelectResolutionIndex);
     }
