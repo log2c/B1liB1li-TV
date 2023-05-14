@@ -77,4 +77,7 @@ dependencies {
     annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+
+    implementation files('libs/extension-ffmpeg-release.aar')
+
 }

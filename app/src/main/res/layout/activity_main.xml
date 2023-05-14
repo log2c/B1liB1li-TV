@@ -23,15 +23,17 @@
             android:layout_gravity="center_vertical"
             tools:src="@drawable/ic_avatar_bilibili" />
 
-        <com.allen.library.SuperButton
+        <Button
             android:id="@+id/bt_login"
-            style="@style/AppTheme.Button.Blue"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/bg_button_normal"
             android:minWidth="80dp"
+            android:nextFocusLeft="@id/cv_history"
             android:nextFocusRight="@id/btn_setting"
+            android:nextFocusUp="@id/cv_history"
             android:nextFocusDown="@id/btn_setting"
             android:text="@string/un_login"
             android:textStyle="bold" />
@@ -41,6 +43,8 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_button_normal"
+            android:nextFocusLeft="@id/bt_login"
             android:nextFocusRight="@id/cv_dynamic"
             android:nextFocusDown="@id/cv_dynamic"
             android:src="@drawable/ic_settings_white" />
@@ -65,6 +69,8 @@
             android:layout_weight="1"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:nextFocusLeft="@id/btn_setting"
+            android:nextFocusUp="@id/btn_setting"
             app:cardBackgroundColor="@color/bilibili0"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true"
@@ -107,6 +113,8 @@
             android:layout_weight="1"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:nextFocusRight="@id/bt_login"
+            android:nextFocusDown="@id/bt_login"
             app:cardBackgroundColor="@color/bilibili2"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true"

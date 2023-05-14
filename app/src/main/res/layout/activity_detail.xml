@@ -74,7 +74,7 @@
             android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_10"
-            android:background="@drawable/selector_button_blue_normal"
+            android:background="@drawable/bg_button_normal_stroke"
             android:gravity="center"
             android:minWidth="165dp"
             android:textAlignment="center"
