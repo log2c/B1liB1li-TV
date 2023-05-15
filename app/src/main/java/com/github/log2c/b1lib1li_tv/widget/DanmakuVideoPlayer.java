@@ -2,6 +2,7 @@ package com.github.log2c.b1lib1li_tv.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,7 +33,7 @@ import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 
-public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
+public class DanmakuVideoPlayer extends GSYVideoPlayer {
     private BaseDanmakuParser mParser;
     private IDanmakuView mDanmakuView;
     private DanmakuContext mDanmakuContext;
@@ -88,6 +89,86 @@ public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
     }
 
     @Override
+    protected void showWifiDialog() {
+
+    }
+
+    @Override
+    protected void showProgressDialog(float deltaX, String seekTime, long seekTimePosition, String totalTime, long totalTimeDuration) {
+
+    }
+
+    @Override
+    protected void dismissProgressDialog() {
+
+    }
+
+    @Override
+    protected void showVolumeDialog(float deltaY, int volumePercent) {
+
+    }
+
+    @Override
+    protected void dismissVolumeDialog() {
+
+    }
+
+    @Override
+    protected void showBrightnessDialog(float percent) {
+
+    }
+
+    @Override
+    protected void dismissBrightnessDialog() {
+
+    }
+
+    @Override
+    protected void onClickUiToggle(MotionEvent e) {
+
+    }
+
+    @Override
+    protected void hideAllWidget() {
+
+    }
+
+    @Override
+    protected void changeUiToNormal() {
+
+    }
+
+    @Override
+    protected void changeUiToPreparingShow() {
+
+    }
+
+    @Override
+    protected void changeUiToPlayingShow() {
+
+    }
+
+    @Override
+    protected void changeUiToPauseShow() {
+
+    }
+
+    @Override
+    protected void changeUiToError() {
+
+    }
+
+    @Override
+    protected void changeUiToCompleteShow() {
+
+    }
+
+    @Override
+    protected void changeUiToPlayingBufferingShow() {
+
+    }
+
+    @Override
     public void onCompletion() {
         releaseDanmaku(this);
     }
@@ -104,6 +185,16 @@ public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
             //如果没有初始化过的，记录位置等待
             setDanmakuStartSeekPosition(time);
         }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.video_layout_local;
+    }
+
+    @Override
+    public void startPlayLogic() {
+
     }
 
     @Override

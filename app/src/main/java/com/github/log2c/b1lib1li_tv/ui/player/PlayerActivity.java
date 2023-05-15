@@ -42,7 +42,7 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.CommonUtil;
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoViewBridge;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
-    private StandardGSYVideoPlayer videoView;
+    private GSYVideoPlayer videoView;
     private boolean danmuLoaded;
 
 
