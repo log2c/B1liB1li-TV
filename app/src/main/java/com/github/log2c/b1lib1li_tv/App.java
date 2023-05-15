@@ -5,7 +5,6 @@ import android.app.Application;
 import android.os.Build;
 
 import com.github.log2c.b1lib1li_tv.network.NetKit;
-import com.github.log2c.b1lib1li_tv.ownuse.OwnExo2PlayerManager;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreApplication;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
@@ -39,7 +38,7 @@ public class App extends Application {
 
     private void initCore() {
         if (AppConfigRepository.getInstance().isUseExoPlayer()) {
-            PlayerFactory.setPlayManager(OwnExo2PlayerManager.class);
+            PlayerFactory.setPlayManager(Exo2PlayerManager.class);
             CacheFactory.setCacheManager(ExoPlayerCacheManager.class);
         } else {
             PlayerFactory.setPlayManager(IjkPlayerManager.class);

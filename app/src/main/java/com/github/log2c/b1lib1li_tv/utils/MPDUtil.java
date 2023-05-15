@@ -57,7 +57,7 @@ public class MPDUtil {
                     valuesMap.put("audio_codecs", audio_codecs);
                     valuesMap.put("audio_duration", audio_duration);
                     valuesMap.put("audio_id", audio_id);
-                    valuesMap.put("audio_bandwidt", audio_bandwidth);
+                    valuesMap.put("audio_bandwidth", audio_bandwidth);
                     valuesMap.put("audio_media", audio_media);
                     return new StringSubstitutor(valuesMap).replace(text);
                 })
