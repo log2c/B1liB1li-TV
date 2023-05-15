@@ -7,7 +7,6 @@ import com.google.android.exoplayer2.DefaultRenderersFactory;
 public class ExoPlayerUtil {
     public static DefaultRenderersFactory buildRenderersFactory(
             Context context) {
-        return new DefaultRenderersFactory(context.getApplicationContext())
-                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
+        return new FfmpegRenderersFactory(context.getApplicationContext());
     }
 }
