@@ -3,6 +3,16 @@
     android:title="@string/setting">
 
     <PreferenceCategory
+        android:title="@string/general"
+        app:iconSpaceReserved="false">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_use_av1"
+            app:title="@string/use_av1" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="@string/player_about"
         app:iconSpaceReserved="false">
         <ListPreference

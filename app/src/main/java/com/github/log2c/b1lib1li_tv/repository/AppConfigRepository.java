@@ -96,6 +96,10 @@ public class AppConfigRepository {
         return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_hardware_decoding), true);
     }
 
+    public boolean isUseAV1() {
+        return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_use_av1), false);
+    }
+
     public boolean isUseIjkPlayer() {
         return !isUseExoPlayer();
     }

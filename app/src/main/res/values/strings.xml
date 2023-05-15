@@ -32,4 +32,7 @@
     <string name="pre_key_codecs">pre_key_codecs</string>
     <string name="pre_key_video_id">pre_key_video_id</string>
     <string name="pre_key_dynamic_span_count">pre_key_dynamic_span_count</string>
+    <string name="general">基本</string>
+    <string name="use_av1">请求AV1编码</string>
+    <string name="pre_key_use_av1">pre_key_use_av1</string>
 </resources>

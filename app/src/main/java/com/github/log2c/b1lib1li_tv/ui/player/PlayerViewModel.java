@@ -39,6 +39,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private static final int DASH_MODE = 16; // H.265 ?
     private static final int MP4_MODE = 1;  // 仅 H.264 编码
     private static final int RESOLUTION_4K = 128;   // 需求4K分辨率
+    private static final int AV1_CODEC = 2048;   // 请求AV1编码
     public String bvid;
     public String aid;
     public String cid;
@@ -76,13 +77,13 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
     private void parsePlayUrl() {
         String qn = "120";  // 	4K 超清
-//        if (AppConfigRepository.getInstance().isUseIjkPlayer()) {   // IJK 不支持dash,Exo 忽略qn
-//            qn = String.valueOf(AppConfigRepository.getInstance().fetchVideoId());
-//        }
-        String fnval = (DASH_MODE | RESOLUTION_4K) + "";
+        int fnval = (DASH_MODE | RESOLUTION_4K);
+        if (AppConfigRepository.getInstance().isUseAV1()) {
+            fnval = fnval | AV1_CODEC;
+        }
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
-        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval, fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
+        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval + "", fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
             @Override
             public void onSuccess(PlayUrlModel model) {
 //                playUrlModelEvent.postValue(model);
