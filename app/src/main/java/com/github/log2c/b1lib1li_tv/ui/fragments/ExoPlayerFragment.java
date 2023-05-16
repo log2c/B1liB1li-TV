@@ -20,12 +20,12 @@ import android.widget.TextView;
 import androidx.leanback.app.VideoSupportFragment;
 import androidx.leanback.app.VideoSupportFragmentGlueHost;
 import androidx.leanback.media.PlaybackGlue;
-import androidx.leanback.media.PlaybackTransportControlGlue;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.ResourceUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.leanback.LeanbackPlayerAdapter;
+import com.github.log2c.b1lib1li_tv.leanback.OwnPlaybackTransportControlGlue;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
 import com.github.log2c.b1lib1li_tv.widget.OwnDanmakuView;
@@ -53,7 +53,8 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
     private DebugTextViewHelper mDebugViewHelper;
     protected TextView mDebugTextView;
     protected OwnDanmakuView mDanmakuView;
-    private PlaybackTransportControlGlue<LeanbackPlayerAdapter> mPlayerGlue;
+    private OwnPlaybackTransportControlGlue<LeanbackPlayerAdapter> mPlayerGlue;
+    private boolean mDanmakuLoaded;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -67,7 +68,6 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
             mPlayer.play();
         }
     };
-    private boolean mDanmakuLoaded;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -76,20 +76,18 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         final FrameLayout rootView = (FrameLayout) super.onCreateView(inflater, container, savedInstanceState);
 
         mPlayerView = new StyledPlayerView(requireContext());
-        mPlayerView.setControllerAutoShow(false);
-        mPlayerView.setControllerHideOnTouch(false);
+        mPlayerView.setUseController(false);
         rootView.addView(mPlayerView, 0, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         mDebugTextView = new TextView(requireContext());
         mDebugTextView.setBackgroundColor(Color.parseColor("#88000000"));
-        View controls_dock = rootView.findViewById(ResourceUtils.getIdByName("playback_controls_dock"));
-        rootView.addView(mDebugTextView, rootView.indexOfChild(controls_dock) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        rootView.addView(mDebugTextView, rootView.indexOfChild(getSurfaceView()) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         mDanmakuView = new OwnDanmakuView(requireContext());
         rootView.addView(mDanmakuView, rootView.indexOfChild(mDebugTextView) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         initializePlayer();
-        mPlayerGlue = new PlaybackTransportControlGlue<>(getActivity(),
+        mPlayerGlue = new OwnPlaybackTransportControlGlue<>(getActivity(),
                 new LeanbackPlayerAdapter(getActivity(), mPlayer, 200));
         mPlayerGlue.setHost(new VideoSupportFragmentGlueHost(this));
         mPlayerGlue.addPlayerCallback(new PlaybackGlue.PlayerCallback() {
@@ -240,6 +238,7 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
             case ExoPlayer.STATE_READY:
                 if (!mDanmakuLoaded) {
                     mDanmakuView.setDanmakuStartSeekPosition(mPlayer.getCurrentPosition());
+                    mDanmakuLoaded = true;
                 }
                 break;
             case ExoPlayer.STATE_IDLE:

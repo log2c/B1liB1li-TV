@@ -20,6 +20,7 @@
             android:entries="@array/media_player"
             android:entryValues="@array/media_player_value"
             app:iconSpaceReserved="false"
+            app:isPreferenceVisible="false"
             app:key="@string/pre_key_media_player"
             app:title="@string/player_core" />
 

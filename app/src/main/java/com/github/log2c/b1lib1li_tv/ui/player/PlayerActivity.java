@@ -15,7 +15,9 @@ import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
 
-public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> {
+import me.jessyan.autosize.internal.CancelAdapt;
+
+public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> implements CancelAdapt {
     private static final String TAG = PlayerActivity.class.getSimpleName();
     public static final String PLAYER_DATA_INTENT_FILTER = "player_data_intent_filter";
     public static final String INTENT_BVID = "bvid";

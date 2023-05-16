@@ -28,8 +28,8 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.setting.SettingsActivity"
-            android:theme="@style/AppTheme.LeanSetting"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.LeanSetting" />
 
         <meta-data
             android:name="design_width_in_dp"
@@ -58,6 +58,7 @@
             android:name=".ui.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:exported="false"
+            android:process=".player"
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.app.lib_name"

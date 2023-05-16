@@ -1,4 +1,4 @@
-package com.github.log2c.b1lib1li_tv.ui.fragments;
+package com.github.log2c.b1lib1li_tv.leanback;
 
 import android.content.Context;
 import android.os.Handler;
