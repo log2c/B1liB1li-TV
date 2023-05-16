@@ -99,6 +99,9 @@ public class AppConfigRepository {
     public boolean isUseAV1() {
         return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_use_av1), false);
     }
+    public boolean isEnableDebugView() {
+        return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_enable_debug_view), false);
+    }
 
     public boolean isUseIjkPlayer() {
         return !isUseExoPlayer();

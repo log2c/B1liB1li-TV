@@ -35,4 +35,6 @@
     <string name="general">基本</string>
     <string name="use_av1">请求AV1编码</string>
     <string name="pre_key_use_av1">pre_key_use_av1</string>
+    <string name="pre_key_enable_debug_view">pre_key_enable_debug_view</string>
+    <string name="debug_view">调试信息</string>
 </resources>

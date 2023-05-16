@@ -41,6 +41,11 @@
             app:iconSpaceReserved="false"
             app:key="@string/pre_key_danmu_size"
             app:title="@string/danmu_size" />
+        <SwitchPreference
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_enable_debug_view"
+            app:title="@string/debug_view" />
     </PreferenceCategory>
 
     <PreferenceCategory

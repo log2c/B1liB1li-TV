@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.leanback.app.VideoSupportFragment;
 import androidx.leanback.app.VideoSupportFragmentGlueHost;
@@ -19,7 +21,9 @@ import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.media.PlaybackTransportControlGlue;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.blankj.utilcode.util.ResourceUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -30,12 +34,16 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.util.DebugTextViewHelper;
 import com.google.android.exoplayer2.util.EventLogger;
 
 @SuppressWarnings("ConstantConditions")
 public class ExoPlayerFragment extends VideoSupportFragment {
+    private static final String TAG = ExoPlayerFragment.class.getSimpleName();
     private StyledPlayerView mPlayerView;
     private ExoPlayer mPlayer;
+    private DebugTextViewHelper mDebugViewHelper;
+    protected TextView mDebugTextView;
     private PlaybackTransportControlGlue<LeanbackPlayerAdapter> mPlayerGlue;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -47,16 +55,21 @@ public class ExoPlayerFragment extends VideoSupportFragment {
         }
     };
 
-
     @SuppressLint("PrivateResource")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getContext().getTheme().applyStyle(androidx.leanback.R.style.Theme_Leanback, true);
         final FrameLayout rootView = (FrameLayout) super.onCreateView(inflater, container, savedInstanceState);
+
         mPlayerView = new StyledPlayerView(requireContext());
         mPlayerView.setControllerAutoShow(false);
         mPlayerView.setControllerHideOnTouch(false);
         rootView.addView(mPlayerView, 0, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+
+        mDebugTextView = new TextView(requireContext());
+        mDebugTextView.setBackgroundColor(Color.parseColor("#88000000"));
+        View controls_dock = rootView.findViewById(ResourceUtils.getIdByName("playback_controls_dock"));
+        rootView.addView(mDebugTextView, rootView.indexOfChild(controls_dock) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         initializePlayer();
         mPlayerGlue = new PlaybackTransportControlGlue<>(getActivity(),
@@ -90,8 +103,9 @@ public class ExoPlayerFragment extends VideoSupportFragment {
             mPlayer.setAudioAttributes(AudioAttributes.DEFAULT, /* handleAudioFocus= */ true);
             mPlayer.setPlayWhenReady(true);
             mPlayerView.setPlayer(mPlayer);
-//            debugViewHelper = new DebugTextViewHelper(mPlayer, debugTextView);
-//            debugViewHelper.start();
+            mDebugTextView.setVisibility(AppConfigRepository.getInstance().isEnableDebugView() ? View.VISIBLE : View.GONE);
+            mDebugViewHelper = new DebugTextViewHelper(mPlayer, mDebugTextView);
+            mDebugViewHelper.start();
         }
 //        boolean haveStartPosition = startItemIndex != C.INDEX_UNSET;
 //        if (haveStartPosition) {
@@ -119,8 +133,10 @@ public class ExoPlayerFragment extends VideoSupportFragment {
 
     protected void releasePlayer() {
         if (mPlayer != null) {
-//            debugViewHelper.stop();
-//            debugViewHelper = null;
+            if (mDebugViewHelper != null) {
+                mDebugViewHelper.stop();
+                mDebugViewHelper = null;
+            }
             mPlayer.release();
             mPlayer = null;
             mPlayerView.setPlayer(/* player= */ null);
