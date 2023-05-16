@@ -3,6 +3,7 @@ package com.github.log2c.b1lib1li_tv.ui.player;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
@@ -10,10 +11,15 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
+import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
+import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
+
+import java.util.List;
 
 import me.jessyan.autosize.internal.CancelAdapt;
 
@@ -69,16 +75,23 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     }
 
     private void onPlayUrlChange(String[] urls) {
-        if (urls.length == 2) {   // EXOPlayer模式
-            Intent intent = new Intent(PLAYER_DATA_INTENT_FILTER);
-            intent.putExtra("video", urls[0]);
-            intent.putExtra("audio", urls[1]);
-            intent.putExtra("danmu_path", viewModel.danmukuPath);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        if (urls.length == 2) {
+            new Thread(() -> {
+                Intent intent = new Intent(PLAYER_DATA_INTENT_FILTER);
+                intent.putExtra("video", urls[0]);
+                intent.putExtra("audio", urls[1]);
+                intent.putExtra("danmu_path", viewModel.danmukuPath);
+                intent.putExtra("data", convertToResolutionModel(viewModel.mPlayUrlModel.getDash().getVideo()));
+                LocalBroadcastManager.getInstance(PlayerActivity.this).sendBroadcast(intent);
+            }).start();
         } else if (urls.length == 1) {
 //            final boolean isCache = !urls[0].endsWith(".mpd");
             final boolean isCache = false;
         }
+    }
+
+    private Parcelable[] convertToResolutionModel(List<PlayUrlModel.DashModel.VideoModel> videoModelList) {
+        return GsonUtils.fromJson(GsonUtils.toJson(videoModelList), ResolutionModel[].class);
     }
 
     private void loadDanmuku() {

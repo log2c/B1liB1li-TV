@@ -9,6 +9,7 @@ import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
 
 public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends PlaybackTransportControlGlue<T> {
+    private ActionClickListener mActionClickListener;
 
     public OwnPlaybackTransportControlGlue(Context context, T impl) {
         super(context, impl);
@@ -44,6 +45,11 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
 
     @Override
     public void onActionClicked(Action action) {
+        if (action == highQualityAction) {
+            if (mActionClickListener != null) {
+                mActionClickListener.onQualityClick(action);
+            }
+        }
 //        if (action == rewindAction) {
 //            // Handle Rewind
 //        } else if (action == fastForwardAction) {
@@ -55,5 +61,13 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
 //        } else {
         super.onActionClicked(action);
 //        }
+    }
+
+    public void setActionClickListener(ActionClickListener actionClickListener) {
+        this.mActionClickListener = actionClickListener;
+    }
+
+    public interface ActionClickListener {
+        void onQualityClick(Action action);
     }
 }

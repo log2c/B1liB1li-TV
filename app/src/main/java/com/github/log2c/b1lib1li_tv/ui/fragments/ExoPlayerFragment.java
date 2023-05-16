@@ -20,14 +20,19 @@ import android.widget.TextView;
 import androidx.leanback.app.VideoSupportFragment;
 import androidx.leanback.app.VideoSupportFragmentGlueHost;
 import androidx.leanback.media.PlaybackGlue;
+import androidx.leanback.widget.Action;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.leanback.LeanbackPlayerAdapter;
 import com.github.log2c.b1lib1li_tv.leanback.OwnPlaybackTransportControlGlue;
+import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
+import com.github.log2c.b1lib1li_tv.ui.setting.SettingFragment;
+import com.github.log2c.b1lib1li_tv.ui.setting.SettingsActivity;
 import com.github.log2c.b1lib1li_tv.widget.OwnDanmakuView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -46,7 +51,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
-public class ExoPlayerFragment extends VideoSupportFragment implements Player.Listener {
+public class ExoPlayerFragment extends VideoSupportFragment implements Player.Listener, OwnPlaybackTransportControlGlue.ActionClickListener {
     private static final String TAG = ExoPlayerFragment.class.getSimpleName();
     private StyledPlayerView mPlayerView;
     private ExoPlayer mPlayer;
@@ -55,11 +60,13 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
     protected OwnDanmakuView mDanmakuView;
     private OwnPlaybackTransportControlGlue<LeanbackPlayerAdapter> mPlayerGlue;
     private boolean mDanmakuLoaded;
+    ResolutionModel[] mResolutionModel;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String video = intent.getStringExtra("video");
             String audio = intent.getStringExtra("audio");
+            mResolutionModel = (ResolutionModel[]) intent.getParcelableArrayExtra("data");
             String danmuPath = intent.getStringExtra("danmu_path");
             if (!TextUtils.isEmpty(danmuPath)) {
                 mDanmakuView.setDanmaKuStream(FileUtils.getFileByPath(danmuPath));
@@ -89,6 +96,7 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         initializePlayer();
         mPlayerGlue = new OwnPlaybackTransportControlGlue<>(getActivity(),
                 new LeanbackPlayerAdapter(getActivity(), mPlayer, 200));
+        mPlayerGlue.setActionClickListener(this);
         mPlayerGlue.setHost(new VideoSupportFragmentGlueHost(this));
         mPlayerGlue.addPlayerCallback(new PlaybackGlue.PlayerCallback() {
             @Override
@@ -249,5 +257,10 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
                 mDanmakuView.release();
                 break;
         }
+    }
+
+    @Override
+    public void onQualityClick(Action action) {
+        SettingsActivity.show(requireActivity(), R.xml.resolution_settings, SettingFragment.KEY_RECEPTION_RESOLUTION, mResolutionModel);
     }
 }
