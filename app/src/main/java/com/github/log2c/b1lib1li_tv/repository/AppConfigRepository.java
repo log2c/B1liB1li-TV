@@ -99,6 +99,7 @@ public class AppConfigRepository {
     public boolean isUseAV1() {
         return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_use_av1), false);
     }
+
     public boolean isEnableDebugView() {
         return SPUtils.getInstance(SP_NAME_CONFIG).getBoolean(Utils.getApp().getString(R.string.pre_key_enable_debug_view), false);
     }
@@ -127,8 +128,15 @@ public class AppConfigRepository {
     }
 
     public int determinedVideoInDashMode(final List<PlayUrlModel.DashModel.VideoModel> modelList) {
-        final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Utils.getApp().getString(R.string.pre_key_video_id), 9999);
-        final String codecs = SPUtils.getInstance(SP_NAME_CONFIG).getString(Utils.getApp().getString(R.string.pre_key_codecs), "hevc");
+        String[] split = SPUtils.getInstance(SP_NAME_CONFIG).getString(Utils.getApp().getString(R.string.pre_key_codecs), "hevc").split("$$");
+        final int id = split.length == 1 ? 9999 : Integer.parseInt(split[0]);
+        String codecs;
+        if (split.length == 1) {
+            codecs = split[0];
+        } else {
+            codecs = split[1];
+        }
+//        final int id = SPUtils.getInstance(SP_NAME_CONFIG).getInt(Utils.getApp().getString(R.string.pre_key_video_id), 9999);
         final List<PlayUrlModel.DashModel.VideoModel> filterList = new ArrayList<>(modelList);
 
         CollectionUtils.filter(filterList, item -> item.getId() == id);

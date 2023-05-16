@@ -110,7 +110,7 @@ public class SettingFragment extends LeanbackSettingsFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
             getPreferenceManager().setSharedPreferencesName(Constants.SP_NAME_CONFIG);
-            setPreferencesFromResource(R.xml.resolution_settings,null);
+            setPreferencesFromResource(R.xml.resolution_settings, null);
             if (getArguments() != null) {
                 models = getArguments().getParcelableArray("data");
             }
@@ -121,7 +121,7 @@ public class SettingFragment extends LeanbackSettingsFragmentCompat {
             CharSequence[] entryValues = new CharSequence[models.length];
             for (int i = 0; i < models.length; i++) {
                 ResolutionModel m = (ResolutionModel) models[i];
-                entryValues[i] = m.getId() + "_" + m.getCodecs();
+                entryValues[i] = m.getId() + "$$" + m.getCodecs();
                 entries[i] = m.getWidth() + "x" + m.getHeight() + "@" + m.getFrameRate() + "P " + m.getCodecs();
             }
             preference.setEntries(entries);
