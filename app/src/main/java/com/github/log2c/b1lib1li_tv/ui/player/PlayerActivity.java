@@ -71,6 +71,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             Intent intent = new Intent(PLAYER_DATA_INTENT_FILTER);
             intent.putExtra("video", urls[0]);
             intent.putExtra("audio", urls[1]);
+            intent.putExtra("danmu_path", viewModel.danmukuPath);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } else if (urls.length == 1) {
 //            final boolean isCache = !urls[0].endsWith(".mpd");

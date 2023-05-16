@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,15 @@ import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.media.PlaybackTransportControlGlue;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ResourceUtils;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
+import com.github.log2c.b1lib1li_tv.widget.OwnDanmakuView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
@@ -37,23 +42,32 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.DebugTextViewHelper;
 import com.google.android.exoplayer2.util.EventLogger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("ConstantConditions")
-public class ExoPlayerFragment extends VideoSupportFragment {
+public class ExoPlayerFragment extends VideoSupportFragment implements Player.Listener {
     private static final String TAG = ExoPlayerFragment.class.getSimpleName();
     private StyledPlayerView mPlayerView;
     private ExoPlayer mPlayer;
     private DebugTextViewHelper mDebugViewHelper;
     protected TextView mDebugTextView;
+    protected OwnDanmakuView mDanmakuView;
     private PlaybackTransportControlGlue<LeanbackPlayerAdapter> mPlayerGlue;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String video = intent.getStringExtra("video");
             String audio = intent.getStringExtra("audio");
+            String danmuPath = intent.getStringExtra("danmu_path");
+            if (!TextUtils.isEmpty(danmuPath)) {
+                mDanmakuView.setDanmaKuStream(FileUtils.getFileByPath(danmuPath));
+            }
             setPlayerMediaSource(video, audio);
             mPlayer.play();
         }
     };
+    private boolean mDanmakuLoaded;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -70,6 +84,9 @@ public class ExoPlayerFragment extends VideoSupportFragment {
         mDebugTextView.setBackgroundColor(Color.parseColor("#88000000"));
         View controls_dock = rootView.findViewById(ResourceUtils.getIdByName("playback_controls_dock"));
         rootView.addView(mDebugTextView, rootView.indexOfChild(controls_dock) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
+        mDanmakuView = new OwnDanmakuView(requireContext());
+        rootView.addView(mDanmakuView, rootView.indexOfChild(mDebugTextView) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         initializePlayer();
         mPlayerGlue = new PlaybackTransportControlGlue<>(getActivity(),
@@ -98,7 +115,7 @@ public class ExoPlayerFragment extends VideoSupportFragment {
             ExoPlayer.Builder playerBuilder =
                     new ExoPlayer.Builder(/* context= */ requireContext());
             mPlayer = playerBuilder.build();
-//            mPlayer.addListener(new PlayerEventListener());
+            mPlayer.addListener(this);
             mPlayer.addAnalyticsListener(new EventLogger());
             mPlayer.setAudioAttributes(AudioAttributes.DEFAULT, /* handleAudioFocus= */ true);
             mPlayer.setPlayWhenReady(true);
@@ -192,5 +209,46 @@ public class ExoPlayerFragment extends VideoSupportFragment {
     public void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mReceiver);
+        mDanmakuView.release();
+    }
+
+    private static final Map<@Player.State Integer, String> PLAYBACK_STATUS = new HashMap<>();
+
+    static {
+        PLAYBACK_STATUS.put(ExoPlayer.STATE_IDLE, "空闲等待");
+        PLAYBACK_STATUS.put(ExoPlayer.STATE_BUFFERING, "缓冲中");
+        PLAYBACK_STATUS.put(ExoPlayer.STATE_READY, "准备完成");
+        PLAYBACK_STATUS.put(ExoPlayer.STATE_ENDED, "完成播放");
+    }
+
+    @Override
+    public void onIsPlayingChanged(boolean isPlaying) {
+        Player.Listener.super.onIsPlayingChanged(isPlaying);
+        Log.d(TAG, "onIsPlayingChanged: " + (isPlaying ? "播放中" : "暂停"));
+        if (isPlaying) {
+            mDanmakuView.onVideoResume();
+        } else {
+            mDanmakuView.onVideoPause();
+        }
+    }
+
+    @Override
+    public void onPlaybackStateChanged(int playbackState) {
+        Player.Listener.super.onPlaybackStateChanged(playbackState);
+        Log.d(TAG, "onPlaybackStateChanged: " + PLAYBACK_STATUS.get(playbackState));
+        switch (playbackState) {
+            case ExoPlayer.STATE_READY:
+                if (!mDanmakuLoaded) {
+                    mDanmakuView.setDanmakuStartSeekPosition(mPlayer.getCurrentPosition());
+                }
+                break;
+            case ExoPlayer.STATE_IDLE:
+                break;
+            case ExoPlayer.STATE_BUFFERING:
+                break;
+            case ExoPlayer.STATE_ENDED:
+                mDanmakuView.release();
+                break;
+        }
     }
 }

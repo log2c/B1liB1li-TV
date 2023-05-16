@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.loader.ILoader;
 import master.flame.danmaku.danmaku.loader.IllegalDataException;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
@@ -30,36 +29,26 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.ui.widget.DanmakuView;
 
-public class DanmakuVideoPlayer extends DanmakuView {
+public class OwnDanmakuView extends DanmakuView {
     private BaseDanmakuParser mParser;
-    private IDanmakuView mDanmakuView;
     private DanmakuContext mDanmakuContext;
     private long mDanmakuStartSeekPosition = -1;
     private boolean mDanmakuShow = true;
     private File mDanmakuFile;
 
-    public DanmakuVideoPlayer(Context context) {
+    public OwnDanmakuView(Context context) {
         this(context, null);
     }
 
-    public DanmakuVideoPlayer(Context context, @Nullable AttributeSet attrs) {
+    public OwnDanmakuView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DanmakuVideoPlayer(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public OwnDanmakuView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
-    protected void init(Context context) {
-        mDanmakuView = this;
         initDanmuku();
     }
 
-    //    @Override
-    public void onPrepared() {
-        onPrepareDanmaku(this);
-    }
 
     //    @Override
     public void onVideoPause() {
@@ -67,7 +56,7 @@ public class DanmakuVideoPlayer extends DanmakuView {
     }
 
     //    @Override
-    public void onVideoResume(boolean isResume) {
+    public void onVideoResume() {
         danmakuOnResume();
     }
 
@@ -82,7 +71,7 @@ public class DanmakuVideoPlayer extends DanmakuView {
 
     //    @Override
     public void onCompletion() {
-        releaseDanmaku(this);
+        release();
     }
 
 
@@ -103,21 +92,21 @@ public class DanmakuVideoPlayer extends DanmakuView {
     }
 
     protected void danmakuOnPause() {
-        if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-            mDanmakuView.pause();
+        if (isPrepared()) {
+            pause();
         }
     }
 
     protected void danmakuOnResume() {
-        if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
-            mDanmakuView.resume();
+        if (isPrepared() && isPaused()) {
+            resume();
         }
     }
 
     public void setDanmaKuStream(File is) {
         mDanmakuFile = is;
-        if (getDanmakuView() != null && !getDanmakuView().isPrepared()) {
-//            onPrepareDanmaku((DanmakuVideoPlayer) getCurrentPlayer());
+        if (!isPrepared()) {
+            onPrepareDanmaku();
         }
     }
 
@@ -131,7 +120,7 @@ public class DanmakuVideoPlayer extends DanmakuView {
         overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
         overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
 
-        DanamakuAdapter danamakuAdapter = new DanamakuAdapter(mDanmakuView);
+        DanamakuAdapter danamakuAdapter = new DanamakuAdapter(this);
         mDanmakuContext = DanmakuContext.create();
         mDanmakuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
                 .setDuplicateMergingEnabled(false)
@@ -140,39 +129,36 @@ public class DanmakuVideoPlayer extends DanmakuView {
                 .setCacheStuffer(new SpannedCacheStuffer(), danamakuAdapter) // 图文混排使用SpannedCacheStuffer
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair);
-        if (mDanmakuView != null) {
-            if (mDanmakuFile != null) {
-                mParser = createParser(getIsStream(mDanmakuFile));
+        if (mDanmakuFile != null) {
+            mParser = createParser(getIsStream(mDanmakuFile));
+        }
+
+        setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
+            @Override
+            public void updateTimer(DanmakuTimer timer) {
             }
 
-            mDanmakuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
-                @Override
-                public void updateTimer(DanmakuTimer timer) {
-                }
+            @Override
+            public void drawingFinished() {
 
-                @Override
-                public void drawingFinished() {
+            }
 
-                }
+            @Override
+            public void danmakuShown(BaseDanmaku danmaku) {
+            }
 
-                @Override
-                public void danmakuShown(BaseDanmaku danmaku) {
+            @Override
+            public void prepared() {
+                start();
+                if (getDanmakuStartSeekPosition() != -1) {
+                    resolveDanmakuSeek(getDanmakuStartSeekPosition());
+                    setDanmakuStartSeekPosition(-1);
                 }
+                resolveDanmakuShow();
 
-                @Override
-                public void prepared() {
-                    if (getDanmakuView() != null) {
-                        getDanmakuView().start();
-                        if (getDanmakuStartSeekPosition() != -1) {
-                            resolveDanmakuSeek(DanmakuVideoPlayer.this, getDanmakuStartSeekPosition());
-                            setDanmakuStartSeekPosition(-1);
-                        }
-                        resolveDanmakuShow();
-                    }
-                }
-            });
-            mDanmakuView.enableDanmakuDrawingCache(true);
-        }
+            }
+        });
+        enableDanmakuDrawingCache(true);
     }
 
     private InputStream getIsStream(File file) {
@@ -185,37 +171,34 @@ public class DanmakuVideoPlayer extends DanmakuView {
     private void resolveDanmakuShow() {
         post(() -> {
             if (mDanmakuShow) {
-                if (!getDanmakuView().isShown())
-                    getDanmakuView().show();
+                if (!isShown())
+                    show();
             } else {
-                if (getDanmakuView().isShown()) {
-                    getDanmakuView().hide();
+                if (isShown()) {
+                    hide();
                 }
             }
         });
     }
 
     public boolean isShowDanmaku() {
-        return getDanmakuView().isShown();
+        return isShown();
     }
 
     /**
      * 开始播放弹幕
      */
-    private void onPrepareDanmaku(DanmakuVideoPlayer gsyVideoPlayer) {
-        if (gsyVideoPlayer.getDanmakuView() != null && !gsyVideoPlayer.getDanmakuView().isPrepared() && gsyVideoPlayer.getParser() != null) {
-            gsyVideoPlayer.getDanmakuView().prepare(gsyVideoPlayer.getParser(),
-                    gsyVideoPlayer.getDanmakuContext());
-        }
+    private void onPrepareDanmaku() {
+        prepare(getParser(), mDanmakuContext);
     }
 
     /**
      * 弹幕偏移
      */
-    private void resolveDanmakuSeek(DanmakuVideoPlayer gsyVideoPlayer, long time) {
-//        if (mHadPlay && gsyVideoPlayer.getDanmakuView() != null && gsyVideoPlayer.getDanmakuView().isPrepared()) {
-//            gsyVideoPlayer.getDanmakuView().seekTo(time);
-//        }
+    private void resolveDanmakuSeek(long time) {
+        if (isPrepared()) {
+            seekTo(time);
+        }
     }
 
     private BaseDanmakuParser createParser(InputStream stream) {
@@ -244,31 +227,13 @@ public class DanmakuVideoPlayer extends DanmakuView {
 
     }
 
-    /**
-     * 释放弹幕控件
-     */
-    private void releaseDanmaku(DanmakuVideoPlayer danmakuVideoPlayer) {
-        if (danmakuVideoPlayer != null && danmakuVideoPlayer.getDanmakuView() != null) {
-//            Debuger.printfError("release Danmaku!");
-            danmakuVideoPlayer.getDanmakuView().release();
-        }
-    }
-
-    public BaseDanmakuParser getParser() {
+    private BaseDanmakuParser getParser() {
         if (mParser == null) {
             if (mDanmakuFile != null) {
                 mParser = createParser(getIsStream(mDanmakuFile));
             }
         }
         return mParser;
-    }
-
-    public DanmakuContext getDanmakuContext() {
-        return mDanmakuContext;
-    }
-
-    public IDanmakuView getDanmakuView() {
-        return mDanmakuView;
     }
 
     public long getDanmakuStartSeekPosition() {
@@ -281,7 +246,7 @@ public class DanmakuVideoPlayer extends DanmakuView {
 
     public void setDanmakuShow(boolean danmakuShow) {
         mDanmakuShow = danmakuShow;
-        if (getDanmakuView() != null && getDanmakuView().isPrepared()) {
+        if (isPrepared()) {
             resolveDanmakuShow();
         }
     }
@@ -290,9 +255,4 @@ public class DanmakuVideoPlayer extends DanmakuView {
         return mDanmakuShow;
     }
 
-    public void seekTo(long ms) {
-        if (mDanmakuView != null) {
-            mDanmakuView.seekTo(ms);
-        }
-    }
 }
