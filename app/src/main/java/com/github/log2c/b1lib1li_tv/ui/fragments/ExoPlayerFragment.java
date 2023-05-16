@@ -23,11 +23,13 @@ import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.Action;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.leanback.LeanbackPlayerAdapter;
 import com.github.log2c.b1lib1li_tv.leanback.OwnPlaybackTransportControlGlue;
+import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
 import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
@@ -47,6 +49,7 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.DebugTextViewHelper;
 import com.google.android.exoplayer2.util.EventLogger;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,13 +88,12 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         mPlayerView = new StyledPlayerView(requireContext());
         mPlayerView.setUseController(false);
         rootView.addView(mPlayerView, 0, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        mDanmakuView = new OwnDanmakuView(requireContext());
+        rootView.addView(mDanmakuView, rootView.indexOfChild(getSurfaceView()) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         mDebugTextView = new TextView(requireContext());
         mDebugTextView.setBackgroundColor(Color.parseColor("#88000000"));
         rootView.addView(mDebugTextView, rootView.indexOfChild(getSurfaceView()) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-
-        mDanmakuView = new OwnDanmakuView(requireContext());
-        rootView.addView(mDanmakuView, rootView.indexOfChild(mDebugTextView) + 1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
         initializePlayer();
         mPlayerGlue = new OwnPlaybackTransportControlGlue<>(getActivity(),
@@ -261,6 +263,15 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
 
     @Override
     public void onQualityClick(Action action) {
-        SettingsActivity.show(requireActivity(), R.xml.resolution_settings, SettingFragment.KEY_RECEPTION_RESOLUTION, mResolutionModel);
+//        SettingsActivity.show(requireActivity(), R.xml.resolution_settings, SettingFragment.KEY_RECEPTION_RESOLUTION, mResolutionModel);
+        String[] entries = new String[mResolutionModel.length];
+        CharSequence[] entryValues = new CharSequence[mResolutionModel.length];
+        for (int i = 0; i < mResolutionModel.length; i++) {
+            ResolutionModel m = mResolutionModel[i];
+            entries[i] = m.getWidth() + "x" + m.getHeight() + "@" + m.getFrameRate() + "P " + m.getCodecs();
+            entryValues[i] = i + "";
+        }
+        SelectDialogFragment.newSingleInstance("title", "msg", entries, entryValues, "")
+                .show(getChildFragmentManager(), "xxx");
     }
 }

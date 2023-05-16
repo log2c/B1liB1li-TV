@@ -15,23 +15,31 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
         super(context, impl);
     }
 
-    //    private PlaybackControlsRow.RepeatAction repeatAction;
+//    private PlaybackControlsRow.RepeatAction repeatAction;
 //    private PlaybackControlsRow.PictureInPictureAction pipAction;
 //    private PlaybackControlsRow.ThumbsUpAction thumbsUpAction;
 //    private PlaybackControlsRow.ThumbsDownAction thumbsDownAction;
 //    private PlaybackControlsRow.SkipPreviousAction skipPreviousAction;
 //    private PlaybackControlsRow.SkipNextAction skipNextAction;
-//    private PlaybackControlsRow.FastForwardAction fastForwardAction;
-//    private PlaybackControlsRow.RewindAction rewindAction;
+    private PlaybackControlsRow.FastForwardAction fastForwardAction;
+    private PlaybackControlsRow.RewindAction rewindAction;
     private PlaybackControlsRow.HighQualityAction highQualityAction;
 
     @Override
     protected void onCreatePrimaryActions(ArrayObjectAdapter primaryActionsAdapter) {
         super.onCreatePrimaryActions(primaryActionsAdapter);
         highQualityAction = new PlaybackControlsRow.HighQualityAction(getContext());
+//        repeatAction = new PlaybackControlsRow.RepeatAction(getContext());
+//        pipAction = new PlaybackControlsRow.PictureInPictureAction(getContext());
+//        thumbsUpAction = new PlaybackControlsRow.ThumbsUpAction(getContext());
+//        thumbsDownAction = new PlaybackControlsRow.ThumbsDownAction(getContext());
+//        skipPreviousAction = new PlaybackControlsRow.SkipPreviousAction(getContext());
+//        skipNextAction=new ;
+        fastForwardAction = new PlaybackControlsRow.FastForwardAction(getContext());
+        rewindAction = new PlaybackControlsRow.RewindAction(getContext());
 //        primaryActionsAdapter.add(skipPreviousAction);
-//        primaryActionsAdapter.add(rewindAction);
-//        primaryActionsAdapter.add(fastForwardAction);
+        primaryActionsAdapter.add(rewindAction);
+        primaryActionsAdapter.add(fastForwardAction);
 //        primaryActionsAdapter.add(skipNextAction);
         primaryActionsAdapter.add(highQualityAction);
     }
@@ -50,17 +58,20 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
                 mActionClickListener.onQualityClick(action);
             }
         }
-//        if (action == rewindAction) {
-//            // Handle Rewind
-//        } else if (action == fastForwardAction) {
-//            // Handle FastForward
-//        } else if (action == thumbsDownAction) {
+        int duration = 10 * 1000;
+        if (action == rewindAction) {
+            getPlayerAdapter().seekTo(getPlayerAdapter().getCurrentPosition() - duration);
+        } else if (action == fastForwardAction) {
+            getPlayerAdapter().seekTo(getPlayerAdapter().getCurrentPosition() + duration);
+        }
+//        else if (action == thumbsDownAction) {
 //            // Handle ThumbsDown
 //        } else if (action == thumbsUpAction) {
 //            // Handle ThumbsUp
-//        } else {
-        super.onActionClicked(action);
 //        }
+        else {
+            super.onActionClicked(action);
+        }
     }
 
     public void setActionClickListener(ActionClickListener actionClickListener) {
