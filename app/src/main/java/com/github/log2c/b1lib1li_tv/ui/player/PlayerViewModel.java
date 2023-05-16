@@ -15,7 +15,6 @@ import com.github.log2c.b1lib1li_tv.utils.MPDUtil;
 import com.github.log2c.base.base.BaseCoreViewModel;
 import com.github.log2c.base.toast.ToastUtils;
 import com.github.log2c.base.utils.Logging;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoView;
 
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -29,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
 public class PlayerViewModel extends BaseCoreViewModel {
     private static final String TAG = PlayerViewModel.class.getSimpleName();
     private final VideoRepository videoRepository;
@@ -44,7 +43,6 @@ public class PlayerViewModel extends BaseCoreViewModel {
     public String aid;
     public String cid;
     public String danmukuPath;
-    public int playerState = GSYVideoView.CURRENT_STATE_PREPAREING; // 播放器状态
     private Disposable historyReportSubscribe;
     public PlayUrlModel mPlayUrlModel;
 
@@ -83,26 +81,29 @@ public class PlayerViewModel extends BaseCoreViewModel {
         }
         String fnver = "0"; // 恒定值
         String fourk = "1"; // 允许4K视频
-        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval + "", fnver, fourk).subscribe(new BackendObserver<PlayUrlModel>() {
-            @Override
-            public void onSuccess(PlayUrlModel model) {
+        videoRepository.getPlayUrl(aid, bvid, cid, qn, fnval + "", fnver, fourk)
+                .delay(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new BackendObserver<PlayUrlModel>() {
+                    @Override
+                    public void onSuccess(PlayUrlModel model) {
 //                playUrlModelEvent.postValue(model);
-                playUrlEvent.postValue(new String[0]);
-                mPlayUrlModel = model;
-                loadPlayResource();
-            }
+                        playUrlEvent.postValue(new String[0]);
+                        mPlayUrlModel = model;
+                        loadPlayResource();
+                    }
 
-            @Override
-            public void onFinish() {
+                    @Override
+                    public void onFinish() {
 
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                ToastUtils.error(e.toString());
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        ToastUtils.error(e.toString());
+                    }
+                });
     }
 
     @SuppressLint("CheckResult")
@@ -169,7 +170,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private void startHistoryReportTimer() {
         historyReportSubscribe = Observable.interval(15, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
-                .filter(aLong -> playerState == GSYVideoView.CURRENT_STATE_PLAYING)
+//                .filter(aLong -> playerState == GSYVideoView.CURRENT_STATE_PLAYING)
                 .subscribe(s -> historyReportEvent.postValue(String.valueOf(s)), Throwable::printStackTrace);
     }
 

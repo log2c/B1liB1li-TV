@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.player.PlayerActivity">
 
-    <com.github.log2c.b1lib1li_tv.widget.DanmakuVideoPlayer
-        android:id="@+id/player"
+    <fragment
+        android:id="@+id/player_fragment"
+        android:name="com.github.log2c.b1lib1li_tv.ui.fragments.ExoPlayerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

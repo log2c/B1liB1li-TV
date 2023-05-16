@@ -48,8 +48,8 @@ configurations.all {
 
 dependencies {
     api rootProject.ext.androidxs
+    api rootProject.ext.exoplayer
     api rootProject.ext.danmukus
-    api rootProject.ext.gsyVideoPlayer
 
     api rootProject.ext.dependencies.MVVMLin
 

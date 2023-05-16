@@ -3,17 +3,14 @@ package com.github.log2c.b1lib1li_tv.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.FileIOUtils;
-import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.DanamakuAdapter;
 import com.github.log2c.b1lib1li_tv.common.BiliDanmukuParser;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
-import com.shuyu.gsyvideoplayer.utils.Debuger;
-import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 
 import java.io.File;
 import java.io.InputStream;
@@ -31,8 +28,9 @@ import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
-public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
+public class DanmakuVideoPlayer extends DanmakuView {
     private BaseDanmakuParser mParser;
     private IDanmakuView mDanmakuView;
     private DanmakuContext mDanmakuContext;
@@ -40,117 +38,68 @@ public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
     private boolean mDanmakuShow = true;
     private File mDanmakuFile;
 
-    public DanmakuVideoPlayer(Context context, Boolean fullFlag) {
-        super(context, fullFlag);
-    }
-
     public DanmakuVideoPlayer(Context context) {
-        super(context);
+        this(context, null);
     }
 
-    public DanmakuVideoPlayer(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public DanmakuVideoPlayer(Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    @Override
+    public DanmakuVideoPlayer(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
     protected void init(Context context) {
-        super.init(context);
-        mDanmakuView = findViewById(R.id.danmaku_view);
+        mDanmakuView = this;
         initDanmuku();
     }
 
-    @Override
+    //    @Override
     public void onPrepared() {
-        super.onPrepared();
         onPrepareDanmaku(this);
     }
 
-    @Override
+    //    @Override
     public void onVideoPause() {
-        super.onVideoPause();
         danmakuOnPause();
     }
 
-    @Override
+    //    @Override
     public void onVideoResume(boolean isResume) {
-        super.onVideoResume(isResume);
         danmakuOnResume();
     }
 
-    @Override
+    //    @Override
     protected void clickStartIcon() {
-        super.clickStartIcon();
-        if (mCurrentState == CURRENT_STATE_PLAYING) {
-            danmakuOnResume();
-        } else if (mCurrentState == CURRENT_STATE_PAUSE) {
-            danmakuOnPause();
-        }
+//        if (mCurrentState == CURRENT_STATE_PLAYING) {
+//            danmakuOnResume();
+//        } else if (mCurrentState == CURRENT_STATE_PAUSE) {
+//            danmakuOnPause();
+//        }
     }
 
-    @Override
+    //    @Override
     public void onCompletion() {
         releaseDanmaku(this);
     }
 
 
-    @Override
+    //    @Override
     public void onSeekComplete() {
-        super.onSeekComplete();
-        long time = mProgressBar.getProgress() * getDuration() / 100;
-        //如果已经初始化过的，直接seek到对于位置
-        if (mHadPlay && getDanmakuView() != null && getDanmakuView().isPrepared()) {
-            resolveDanmakuSeek(this, time);
-        } else if (mHadPlay && getDanmakuView() != null && !getDanmakuView().isPrepared()) {
-            //如果没有初始化过的，记录位置等待
-            setDanmakuStartSeekPosition(time);
-        }
+//        long time = mProgressBar.getProgress() * getDuration() / 100;
+//        //如果已经初始化过的，直接seek到对于位置
+//        if (mHadPlay && getDanmakuView() != null && getDanmakuView().isPrepared()) {
+//            resolveDanmakuSeek(this, time);
+//        } else if (mHadPlay && getDanmakuView() != null && !getDanmakuView().isPrepared()) {
+//            //如果没有初始化过的，记录位置等待
+//            setDanmakuStartSeekPosition(time);
+//        }
     }
 
-    @Override
+    //    @Override
     public void onClick(View v) {
-        super.onClick(v);
-    }
-
-    @Override
-    protected void cloneParams(GSYBaseVideoPlayer from, GSYBaseVideoPlayer to) {
-        ((DanmakuVideoPlayer) to).mDanmakuFile = ((DanmakuVideoPlayer) from).mDanmakuFile;
-        super.cloneParams(from, to);
-    }
-
-    /**
-     * 处理播放器在全屏切换时，弹幕显示的逻辑
-     * 需要格外注意的是，因为全屏和小屏，是切换了播放器，所以需要同步之间的弹幕状态
-     */
-    @Override
-    public GSYBaseVideoPlayer startWindowFullscreen(Context context, boolean actionBar, boolean statusBar) {
-        GSYBaseVideoPlayer gsyBaseVideoPlayer = super.startWindowFullscreen(context, actionBar, statusBar);
-        if (gsyBaseVideoPlayer != null) {
-            DanmakuVideoPlayer gsyVideoPlayer = (DanmakuVideoPlayer) gsyBaseVideoPlayer;
-            //对弹幕设置偏移记录
-            gsyVideoPlayer.setDanmakuStartSeekPosition(getCurrentPositionWhenPlaying());
-            gsyVideoPlayer.setDanmakuShow(isDanmakuShow());
-            onPrepareDanmaku(gsyVideoPlayer);
-        }
-        return gsyBaseVideoPlayer;
-    }
-
-    /**
-     * 处理播放器在退出全屏时，弹幕显示的逻辑
-     * 需要格外注意的是，因为全屏和小屏，是切换了播放器，所以需要同步之间的弹幕状态
-     */
-    @Override
-    protected void resolveNormalVideoShow(View oldF, ViewGroup vp, GSYVideoPlayer gsyVideoPlayer) {
-        super.resolveNormalVideoShow(oldF, vp, gsyVideoPlayer);
-        if (gsyVideoPlayer != null) {
-            DanmakuVideoPlayer gsyDanmaVideoPlayer = (DanmakuVideoPlayer) gsyVideoPlayer;
-            setDanmakuShow(gsyDanmaVideoPlayer.isDanmakuShow());
-            if (gsyDanmaVideoPlayer.getDanmakuView() != null &&
-                    gsyDanmaVideoPlayer.getDanmakuView().isPrepared()) {
-                resolveDanmakuSeek(this, gsyDanmaVideoPlayer.getCurrentPositionWhenPlaying());
-                resolveDanmakuShow();
-                releaseDanmaku(gsyDanmaVideoPlayer);
-            }
-        }
     }
 
     protected void danmakuOnPause() {
@@ -168,7 +117,7 @@ public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
     public void setDanmaKuStream(File is) {
         mDanmakuFile = is;
         if (getDanmakuView() != null && !getDanmakuView().isPrepared()) {
-            onPrepareDanmaku((DanmakuVideoPlayer) getCurrentPlayer());
+//            onPrepareDanmaku((DanmakuVideoPlayer) getCurrentPlayer());
         }
     }
 
@@ -264,9 +213,9 @@ public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
      * 弹幕偏移
      */
     private void resolveDanmakuSeek(DanmakuVideoPlayer gsyVideoPlayer, long time) {
-        if (mHadPlay && gsyVideoPlayer.getDanmakuView() != null && gsyVideoPlayer.getDanmakuView().isPrepared()) {
-            gsyVideoPlayer.getDanmakuView().seekTo(time);
-        }
+//        if (mHadPlay && gsyVideoPlayer.getDanmakuView() != null && gsyVideoPlayer.getDanmakuView().isPrepared()) {
+//            gsyVideoPlayer.getDanmakuView().seekTo(time);
+//        }
     }
 
     private BaseDanmakuParser createParser(InputStream stream) {
@@ -300,7 +249,7 @@ public class DanmakuVideoPlayer extends LocalGSYVideoPlayer {
      */
     private void releaseDanmaku(DanmakuVideoPlayer danmakuVideoPlayer) {
         if (danmakuVideoPlayer != null && danmakuVideoPlayer.getDanmakuView() != null) {
-            Debuger.printfError("release Danmaku!");
+//            Debuger.printfError("release Danmaku!");
             danmakuVideoPlayer.getDanmakuView().release();
         }
     }

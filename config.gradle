@@ -16,7 +16,8 @@ ext {
             constraint       : '2.1.4',
             annotation       : '1.5.0',
             room             : '2.4.3',
-            navigation       : '2.5.3'
+            navigation       : '2.5.3',
+            exoplayer        : '2.18.6'
     ]
 
     //androidx
@@ -87,30 +88,19 @@ ext {
             'commons-text'       : "org.apache.commons:commons-text:1.10.0",
     ]
 
-    dkplayer_lib = [
-            'dkplayer-java': 'com.github.dueeeke.dkplayer:dkplayer-java:3.2.6',
-            'dkplayer-ui'  : 'com.github.dueeeke.dkplayer:dkplayer-ui:3.2.6',
-            'player-exo'   : 'com.github.dueeeke.dkplayer:player-exo:3.2.6',
-            'player-ijk'   : 'com.github.dueeeke.dkplayer:player-ijk:3.2.6',
-            'videocache'   : 'com.github.dueeeke.dkplayer:videocache:3.2.6'
-    ]
-
     danmuku = [
             DanmakuFlameMaster: 'com.github.ctiao:DanmakuFlameMaster:0.9.25',
             ndkbitmap         : 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
     ]
-    GSYVideoPlayer = [
-            gsyVideoPlayer: 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack',
-            //是否需要ExoPlayer模式
-            exo2          : 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v8.3.5-release-jitpack',
-//            exo           : "com.google.android.exoplayer:exoplayer:2.18.4",
-
-//            arm64         : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack',
-//            armv7a        : 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.3.5-release-jitpack'
+    exoplayer = [
+            core : "com.google.android.exoplayer:exoplayer:${versions['exoplayer']}",
+//            core : "com.google.android.exoplayer:exoplayer-core:${versions['exoplayer']}",
+//            dash : "com.google.android.exoplayer:exoplayer-dash:${versions['exoplayer']}",
+//            ui   : "com.google.android.exoplayer:exoplayer-ui:${versions['exoplayer']}",
+            cache: "com.danikula:videocache:2.7.1",
     ]
 
     androidxs = androidx.values()
-    dkplayer = dkplayer_lib.values()
     danmukus = danmuku.values()
-    gsyVideoPlayer = GSYVideoPlayer.values()
+    exoplayer = exoplayer.values()
 }
