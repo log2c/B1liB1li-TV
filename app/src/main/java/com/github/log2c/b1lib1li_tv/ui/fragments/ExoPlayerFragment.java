@@ -17,13 +17,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.leanback.app.VideoSupportFragment;
 import androidx.leanback.app.VideoSupportFragmentGlueHost;
 import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.Action;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
@@ -33,8 +33,6 @@ import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
 import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
-import com.github.log2c.b1lib1li_tv.ui.setting.SettingFragment;
-import com.github.log2c.b1lib1li_tv.ui.setting.SettingsActivity;
 import com.github.log2c.b1lib1li_tv.widget.OwnDanmakuView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -49,7 +47,6 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.DebugTextViewHelper;
 import com.google.android.exoplayer2.util.EventLogger;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +70,7 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
             String danmuPath = intent.getStringExtra("danmu_path");
             if (!TextUtils.isEmpty(danmuPath)) {
                 mDanmakuView.setDanmaKuStream(FileUtils.getFileByPath(danmuPath));
+                mDanmakuView.setDanmakuShow(AppConfigRepository.getInstance().fetchDanmakuToggle());
             }
             setPlayerMediaSource(video, audio);
             mPlayer.play();
@@ -233,11 +231,18 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
     public void onIsPlayingChanged(boolean isPlaying) {
         Player.Listener.super.onIsPlayingChanged(isPlaying);
         Log.d(TAG, "onIsPlayingChanged: " + (isPlaying ? "播放中" : "暂停"));
-        if (isPlaying) {
-            mDanmakuView.onVideoResume();
-        } else {
-            mDanmakuView.onVideoPause();
+        if (AppConfigRepository.getInstance().fetchDanmakuToggle()) {
+            if (isPlaying) {
+                mDanmakuView.onVideoResume();
+            } else {
+                mDanmakuView.onVideoPause();
+            }
         }
+    }
+
+    @Override
+    public void onPositionDiscontinuity(@NonNull Player.PositionInfo oldPosition, @NonNull Player.PositionInfo newPosition, @Player.DiscontinuityReason int reason) {
+        mDanmakuView.seekTo(newPosition.positionMs);
     }
 
     @Override
@@ -246,17 +251,12 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         Log.d(TAG, "onPlaybackStateChanged: " + PLAYBACK_STATUS.get(playbackState));
         switch (playbackState) {
             case ExoPlayer.STATE_READY:
-//                if (!mDanmakuLoaded) {
-//                    mDanmakuView.setDanmakuStartSeekPosition(mPlayer.getCurrentPosition());
-//                    mDanmakuLoaded = true;
-//                }
                 break;
             case ExoPlayer.STATE_IDLE:
                 break;
             case ExoPlayer.STATE_BUFFERING:
                 break;
             case ExoPlayer.STATE_ENDED:
-                mDanmakuView.release();
                 break;
         }
     }
