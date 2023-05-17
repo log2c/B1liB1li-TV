@@ -118,8 +118,12 @@ public class AppConfigRepository {
         Logging.i("Cookie跨域处理完成");
     }
 
-    public void storeVideoParams(int dashVideoId, String codecs) {
-        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_video_id), dashVideoId);
+//    public void storeVideoParams(int dashVideoId, String codecs) {
+//        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_video_id), dashVideoId);
+//        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_codecs), codecs);
+//    }
+
+    public void storeCodecs(String codecs) {
         SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_codecs), codecs);
     }
 

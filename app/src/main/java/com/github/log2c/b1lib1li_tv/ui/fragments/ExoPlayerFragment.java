@@ -246,10 +246,10 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         Log.d(TAG, "onPlaybackStateChanged: " + PLAYBACK_STATUS.get(playbackState));
         switch (playbackState) {
             case ExoPlayer.STATE_READY:
-                if (!mDanmakuLoaded) {
-                    mDanmakuView.setDanmakuStartSeekPosition(mPlayer.getCurrentPosition());
-                    mDanmakuLoaded = true;
-                }
+//                if (!mDanmakuLoaded) {
+//                    mDanmakuView.setDanmakuStartSeekPosition(mPlayer.getCurrentPosition());
+//                    mDanmakuLoaded = true;
+//                }
                 break;
             case ExoPlayer.STATE_IDLE:
                 break;
@@ -263,15 +263,14 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
 
     @Override
     public void onQualityClick(Action action) {
-//        SettingsActivity.show(requireActivity(), R.xml.resolution_settings, SettingFragment.KEY_RECEPTION_RESOLUTION, mResolutionModel);
         String[] entries = new String[mResolutionModel.length];
         CharSequence[] entryValues = new CharSequence[mResolutionModel.length];
         for (int i = 0; i < mResolutionModel.length; i++) {
             ResolutionModel m = mResolutionModel[i];
             entries[i] = m.getWidth() + "x" + m.getHeight() + "@" + m.getFrameRate() + "P " + m.getCodecs();
-            entryValues[i] = i + "";
+            entryValues[i] = m.getId() + "$$" + m.getCodecs();
         }
-        SelectDialogFragment.newSingleInstance("title", "msg", entries, entryValues, "")
+        SelectDialogFragment.newSingleInstance(getString(R.string.resolution), "", entries, entryValues, AppConfigRepository.getInstance().fetchDefaultCodec())
                 .show(getChildFragmentManager(), "xxx");
     }
 }

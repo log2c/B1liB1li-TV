@@ -1,6 +1,7 @@
 package com.github.log2c.b1lib1li_tv.leanback;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -21,9 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ResourceUtils;
 import com.github.log2c.b1lib1li_tv.R;
+import com.google.android.exoplayer2.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SelectDialogFragment extends DialogFragment {
@@ -47,6 +52,11 @@ public class SelectDialogFragment extends DialogFragment {
     private CharSequence[] mEntryValues;
     private CharSequence mDialogTitle;
     private CharSequence mDialogMessage;
+
+    @Override
+    public int getTheme() {
+        return R.style.AlignEndDialogTheme;
+    }
 
     @NonNull
     @Override
@@ -75,9 +85,15 @@ public class SelectDialogFragment extends DialogFragment {
         bundle.putCharSequenceArray(SAVE_STATE_ENTRIES, entries);
         bundle.putCharSequenceArray(SAVE_STATE_ENTRY_VALUES, entryValues);
         if (multi) {
+            if (initialSelections == null) {
+                initialSelections = new HashSet<>();
+            }
             bundle.putStringArray(SAVE_STATE_INITIAL_SELECTIONS,
                     initialSelections.toArray(new String[initialSelections.size()]));
         } else {
+            if (TextUtils.isEmpty(initialSelection)) {
+                initialSelection = "";
+            }
             bundle.putCharSequence(SAVE_STATE_INITIAL_SELECTION, initialSelection);
         }
         SelectDialogFragment fragment = new SelectDialogFragment();
@@ -99,6 +115,26 @@ public class SelectDialogFragment extends DialogFragment {
 
     private static int getLayoutIdByName(String name) {
         return ResourceUtils.getLayoutIdByName(name);
+    }
+
+    protected void onItemClick(int position) {
+        if (getParentFragment() instanceof SelectDialogListener) {
+            ((SelectDialogListener) getParentFragment()).onSingleClick(this, position);
+        } else if (requireActivity() instanceof SelectDialogListener) {
+            ((SelectDialogListener) requireActivity()).onSingleClick(this, position);
+        } else {
+            throw new IllegalArgumentException("请将宿主 implements SelectDialogListener.");
+        }
+    }
+
+    private void onItemClick(int[] selected) {
+        if (getParentFragment() instanceof SelectDialogListener) {
+            ((SelectDialogListener) getParentFragment()).onMultiClick(this, selected);
+        } else if (requireActivity() instanceof SelectDialogListener) {
+            ((SelectDialogListener) requireActivity()).onMultiClick(this, selected);
+        } else {
+            throw new IllegalArgumentException("请将宿主 implements SelectDialogListener.");
+        }
     }
 
     @Override
@@ -153,6 +189,18 @@ public class SelectDialogFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (getParentFragment() instanceof SelectDialogListener) {
+            ((SelectDialogListener) getParentFragment()).onSelectDialogDismiss(this);
+        } else if (requireActivity() instanceof SelectDialogListener) {
+            ((SelectDialogListener) requireActivity()).onSelectDialogDismiss(this);
+        } else {
+            throw new IllegalArgumentException("请将宿主 implements SelectDialogListener.");
+        }
+    }
+
     @SuppressWarnings("rawtypes")
     protected RecyclerView.Adapter onCreateAdapter() {
         //final DialogPreference preference = getPreference();
@@ -203,10 +251,11 @@ public class SelectDialogFragment extends DialogFragment {
             if (index == RecyclerView.NO_POSITION) {
                 return;
             }
-            final CharSequence entry = mEntryValues[index];
-
-            // TODO
+            viewHolder.mWidgetView.setChecked(!viewHolder.mWidgetView.isChecked());
+            mSelectedValue = mEntryValues[index];
             notifyDataSetChanged();
+
+            SelectDialogFragment.this.onItemClick(index);
         }
     }
 
@@ -256,24 +305,20 @@ public class SelectDialogFragment extends DialogFragment {
             } else {
                 mSelections.add(entry);
             }
-//            final MultiSelectListPreference multiSelectListPreference =
-//                    (MultiSelectListPreference) getPreference();
-//            // Pass copies of the set to callChangeListener and setValues to avoid mutations
-//            if (multiSelectListPreference.callChangeListener(new HashSet<>(mSelections))) {
-//                multiSelectListPreference.setValues(new HashSet<>(mSelections));
-//                mInitialSelections = mSelections;
-//            } else {
-//                // Change refused, back it out
-            if (mSelections.contains(entry)) {
-                mSelections.remove(entry);
-            } else {
-                mSelections.add(entry);
-            }
-//            }
+            int[] selected = new int[mSelections.size()];
+            List<CharSequence> list = Arrays.asList(mEntryValues);
 
+            int i = 0;
+            for (String selection : mSelections) {
+                selected[i] = list.indexOf(selection);
+                i++;
+            }
+
+            SelectDialogFragment.this.onItemClick(selected);
             notifyDataSetChanged();
         }
     }
+
 
     private interface OnItemClickListener {
         void onItemClick(SelectDialogFragment.ViewHolder viewHolder);
@@ -314,6 +359,17 @@ public class SelectDialogFragment extends DialogFragment {
         @Override
         public void onClick(View v) {
             mListener.onItemClick(this);
+        }
+    }
+
+    public interface SelectDialogListener {
+        default void onSingleClick(SelectDialogFragment fragment, int position) {
+        }
+
+        default void onMultiClick(SelectDialogFragment fragment, int[] positions) {
+        }
+
+        default void onSelectDialogDismiss(SelectDialogFragment fragment) {
         }
     }
 }

@@ -14,6 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.blankj.utilcode.util.GsonUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
+import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
@@ -23,7 +24,7 @@ import java.util.List;
 
 import me.jessyan.autosize.internal.CancelAdapt;
 
-public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> implements CancelAdapt {
+public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> implements CancelAdapt, SelectDialogFragment.SelectDialogListener {
     private static final String TAG = PlayerActivity.class.getSimpleName();
     public static final String PLAYER_DATA_INTENT_FILTER = "player_data_intent_filter";
     public static final String INTENT_BVID = "bvid";
@@ -110,4 +111,12 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         danmuLoaded = true;
     }
 
+    @Override
+    public void onSingleClick(SelectDialogFragment fragment, int position) {
+        fragment.dismiss();
+        SelectDialogFragment.SelectDialogListener.super.onSingleClick(fragment, position);
+        PlayUrlModel.DashModel.VideoModel model = viewModel.mPlayUrlModel.getDash().getVideo().get(position);
+        AppConfigRepository.getInstance().storeCodecs(model.getId() + "$$" + model.getCodecs());
+        viewModel.loadPlayResource();   // 重新加载
+    }
 }
