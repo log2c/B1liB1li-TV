@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.Utils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.model.UpdateModel;
+import com.github.log2c.base.toast.ToastUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,6 +81,8 @@ public class UpdateManager {
         return null;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("CheckResult")
     public Observable<UpdateModel> check() {
         return RxHttp.get(CHECK_URL)
                 .toObservable(UpdateModel.class)
@@ -93,6 +96,7 @@ public class UpdateManager {
                             return true;
                         }
                     }
+                    Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(e -> ToastUtils.success(R.string.no_upgrade_info));
                     return false;
                 })
                 .subscribeOn(Schedulers.newThread())

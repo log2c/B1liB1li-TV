@@ -41,4 +41,5 @@
     <string name="check_update">检查更新</string>
     <string name="auto_check_update">自动检查更新</string>
     <string name="pre_key_auto_check_update">pre_key_auto_check_update</string>
+    <string name="no_upgrade_info">已经是最新咯!</string>
 </resources>
