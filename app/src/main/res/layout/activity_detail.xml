@@ -216,7 +216,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:text="test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test.test." />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.leanback.widget.HorizontalGridView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="85dp"
@@ -230,7 +230,7 @@
         app:layout_constraintStart_toStartOf="@id/tv_desc"
         app:layout_constraintTop_toBottomOf="@id/tv_desc" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.leanback.widget.HorizontalGridView
         android:id="@+id/relate_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"

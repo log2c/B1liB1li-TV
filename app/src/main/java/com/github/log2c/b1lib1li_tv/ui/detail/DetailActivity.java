@@ -80,16 +80,6 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
         };
         viewModel.viewModelLiveEvent.observe(this, this::fillData);
 
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false) {
-            @Override
-            public void onLayoutCompleted(RecyclerView.State state) {
-                super.onLayoutCompleted(state);
-                if (getItemCount() == 0) {
-                    return;
-                }
-                trySetViewFocus();
-            }
-        });
         mBinding.recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
             final VideoViewModel viewModel = DetailActivity.this.viewModel.viewModelLiveEvent.getValue();
@@ -97,7 +87,6 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
             PlayerActivity.showActivity(DetailActivity.this, viewModel.getBvid(), viewModel.getAid() + "", model.getCid() + "");
         });
         mRelateAdapter = new FeedAdapter(R.layout.item_glance_related);
-        mBinding.relateRv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         mBinding.relateRv.setAdapter(mRelateAdapter);
         mRelateAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<FeedModel.ItemsBean> itemsBeans = DetailActivity.this.viewModel.relatedEvent.getValue();

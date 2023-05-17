@@ -35,7 +35,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
     @Override
     public void initView(@Nullable Bundle bundle) {
         mAdapter = new FeedAdapter();
-        mBinding.recyclerview.setLayoutManager(new GridLayoutManager(this, AppConfigRepository.getInstance().getDynamicSpanCount()));
+        mBinding.recyclerview.setNumColumns(AppConfigRepository.getInstance().getDynamicSpanCount());
         mBinding.recyclerview.setAdapter(mAdapter);
         mAdapter.setNewInstance(new ArrayList<>());
         mAdapter.getLoadMoreModule().setAutoLoadMore(true);

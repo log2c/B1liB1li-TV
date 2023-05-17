@@ -7,14 +7,13 @@
     android:background="@color/xui_config_color_75_pure_black"
     tools:context=".ui.dynamic.DynamicActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.leanback.widget.VerticalGridView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         android:focusable="true"
         android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:itemCount="20"
         tools:listitem="@layout/item_glance_dynamic" />
 

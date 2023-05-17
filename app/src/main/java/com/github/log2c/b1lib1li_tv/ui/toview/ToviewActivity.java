@@ -35,7 +35,7 @@ public class ToviewActivity extends BaseCoreActivity<ToviewViewModel, ActivityTo
     @Override
     public void initView(@Nullable Bundle bundle) {
         mAdapter = new ToviewAdapter();
-        mBinding.recyclerview.setLayoutManager(new GridLayoutManager(this, AppConfigRepository.getInstance().getDynamicSpanCount()));
+        mBinding.recyclerview.setNumColumns(AppConfigRepository.getInstance().getDynamicSpanCount());
         mBinding.recyclerview.setAdapter(mAdapter);
         mAdapter.setNewInstance(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
