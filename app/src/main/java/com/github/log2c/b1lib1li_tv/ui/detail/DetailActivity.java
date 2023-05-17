@@ -13,10 +13,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.leanback.widget.BaseGridView;
+import androidx.leanback.widget.GridLayoutManager;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ReflectUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -46,6 +49,7 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
     public static final String INTENT_AID = "aid";
     private BaseQuickAdapter<VideoViewModel.PagesModel, BaseViewHolder> adapter;
     private FeedAdapter mRelateAdapter;
+    private boolean mPagesLoaded;
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid) {
         final Intent intent = new Intent(context, DetailActivity.class);
@@ -137,7 +141,17 @@ public class DetailActivity extends BaseCoreActivity<DetailViewModel, ActivityDe
 
         mBinding.tvDesc.setText(videoViewModel.getDesc());
         adapter.setNewInstance(videoViewModel.getPages());
-        trySetViewFocus();
+
+        GridLayoutManager manager = (GridLayoutManager) mBinding.recyclerView.getLayoutManager();
+        ReflectUtils.reflect(manager).method("addOnLayoutCompletedListener", new BaseGridView.OnLayoutCompletedListener() {
+            @Override
+            public void onLayoutCompleted(@NonNull RecyclerView.State state) {
+                if (!mPagesLoaded) {
+                    trySetViewFocus();
+                }
+                mPagesLoaded = true;
+            }
+        });
     }
 
     @SuppressWarnings("ConstantConditions")
