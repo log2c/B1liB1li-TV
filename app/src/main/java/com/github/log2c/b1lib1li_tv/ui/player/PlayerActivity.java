@@ -3,21 +3,18 @@ package com.github.log2c.b1lib1li_tv.ui.player;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.blankj.utilcode.util.GsonUtils;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.contracts.PlayerActivityContract;
 import com.github.log2c.b1lib1li_tv.contracts.PlayerFragmentContract;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
-import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
 
@@ -27,9 +24,9 @@ import java.util.List;
 
 import me.jessyan.autosize.internal.CancelAdapt;
 
-public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> implements CancelAdapt, SelectDialogFragment.SelectDialogListener {
+public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPlayerBinding> implements CancelAdapt, SelectDialogFragment.SelectDialogListener, PlayerActivityContract {
+    @SuppressWarnings("unused")
     private static final String TAG = PlayerActivity.class.getSimpleName();
-    public static final String PLAYER_DATA_INTENT_FILTER = "player_data_intent_filter";
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
@@ -89,7 +86,7 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
             return Collections.emptyList();
         }
 
-        List<Fragment> visibleFragments = new ArrayList<Fragment>();
+        List<Fragment> visibleFragments = new ArrayList<>();
         for (Fragment fragment : allFragments) {
             if (fragment.isVisible()) {
                 visibleFragments.add(fragment);
@@ -98,24 +95,19 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         return visibleFragments;
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     private void onPlayUrlChange(String[] urls) {
         if (urls.length == 2) {
-            new Thread(() -> {
-                Intent intent = new Intent(PLAYER_DATA_INTENT_FILTER);
-                intent.putExtra("video", urls[0]);
-                intent.putExtra("audio", urls[1]);
-                intent.putExtra("danmu_path", viewModel.danmukuPath);
-                intent.putExtra("data", convertToResolutionModel(viewModel.mPlayUrlModel.getDash().getVideo()));
-                LocalBroadcastManager.getInstance(PlayerActivity.this).sendBroadcast(intent);
-            }).start();
+            for (Fragment fragment : getVisibleFragments()) {
+                if (fragment instanceof PlayerFragmentContract) {
+                    ((PlayerFragmentContract) fragment).onPlayerDataPrepared(urls[1], urls[0], viewModel.danmukuPath);
+                    break;
+                }
+            }
         } else if (urls.length == 1) {
 //            final boolean isCache = !urls[0].endsWith(".mpd");
-            final boolean isCache = false;
+//            final boolean isCache = false;
         }
-    }
-
-    private Parcelable[] convertToResolutionModel(List<PlayUrlModel.DashModel.VideoModel> videoModelList) {
-        return GsonUtils.fromJson(GsonUtils.toJson(videoModelList), ResolutionModel[].class);
     }
 
     @Override
@@ -124,6 +116,18 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         SelectDialogFragment.SelectDialogListener.super.onSingleClick(fragment, position);
         PlayUrlModel.DashModel.VideoModel model = viewModel.mPlayUrlModel.getDash().getVideo().get(position);
         AppConfigRepository.getInstance().storeCodecs(model.getId() + "$$" + model.getCodecs());
+        for (Fragment f : getVisibleFragments()) {
+            if (f instanceof PlayerFragmentContract) {
+                viewModel.mPlayUrlModel.setLast_play_time(((PlayerFragmentContract) f).playingPosition());
+                break;
+            }
+        }
+
         viewModel.loadPlayResource();   // 重新加载
+    }
+
+    @Override
+    public PlayUrlModel getPlayUrlModel() {
+        return viewModel.mPlayUrlModel;
     }
 }

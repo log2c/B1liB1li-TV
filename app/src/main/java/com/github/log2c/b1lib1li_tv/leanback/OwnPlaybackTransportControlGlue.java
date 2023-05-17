@@ -15,8 +15,8 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
         super(context, impl);
     }
 
-//    private PlaybackControlsRow.RepeatAction repeatAction;
-//    private PlaybackControlsRow.PictureInPictureAction pipAction;
+    private PlaybackControlsRow.RepeatAction repeatAction;
+    //    private PlaybackControlsRow.PictureInPictureAction pipAction;
 //    private PlaybackControlsRow.ThumbsUpAction thumbsUpAction;
 //    private PlaybackControlsRow.ThumbsDownAction thumbsDownAction;
 //    private PlaybackControlsRow.SkipPreviousAction skipPreviousAction;
@@ -29,7 +29,7 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
     protected void onCreatePrimaryActions(ArrayObjectAdapter primaryActionsAdapter) {
         super.onCreatePrimaryActions(primaryActionsAdapter);
         highQualityAction = new PlaybackControlsRow.HighQualityAction(getContext());
-//        repeatAction = new PlaybackControlsRow.RepeatAction(getContext());
+        repeatAction = new PlaybackControlsRow.RepeatAction(getContext());
 //        pipAction = new PlaybackControlsRow.PictureInPictureAction(getContext());
 //        thumbsUpAction = new PlaybackControlsRow.ThumbsUpAction(getContext());
 //        thumbsDownAction = new PlaybackControlsRow.ThumbsDownAction(getContext());
@@ -40,6 +40,7 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
 //        primaryActionsAdapter.add(skipPreviousAction);
         primaryActionsAdapter.add(rewindAction);
         primaryActionsAdapter.add(fastForwardAction);
+        primaryActionsAdapter.add(repeatAction);
 //        primaryActionsAdapter.add(skipNextAction);
         primaryActionsAdapter.add(highQualityAction);
     }
@@ -63,6 +64,8 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
             getPlayerAdapter().seekTo(getPlayerAdapter().getCurrentPosition() - duration);
         } else if (action == fastForwardAction) {
             getPlayerAdapter().seekTo(getPlayerAdapter().getCurrentPosition() + duration);
+        } else if (action == repeatAction) {
+            getPlayerAdapter().seekTo(0);
         }
 //        else if (action == thumbsDownAction) {
 //            // Handle ThumbsDown

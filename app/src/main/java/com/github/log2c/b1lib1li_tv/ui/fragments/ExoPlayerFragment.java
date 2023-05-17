@@ -1,10 +1,6 @@
 package com.github.log2c.b1lib1li_tv.ui.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -22,18 +18,17 @@ import androidx.leanback.app.VideoSupportFragment;
 import androidx.leanback.app.VideoSupportFragmentGlueHost;
 import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.Action;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.contracts.PlayerActivityContract;
 import com.github.log2c.b1lib1li_tv.contracts.PlayerFragmentContract;
 import com.github.log2c.b1lib1li_tv.leanback.LeanbackPlayerAdapter;
 import com.github.log2c.b1lib1li_tv.leanback.OwnPlaybackTransportControlGlue;
 import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
-import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
+import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
-import com.github.log2c.b1lib1li_tv.ui.player.PlayerActivity;
 import com.github.log2c.b1lib1li_tv.widget.OwnDanmakuView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -49,6 +44,7 @@ import com.google.android.exoplayer2.util.DebugTextViewHelper;
 import com.google.android.exoplayer2.util.EventLogger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
@@ -60,23 +56,6 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
     protected TextView mDebugTextView;
     protected OwnDanmakuView mDanmakuView;
     private OwnPlaybackTransportControlGlue<LeanbackPlayerAdapter> mPlayerGlue;
-    private boolean mDanmakuLoaded;
-    ResolutionModel[] mResolutionModel;
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String video = intent.getStringExtra("video");
-            String audio = intent.getStringExtra("audio");
-            mResolutionModel = (ResolutionModel[]) intent.getParcelableArrayExtra("data");
-            String danmuPath = intent.getStringExtra("danmu_path");
-            if (!TextUtils.isEmpty(danmuPath)) {
-                mDanmakuView.setDanmaKuStream(FileUtils.getFileByPath(danmuPath));
-                mDanmakuView.setDanmakuShow(AppConfigRepository.getInstance().fetchDanmakuToggle());
-            }
-            setPlayerMediaSource(video, audio);
-            mPlayer.play();
-        }
-    };
 
     @SuppressLint("PrivateResource")
     @Override
@@ -102,6 +81,7 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         mPlayerGlue.addPlayerCallback(new PlaybackGlue.PlayerCallback() {
             @Override
             public void onPreparedStateChanged(PlaybackGlue glue) {
+                Log.d(TAG, "onPreparedStateChanged");
                 if (glue.isPrepared()) {
 //                    playerGlue.setSeekProvider(new MySeekProvider());
                     mPlayerGlue.play();
@@ -109,12 +89,6 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
             }
         });
         return rootView;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(mReceiver, new IntentFilter(PlayerActivity.PLAYER_DATA_INTENT_FILTER));
-        super.onCreate(savedInstanceState);
     }
 
     protected void initializePlayer() {
@@ -131,11 +105,6 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
             mDebugViewHelper = new DebugTextViewHelper(mPlayer, mDebugTextView);
             mDebugViewHelper.start();
         }
-//        boolean haveStartPosition = startItemIndex != C.INDEX_UNSET;
-//        if (haveStartPosition) {
-//            mPlayer.seekTo(startItemIndex, startPosition);
-//        }
-//        mPlayer.setMediaItems(mediaItems, /* resetPosition= */ !haveStartPosition);
         mPlayer.prepare();
     }
 
@@ -215,7 +184,6 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(mReceiver);
         mDanmakuView.release();
     }
 
@@ -246,6 +214,7 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         mDanmakuView.seekTo(newPosition.positionMs);
     }
 
+    @SuppressWarnings("DuplicateBranchesInSwitch")
     @Override
     public void onPlaybackStateChanged(int playbackState) {
         Player.Listener.super.onPlaybackStateChanged(playbackState);
@@ -262,21 +231,42 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         }
     }
 
+    private PlayerActivityContract checkActivity() {
+        if (!(requireActivity() instanceof PlayerActivityContract)) {
+            throw new IllegalArgumentException("Activity 必须实现 PlayerActivityContract 接口.");
+        }
+        return (PlayerActivityContract) requireActivity();
+    }
+
     @Override
     public void onQualityClick(Action action) {
-        String[] entries = new String[mResolutionModel.length];
-        CharSequence[] entryValues = new CharSequence[mResolutionModel.length];
-        for (int i = 0; i < mResolutionModel.length; i++) {
-            ResolutionModel m = mResolutionModel[i];
+        List<PlayUrlModel.DashModel.VideoModel> modelList = checkActivity().getPlayUrlModel().getDash().getVideo();
+        final int idx = AppConfigRepository.getInstance().determinedVideoInDashMode(modelList);
+
+        String[] entries = new String[modelList.size()];
+        CharSequence[] entryValues = new CharSequence[modelList.size()];
+        for (int i = 0; i < modelList.size(); i++) {
+            PlayUrlModel.DashModel.VideoModel m = modelList.get(i);
             entries[i] = m.getWidth() + "x" + m.getHeight() + "@" + m.getFrameRate() + "P " + m.getCodecs();
             entryValues[i] = m.getId() + "$$" + m.getCodecs();
         }
-        SelectDialogFragment.newSingleInstance(getString(R.string.resolution), "", entries, entryValues, AppConfigRepository.getInstance().fetchDefaultCodec())
+        SelectDialogFragment.newSingleInstance(getString(R.string.resolution), "", entries, entryValues, entryValues[idx])
                 .show(getChildFragmentManager(), "xxx");
     }
 
     @Override
     public long playingPosition() {
         return mPlayer.getCurrentPosition();
+    }
+
+    @Override
+    public void onPlayerDataPrepared(String audioUrl, String videoUrl, String danmakuFilePath) {
+        if (!TextUtils.isEmpty(danmakuFilePath)) {
+            mDanmakuView.setDanmaKuStream(FileUtils.getFileByPath(danmakuFilePath));
+            mDanmakuView.setDanmakuShow(AppConfigRepository.getInstance().fetchDanmakuToggle());
+        }
+        setPlayerMediaSource(videoUrl, audioUrl);
+        mPlayer.play();
+        mPlayer.seekTo(checkActivity().getPlayUrlModel().getLast_play_time());
     }
 }
