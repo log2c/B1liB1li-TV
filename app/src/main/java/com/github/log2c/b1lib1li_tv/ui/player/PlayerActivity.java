@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.contracts.PlayerFragmentContract;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
@@ -20,6 +21,8 @@ import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.base.base.BaseCoreActivity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.jessyan.autosize.internal.CancelAdapt;
@@ -30,7 +33,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     public static final String INTENT_BVID = "bvid";
     public static final String INTENT_AID = "aid";
     public static final String INTENT_CID = "cid";
-    private boolean danmuLoaded;
 
 
     public static void showActivity(Activity context, @Nullable String bvid, @Nullable String aid, @Nullable String cid) {
@@ -52,8 +54,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
         viewModel.aid = getIntent().getStringExtra(INTENT_AID);
         viewModel.cid = getIntent().getStringExtra(INTENT_CID);
         viewModel.prepareAndStart();
-
-//        mBinding.player.setDanmakuShow(AppConfigRepository.getInstance().fetchDanmakuToggle());
     }
 
     @Override
@@ -73,7 +73,29 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     public void initView(@Nullable Bundle bundle) {
         viewModel.playUrlEvent.observe(this, this::onPlayUrlChange);
-//        viewModel.historyReportEvent.observe(this, s -> viewModel.updateHistory(videoView.getCurrentPlayer().getCurrentPositionWhenPlaying()));
+        viewModel.historyReportEvent.observe(this, s -> {
+            for (Fragment fragment : getVisibleFragments()) {
+                if (fragment instanceof PlayerFragmentContract) {
+                    viewModel.updateHistory(((PlayerFragmentContract) fragment).playingPosition());
+                    break;
+                }
+            }
+        });
+    }
+
+    public List<Fragment> getVisibleFragments() {
+        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+        if (allFragments.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Fragment> visibleFragments = new ArrayList<Fragment>();
+        for (Fragment fragment : allFragments) {
+            if (fragment.isVisible()) {
+                visibleFragments.add(fragment);
+            }
+        }
+        return visibleFragments;
     }
 
     private void onPlayUrlChange(String[] urls) {
@@ -94,21 +116,6 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
 
     private Parcelable[] convertToResolutionModel(List<PlayUrlModel.DashModel.VideoModel> videoModelList) {
         return GsonUtils.fromJson(GsonUtils.toJson(videoModelList), ResolutionModel[].class);
-    }
-
-    private void loadDanmuku() {
-        if (!AppConfigRepository.getInstance().fetchDanmakuToggle()) {
-            return;
-        }
-        if (danmuLoaded) {
-            return;
-        }
-        if (TextUtils.isEmpty(viewModel.danmukuPath)) {
-            return;
-        }
-//        mBinding.player.setDanmaKuStream(new File(viewModel.danmukuPath));
-//        mBinding.player.getDanmakuView().seekTo(mBinding.player.getCurrentPlayer().getCurrentPositionWhenPlaying());
-        danmuLoaded = true;
     }
 
     @Override

@@ -27,6 +27,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.blankj.utilcode.util.FileUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
+import com.github.log2c.b1lib1li_tv.contracts.PlayerFragmentContract;
 import com.github.log2c.b1lib1li_tv.leanback.LeanbackPlayerAdapter;
 import com.github.log2c.b1lib1li_tv.leanback.OwnPlaybackTransportControlGlue;
 import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
@@ -51,7 +52,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
-public class ExoPlayerFragment extends VideoSupportFragment implements Player.Listener, OwnPlaybackTransportControlGlue.ActionClickListener {
+public class ExoPlayerFragment extends VideoSupportFragment implements Player.Listener, OwnPlaybackTransportControlGlue.ActionClickListener, PlayerFragmentContract {
     private static final String TAG = ExoPlayerFragment.class.getSimpleName();
     private StyledPlayerView mPlayerView;
     private ExoPlayer mPlayer;
@@ -272,5 +273,10 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
         }
         SelectDialogFragment.newSingleInstance(getString(R.string.resolution), "", entries, entryValues, AppConfigRepository.getInstance().fetchDefaultCodec())
                 .show(getChildFragmentManager(), "xxx");
+    }
+
+    @Override
+    public long playingPosition() {
+        return mPlayer.getCurrentPosition();
     }
 }
