@@ -7,6 +7,7 @@ import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
+import com.github.log2c.b1lib1li_tv.update.UpdateManager;
 import com.github.log2c.base.base.BaseCoreViewModel;
 import com.github.log2c.base.toast.ToastUtils;
 
@@ -17,6 +18,9 @@ public class MainViewModel extends BaseCoreViewModel {
 
     public MainViewModel() {
         userRepository = new UserRepositoryImpl();
+        if (AppConfigRepository.getInstance().isAutoCheckUpdate()) {
+            UpdateManager.getInstance().checkUpdate();
+        }
     }
 
     public void fetchUserInfo() {

@@ -86,6 +86,7 @@ ext {
             xpopup               : 'com.github.li-xiaojun:XPopup:2.9.16',
             AndroidAutoSize      : 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1',
             'commons-text'       : "org.apache.commons:commons-text:1.10.0",
+            appupdate            : "io.github.azhon:appupdate:4.2.8",
     ]
 
     danmuku = [

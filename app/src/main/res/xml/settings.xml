@@ -52,6 +52,15 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/etc">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_auto_check_update"
+            app:title="@string/auto_check_update" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pre_key_check_update"
+            app:title="@string/check_update" />
         <Preference
             app:iconSpaceReserved="false"
             app:key="@string/pre_key_relaunch"

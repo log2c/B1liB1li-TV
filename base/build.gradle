@@ -67,4 +67,5 @@ dependencies {
     api rootProject.ext.dependencies.xpopup
     api rootProject.ext.dependencies.AndroidAutoSize
     api rootProject.ext.dependencies['commons-text']
+    api rootProject.ext.dependencies.appupdate
 }

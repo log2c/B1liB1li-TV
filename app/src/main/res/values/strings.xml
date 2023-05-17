@@ -37,4 +37,8 @@
     <string name="pre_key_use_av1">pre_key_use_av1</string>
     <string name="pre_key_enable_debug_view">pre_key_enable_debug_view</string>
     <string name="debug_view">调试信息</string>
+    <string name="pre_key_check_update">pre_key_check_update</string>
+    <string name="check_update">检查更新</string>
+    <string name="auto_check_update">自动检查更新</string>
+    <string name="pre_key_auto_check_update">pre_key_auto_check_update</string>
 </resources>

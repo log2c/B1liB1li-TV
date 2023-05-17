@@ -20,6 +20,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
 import com.github.log2c.b1lib1li_tv.model.ResolutionModel;
+import com.github.log2c.b1lib1li_tv.update.UpdateManager;
 
 public class SettingFragment extends LeanbackSettingsFragmentCompat {
     private final static String TAG = SettingFragment.class.getSimpleName();
@@ -99,6 +100,8 @@ public class SettingFragment extends LeanbackSettingsFragmentCompat {
         public boolean onPreferenceTreeClick(@NonNull Preference preference) {
             if (preference.getKey().equals(getString(R.string.pre_key_relaunch))) {
                 AppUtils.relaunchApp(true);
+            } else if (preference.getKey().equals(getString(R.string.pre_key_check_update))) {
+                UpdateManager.getInstance().checkUpdate();
             }
             return super.onPreferenceTreeClick(preference);
         }
