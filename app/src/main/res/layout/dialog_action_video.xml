@@ -18,13 +18,13 @@
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_like_white"
             android:gravity="center"
             android:padding="@dimen/dp_10"
             android:text="@string/add_like"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:icon="@drawable/ic_like_white"
-            app:icon_size="40dp" />
+            app:drawableSize="20dp" />
 
         <com.github.log2c.b1lib1li_tv.widget.IconButton
             android:id="@+id/btn_add_coin"
@@ -33,13 +33,13 @@
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_coin_white"
             android:gravity="center"
             android:padding="@dimen/dp_10"
             android:text="@string/add_coin"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:icon="@drawable/ic_coin_white"
-            app:icon_size="40dp" />
+            app:drawableSize="20dp" />
 
         <com.github.log2c.b1lib1li_tv.widget.IconButton
             android:id="@+id/btn_add_favour"
@@ -48,12 +48,12 @@
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_favourite_white"
             android:gravity="center"
             android:text="@string/add_favour"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:icon="@drawable/ic_favourite_white"
-            app:icon_size="40dp" />
+            app:drawableSize="20dp" />
     </LinearLayout>
 
     <com.github.log2c.b1lib1li_tv.widget.IconButton
@@ -63,11 +63,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/dp_4"
         android:background="?android:attr/selectableItemBackground"
+        android:drawableStart="@drawable/ic_heart_red"
         android:gravity="center"
         android:minWidth="250dp"
         android:padding="@dimen/dp_10"
         android:text="@string/action_triple"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:icon="@drawable/ic_heart_red" />
+        app:drawableSize="20dp" />
 </LinearLayout>

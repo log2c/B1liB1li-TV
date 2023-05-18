@@ -3,144 +3,227 @@ package com.github.log2c.b1lib1li_tv.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.PixelFormat;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.github.log2c.b1lib1li_tv.R;
 
-public class IconButton extends androidx.appcompat.widget.AppCompatButton {
-    private @DrawableRes int mIconRes;
-    private float mIconSize;
-    private float mIconPadding;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
-    public IconButton(@NonNull Context context) {
-        this(context, null);
+public class IconButton extends AppCompatButton {
+
+    private static final String DELIMITERS = "\n";
+    private static final int DRAWABLE_LEFT_POSITION = 0;
+    private static final int DRAWABLE_TOP_POSITION = 1;
+    private static final int DRAWABLE_RIGHT_POSITION = 2;
+    private static final int DRAWABLE_BOTTOM_POSITION = 3;
+    private static final int DRAWABLES_LENGTH = 4;
+
+    private Rect textBoundsRect;
+    @ColorInt
+    private int mTintColor = Color.TRANSPARENT;
+    private int mLeftPadding;
+    private int mRightPadding;
+    private int mDrawableSize;
+
+    public IconButton(Context context) {
+        super(context);
+        init(context, null, 0);
     }
 
-    public IconButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, -1);
+    public IconButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context, attrs, 0);
     }
 
-    public IconButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public IconButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr);
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         if (attrs != null) {
-            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.icon_button);
-            mIconRes = ta.getResourceId(R.styleable.icon_button_icon, -1);
-            mIconSize = ta.getDimension(R.styleable.icon_button_icon_size, -1);
-            mIconPadding = ta.getDimension(R.styleable.icon_button_icon_padding, 0);
-            ta.recycle();
-            setIconInternal();
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.icon_button, defStyleAttr, 0);
+            mTintColor = typedArray.getColor(R.styleable.icon_button_drawableTint, Color.TRANSPARENT);
+            mDrawableSize = typedArray.getDimensionPixelSize(R.styleable.icon_button_drawableSize, -1);
+
+            float defaultDrawablePadding = getResources().getDimension(R.dimen.icon_button_default_drawable_padding);
+            int drawablePadding = (int) typedArray.getDimension(R.styleable.icon_button_android_drawablePadding, defaultDrawablePadding);
+            setCompoundDrawablePadding(drawablePadding);
+
+            updateDrawables();
+            typedArray.recycle();
         }
+        mLeftPadding = getPaddingLeft();
+        mRightPadding = getPaddingRight();
+    }
+
+    private void updateDrawables() {
+        if (mTintColor != Color.TRANSPARENT || mDrawableSize != -1) {
+            Drawable[] drawables = getCompoundDrawables();
+            if (drawables.length != DRAWABLES_LENGTH) return;
+
+            Drawable[] wrappedDrawables = new Drawable[DRAWABLES_LENGTH];
+            for (int i = 0; i < DRAWABLES_LENGTH; i++) {
+                Drawable drawable = drawables[i];
+                if (drawable != null) {
+                    Drawable wrappedDrawable = drawable;
+                    if (mTintColor != Color.TRANSPARENT) {
+                        wrappedDrawable = getTintedDrawable(wrappedDrawable);
+                    }
+                    if (mDrawableSize > 0) {
+                        wrappedDrawable = updateDrawableBounds(wrappedDrawable);
+                    }
+                    wrappedDrawables[i] = wrappedDrawable;
+                }
+            }
+            if (mDrawableSize > 0) {
+                setCompoundDrawables(wrappedDrawables[DRAWABLE_LEFT_POSITION],
+                        wrappedDrawables[DRAWABLE_TOP_POSITION],
+                        wrappedDrawables[DRAWABLE_RIGHT_POSITION],
+                        wrappedDrawables[DRAWABLE_BOTTOM_POSITION]);
+            } else {
+                setCompoundDrawablesWithIntrinsicBounds(wrappedDrawables[DRAWABLE_LEFT_POSITION],
+                        wrappedDrawables[DRAWABLE_TOP_POSITION],
+                        wrappedDrawables[DRAWABLE_RIGHT_POSITION],
+                        wrappedDrawables[DRAWABLE_BOTTOM_POSITION]);
+            }
+        }
+    }
+
+    public void setIcon(@DrawableRes int drawable) {
+        Drawable draw = ResourcesCompat.getDrawable(getResources(), drawable, null);
+        setCompoundDrawables(draw, null, null, null);
+    }
+
+    @NonNull
+    private Drawable getTintedDrawable(@NonNull Drawable drawable) {
+        Drawable mutate = DrawableCompat.wrap(drawable).mutate();
+        DrawableCompat.setTint(mutate, mTintColor);
+        return mutate;
+    }
+
+    @NonNull
+    private Drawable updateDrawableBounds(@NonNull Drawable drawable) {
+        drawable.getBounds().set(0, 0, mDrawableSize, mDrawableSize);
+        return drawable;
+    }
+
+    @Override
+    public void setCompoundDrawables(@Nullable Drawable left, @Nullable Drawable top, @Nullable Drawable right, @Nullable Drawable bottom) {
+        super.setCompoundDrawables(left, top, right, bottom);
+        updatePadding();
+    }
+
+    @Override
+    public void setCompoundDrawablesWithIntrinsicBounds(@Nullable Drawable left, @Nullable Drawable top, @Nullable Drawable right, @Nullable Drawable bottom) {
+        super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
+        updatePadding();
+    }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
+        updatePadding();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (mIconSize == -1) {
-            mIconSize = (float) (Math.min(w, h) * 0.5f);
-//            mIconPadding = mIconSize * 0.1f;
-            setIconInternal();
-        }
+        updatePadding(w);
     }
 
-    public void setIcon(@DrawableRes int iconRes) {
-        setIcon(iconRes, (int) mIconSize);
+    private void updatePadding() {
+        updatePadding(getMeasuredWidth());
     }
 
-    public void setIcon(@DrawableRes int iconRes, int dimension) {
-        mIconRes = iconRes;
-        mIconSize = dimension;
-        setIconInternal();
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left, top, right, bottom);
+        mLeftPadding = left;
+        mRightPadding = right;
+        updatePadding();
     }
 
-    protected void setIconInternal() {
-        if (mIconRes == -1 || mIconSize == -1) {
-            return;
+    private void updatePadding(int width) {
+        if (width == 0) return;
+
+        Drawable[] compoundDrawables = getCompoundDrawables();
+        if (compoundDrawables.length != DRAWABLES_LENGTH) return;
+
+        Drawable leftDrawable = compoundDrawables[DRAWABLE_LEFT_POSITION];
+        Drawable rightDrawable = compoundDrawables[DRAWABLE_RIGHT_POSITION];
+        if (leftDrawable == null && rightDrawable == null) return;
+
+        int textWidth = getTextWidth();
+        int iconPadding = Math.max(getCompoundDrawablePadding(), 1);
+        int paddingSize;
+
+        int leftWidth = leftDrawable == null ? 0 : leftDrawable.getBounds().width();
+        int rightWidth = rightDrawable == null ? 0 : rightDrawable.getBounds().width();
+
+        if (leftDrawable != null && rightDrawable != null) {
+            paddingSize = (width - leftWidth - rightWidth - textWidth - iconPadding * 4) / 2;
+        } else if (leftDrawable != null) {
+            paddingSize = (width - leftWidth - iconPadding * 2 - textWidth) / 2;
+        } else {
+            paddingSize = (width - rightWidth - iconPadding * 2 - textWidth) / 2;
         }
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), mIconRes, null);
-        WrappedDrawable wrappedDrawable = new WrappedDrawable(drawable);
-        wrappedDrawable.setBounds(0, 0, (int) mIconSize, (int) mIconSize);
-        setPadding((int) (mIconSize + mIconPadding + mIconPadding), getPaddingTop(), getPaddingRight(), getPaddingBottom());
-        setCompoundDrawablesWithIntrinsicBounds(wrappedDrawable, null, null, null);
+
+        super.setPadding(Math.max(mLeftPadding, paddingSize), getPaddingTop(), Math.max(paddingSize, mRightPadding), getPaddingBottom());
     }
 
-    public static class WrappedDrawable extends Drawable {
-
-        private final Drawable _drawable;
-
-        protected Drawable getDrawable() {
-            return _drawable;
+    private int getTextWidth() {
+        if (textBoundsRect == null) {
+            textBoundsRect = new Rect();
         }
+        Paint paint = getPaint();
+        String text = divideText();
+        paint.getTextBounds(text, 0, text.length(), textBoundsRect);
+        return textBoundsRect.width();
+    }
 
-        public WrappedDrawable(Drawable drawable) {
-            super();
-            _drawable = drawable;
+    private String divideText() {
+        String text = getText().toString();
+        if (text.isEmpty()) {
+            return "";
         }
-
-        @Override
-        public void setBounds(int left, int top, int right, int bottom) {
-            //update bounds to get correctly
-            super.setBounds(left, top, right, bottom);
-            Drawable drawable = getDrawable();
-            if (drawable != null) {
-                drawable.setBounds(left, top, right, bottom);
+        List<String> list = new ArrayList<>();
+        StringTokenizer tokenizer = new StringTokenizer(text, DELIMITERS, false);
+        while (tokenizer.hasMoreTokens()) {
+            list.add(tokenizer.nextToken());
+        }
+        if (list.size() == 1) {
+            return isAllCaps() ? list.get(0).toUpperCase() : list.get(0);
+        }
+        String longPart = list.get(0);
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i + 1).length() > list.get(i).length()) {
+                longPart = list.get(i + 1);
             }
         }
 
-        @Override
-        public void setAlpha(int alpha) {
-            Drawable drawable = getDrawable();
-            if (drawable != null) {
-                drawable.setAlpha(alpha);
-            }
-        }
+        return isAllCaps() ? longPart.toUpperCase() : longPart;
+    }
 
-        @Override
-        public void setColorFilter(ColorFilter colorFilter) {
-            Drawable drawable = getDrawable();
-            if (drawable != null) {
-                drawable.setColorFilter(colorFilter);
-            }
-        }
+    public boolean isAllCaps() {
+        TransformationMethod method = getTransformationMethod();
+        if (method == null) return false;
 
-        @Override
-        public int getOpacity() {
-            Drawable drawable = getDrawable();
-            return drawable != null
-                    ? drawable.getOpacity()
-                    : PixelFormat.UNKNOWN;
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            Drawable drawable = getDrawable();
-            if (drawable != null) {
-                drawable.draw(canvas);
-            }
-        }
-
-        @Override
-        public int getIntrinsicWidth() {
-            Drawable drawable = getDrawable();
-            return drawable != null
-                    ? drawable.getBounds().width()
-                    : 0;
-        }
-
-        @Override
-        public int getIntrinsicHeight() {
-            Drawable drawable = getDrawable();
-            return drawable != null ?
-                    drawable.getBounds().height()
-                    : 0;
-        }
+        return method.getClass().getSimpleName().equals("AllCapsTransformationMethod");
     }
 }
