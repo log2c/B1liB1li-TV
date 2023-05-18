@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,12 +20,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.allen.library.SuperTextView;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerViewModel;
+import com.github.log2c.b1lib1li_tv.widget.IconButton;
 
 public class VideoActionDialogFragment extends DialogFragment implements View.OnClickListener {
     private PlayerViewModel mPlayerViewModel;
-    private SuperTextView mBtnLike;
-    private SuperTextView mBtnAddCoin;
-    private SuperTextView mBtnAddFavour;
+    private IconButton mBtnLike;
+    private IconButton mBtnAddCoin;
+    private IconButton mBtnAddFavour;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,9 +41,8 @@ public class VideoActionDialogFragment extends DialogFragment implements View.On
         Point size = new Point();
         Display display = window.getWindowManager().getDefaultDisplay();
         display.getSize(size);
-        int width = size.x;
 
-        window.setLayout((int) (width * 0.65), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout((int) (Math.min(size.x, size.y) * 0.8f), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
     }
 
@@ -49,7 +50,6 @@ public class VideoActionDialogFragment extends DialogFragment implements View.On
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getContext().getTheme().applyStyle(com.google.android.material.R.style.Theme_MaterialComponents, true);
         View rootView = inflater.inflate(R.layout.dialog_action_video, container);
         mBtnLike = rootView.findViewById(R.id.btn_like);
         mBtnLike.setOnClickListener(this);
@@ -70,27 +70,27 @@ public class VideoActionDialogFragment extends DialogFragment implements View.On
             throw new IllegalArgumentException("参数错误.");
         }
         if (value[0]) {
-            mBtnLike.setCenterString(getString(R.string.is_liked));
-            mBtnLike.setLeftIcon(requireContext().getDrawable(R.drawable.ic_like_pink));
+            mBtnLike.setText(getString(R.string.is_liked));
+            mBtnLike.setIcon(R.drawable.ic_like_pink);
         } else {
-            mBtnLike.setCenterString(getString(R.string.add_like));
-            mBtnLike.setLeftIcon(requireContext().getDrawable(R.drawable.ic_like_white));
+            mBtnLike.setText(getString(R.string.add_like));
+            mBtnLike.setIcon(R.drawable.ic_like_white);
         }
 
         if (value[1]) {
-            mBtnAddCoin.setCenterString(getString(R.string.is_add_coin));
-            mBtnAddCoin.setLeftIcon(requireContext().getDrawable(R.drawable.ic_coin_pink));
+            mBtnAddCoin.setText(getString(R.string.is_add_coin));
+            mBtnAddCoin.setIcon(R.drawable.ic_coin_pink);
         } else {
-            mBtnAddCoin.setCenterString(getString(R.string.add_coin));
-            mBtnAddCoin.setLeftIcon(requireContext().getDrawable(R.drawable.ic_coin_white));
+            mBtnAddCoin.setText(getString(R.string.add_coin));
+            mBtnAddCoin.setIcon(R.drawable.ic_coin_white);
         }
 
         if (value[2]) {
-            mBtnAddFavour.setCenterString(getString(R.string.is_add_favour));
-            mBtnAddFavour.setLeftIcon(requireContext().getDrawable(R.drawable.ic_favourite_pink));
+            mBtnAddFavour.setText(getString(R.string.is_add_favour));
+            mBtnAddFavour.setIcon(R.drawable.ic_favourite_pink);
         } else {
-            mBtnAddFavour.setCenterString(getString(R.string.add_favour));
-            mBtnAddFavour.setLeftIcon(requireContext().getDrawable(R.drawable.ic_favourite_white));
+            mBtnAddFavour.setText(getString(R.string.add_favour));
+            mBtnAddFavour.setIcon(R.drawable.ic_favourite_white);
         }
     }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="icon_button">
+        <attr name="icon_size" format="dimension" />
+        <attr name="icon_padding" format="dimension" />
+        <attr name="icon" format="reference" />
+    </declare-styleable>
+</resources>

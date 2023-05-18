@@ -8,76 +8,66 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.allen.library.SuperTextView
+        <com.github.log2c.b1lib1li_tv.widget.IconButton
             android:id="@+id/btn_like"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            app:iconGravity="start"
-            app:iconSize="10dp"
-            app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
-            app:sCenterTextColor="@color/white"
-            app:sCenterTextSize="20sp"
-            app:sCenterTextString="@string/add_like"
-            app:sLeftIconHeight="30dp"
-            app:sLeftIconRes="@drawable/ic_like_white"
-            app:sLeftIconWidth="30dp"
-            app:sUseRipple="true" />
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/add_like"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:icon="@drawable/ic_like_white"
+            app:icon_size="40dp" />
 
-        <com.allen.library.SuperTextView
+        <com.github.log2c.b1lib1li_tv.widget.IconButton
             android:id="@+id/btn_add_coin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            app:iconGravity="start"
-            app:iconSize="10dp"
-            app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
-            app:sCenterTextColor="@color/white"
-            app:sCenterTextSize="20sp"
-            app:sCenterTextString="@string/add_coin"
-            app:sLeftIconHeight="30dp"
-            app:sLeftIconRes="@drawable/ic_coin_white"
-            app:sLeftIconWidth="30dp"
-            app:sUseRipple="true" />
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/add_coin"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:icon="@drawable/ic_coin_white"
+            app:icon_size="40dp" />
 
-        <com.allen.library.SuperTextView
+        <com.github.log2c.b1lib1li_tv.widget.IconButton
             android:id="@+id/btn_add_favour"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            app:iconGravity="start"
-            app:iconSize="10dp"
-            app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
-            app:sCenterTextColor="@color/white"
-            app:sCenterTextSize="20sp"
-            app:sCenterTextString="@string/add_favour"
-            app:sLeftIconHeight="30dp"
-            app:sLeftIconRes="@drawable/ic_favourite_white"
-            app:sLeftIconWidth="30dp"
-            app:sUseRipple="true" />
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/add_favour"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:icon="@drawable/ic_favourite_white"
+            app:icon_size="40dp" />
     </LinearLayout>
 
-    <com.allen.library.SuperTextView
+    <com.github.log2c.b1lib1li_tv.widget.IconButton
         android:id="@+id/btn_add_triple"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/dp_4"
-        android:maxWidth="150dp"
-        app:iconGravity="start"
-        app:iconSize="10dp"
-        app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
-        app:sCenterTextColor="@color/white"
-        app:sCenterTextSize="20sp"
-        app:sCenterTextString="@string/action_triple"
-        app:sLeftIconHeight="30dp"
-        app:sLeftIconRes="@drawable/ic_heart_red"
-        app:sLeftIconWidth="30dp"
-        app:sUseRipple="true" />
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:minWidth="250dp"
+        android:padding="@dimen/dp_10"
+        android:text="@string/action_triple"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:icon="@drawable/ic_heart_red" />
 </LinearLayout>
