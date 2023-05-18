@@ -255,6 +255,11 @@ public class ExoPlayerFragment extends VideoSupportFragment implements Player.Li
     }
 
     @Override
+    public void onThumbsUp(Action action) {
+        checkActivity().showVideoActionDialog();
+    }
+
+    @Override
     public long playingPosition() {
         return mPlayer.getCurrentPosition();
     }

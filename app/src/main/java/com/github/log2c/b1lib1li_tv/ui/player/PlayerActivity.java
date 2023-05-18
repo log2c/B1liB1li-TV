@@ -16,6 +16,7 @@ import com.github.log2c.b1lib1li_tv.databinding.ActivityPlayerBinding;
 import com.github.log2c.b1lib1li_tv.leanback.SelectDialogFragment;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
+import com.github.log2c.b1lib1li_tv.ui.fragments.VideoActionDialogFragment;
 import com.github.log2c.base.base.BaseCoreActivity;
 
 import java.util.ArrayList;
@@ -129,5 +130,11 @@ public class PlayerActivity extends BaseCoreActivity<PlayerViewModel, ActivityPl
     @Override
     public PlayUrlModel getPlayUrlModel() {
         return viewModel.mPlayUrlModel;
+    }
+
+    @Override
+    public void showVideoActionDialog() {
+        new VideoActionDialogFragment()
+                .show(getSupportFragmentManager(), VideoActionDialogFragment.class.getSimpleName());
     }
 }

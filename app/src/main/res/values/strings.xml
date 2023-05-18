@@ -42,4 +42,11 @@
     <string name="auto_check_update">自动检查更新</string>
     <string name="pre_key_auto_check_update">pre_key_auto_check_update</string>
     <string name="no_upgrade_info">已经是最新咯!</string>
+    <string name="add_like">点赞</string>
+    <string name="add_coin">投币</string>
+    <string name="add_favour">收藏</string>
+    <string name="action_triple">一键三连</string>
+    <string name="is_liked">已点赞</string>
+    <string name="is_add_coin">已投币</string>
+    <string name="is_add_favour">已收藏</string>
 </resources>

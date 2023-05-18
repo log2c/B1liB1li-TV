@@ -17,8 +17,8 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
 
     private PlaybackControlsRow.RepeatAction repeatAction;
     //    private PlaybackControlsRow.PictureInPictureAction pipAction;
-//    private PlaybackControlsRow.ThumbsUpAction thumbsUpAction;
-//    private PlaybackControlsRow.ThumbsDownAction thumbsDownAction;
+    private PlaybackControlsRow.ThumbsUpAction thumbsUpAction;
+    //    private PlaybackControlsRow.ThumbsDownAction thumbsDownAction;
 //    private PlaybackControlsRow.SkipPreviousAction skipPreviousAction;
 //    private PlaybackControlsRow.SkipNextAction skipNextAction;
     private PlaybackControlsRow.FastForwardAction fastForwardAction;
@@ -31,7 +31,6 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
         highQualityAction = new PlaybackControlsRow.HighQualityAction(getContext());
         repeatAction = new PlaybackControlsRow.RepeatAction(getContext());
 //        pipAction = new PlaybackControlsRow.PictureInPictureAction(getContext());
-//        thumbsUpAction = new PlaybackControlsRow.ThumbsUpAction(getContext());
 //        thumbsDownAction = new PlaybackControlsRow.ThumbsDownAction(getContext());
 //        skipPreviousAction = new PlaybackControlsRow.SkipPreviousAction(getContext());
 //        skipNextAction=new ;
@@ -48,8 +47,9 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
     @Override
     protected void onCreateSecondaryActions(ArrayObjectAdapter adapter) {
         super.onCreateSecondaryActions(adapter);
+        thumbsUpAction = new PlaybackControlsRow.ThumbsUpAction(getContext());
 //        adapter.add(thumbsDownAction);
-//        adapter.add(thumbsUpAction);
+        adapter.add(thumbsUpAction);
     }
 
     @Override
@@ -69,10 +69,13 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
         }
 //        else if (action == thumbsDownAction) {
 //            // Handle ThumbsDown
-//        } else if (action == thumbsUpAction) {
-//            // Handle ThumbsUp
 //        }
-        else {
+        else if (action == thumbsUpAction) {
+            // Handle ThumbsUp
+            if (mActionClickListener != null) {
+                mActionClickListener.onThumbsUp(action);
+            }
+        } else {
             super.onActionClicked(action);
         }
     }
@@ -83,5 +86,7 @@ public class OwnPlaybackTransportControlGlue<T extends PlayerAdapter> extends Pl
 
     public interface ActionClickListener {
         void onQualityClick(Action action);
+
+        void onThumbsUp(Action action);
     }
 }

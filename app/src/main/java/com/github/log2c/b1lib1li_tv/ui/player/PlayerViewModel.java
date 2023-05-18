@@ -9,7 +9,9 @@ import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
+import com.github.log2c.b1lib1li_tv.repository.VideoActionRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
+import com.github.log2c.b1lib1li_tv.repository.impl.VideoActionRepositoryImpl;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.b1lib1li_tv.utils.MPDUtil;
 import com.github.log2c.base.base.BaseCoreViewModel;
@@ -21,6 +23,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -32,9 +35,11 @@ import io.reactivex.schedulers.Schedulers;
 public class PlayerViewModel extends BaseCoreViewModel {
     private static final String TAG = PlayerViewModel.class.getSimpleName();
     private final VideoRepository videoRepository;
+    private final VideoActionRepository videoActionRepository;
     public final SingleLiveEvent<File> concatEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String[]> playUrlEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String> historyReportEvent = new SingleLiveEvent<>();
+    public final SingleLiveEvent<Boolean[]> videoActionEvent = new SingleLiveEvent<>(); // 点赞、投币、收藏状态
     private static final int DASH_MODE = 16; // H.265 ?
     private static final int MP4_MODE = 1;  // 仅 H.264 编码
     private static final int RESOLUTION_4K = 128;   // 需求4K分辨率
@@ -48,6 +53,8 @@ public class PlayerViewModel extends BaseCoreViewModel {
 
     public PlayerViewModel() {
         videoRepository = new VideoRepositoryImpl();
+        videoActionRepository = new VideoActionRepositoryImpl();
+        videoActionEvent.setValue(new Boolean[]{false, false, false});
     }
 
     @Override
@@ -59,6 +66,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
     public void prepareAndStart() {
+        fetchVideoActionInfo();
         videoRepository.fetchDanmukuLocalFilePath(cid)
                 .subscribeOn(Schedulers.io())
                 .onErrorReturn(throwable -> "")
@@ -71,6 +79,17 @@ public class PlayerViewModel extends BaseCoreViewModel {
                     ToastUtils.error("弹幕加载失败.");
                     parsePlayUrl();
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    private void fetchVideoActionInfo() {
+        Observable.zip(videoActionRepository.isLike(aid, bvid),
+                        videoActionRepository.isAddCoin(aid, bvid),
+                        videoActionRepository.isFavoured(aid, bvid),
+                        (b0, b1, b2) -> new Boolean[]{b0, b1, b2})
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(videoActionEvent::postValue, Throwable::printStackTrace);
     }
 
     private void parsePlayUrl() {
@@ -170,7 +189,6 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private void startHistoryReportTimer() {
         historyReportSubscribe = Observable.interval(15, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
-//                .filter(aLong -> playerState == GSYVideoView.CURRENT_STATE_PLAYING)
                 .subscribe(s -> historyReportEvent.postValue(String.valueOf(s)), Throwable::printStackTrace);
     }
 
@@ -180,5 +198,33 @@ public class PlayerViewModel extends BaseCoreViewModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @SuppressLint("CheckResult")
+    public void actionLike() {
+        videoActionRepository.like(aid, bvid, !Objects.requireNonNull(videoActionEvent.getValue())[0])
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("点赞失败."));
+    }
+
+    @SuppressLint("CheckResult")
+    public void addCoin(int multiply) {
+        videoActionRepository.addCoin(aid, bvid, multiply)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("投币失败."));
+    }
+
+    @SuppressLint("CheckResult")
+    public void addFavor() {
+        videoActionRepository.addFavor(aid, bvid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("收藏失败."));
+    }
+
+    @SuppressLint("CheckResult")
+    public void triple() {
+        videoActionRepository.triple(aid, bvid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("三连失败."));
     }
 }

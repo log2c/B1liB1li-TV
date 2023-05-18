@@ -23,4 +23,11 @@ public class Urls {
 
     public static final String RELATED = "https://api.bilibili.com/x/web-interface/archive/related"; // 推荐
 
+    public static final String HAS_LIKE = "https://api.bilibili.com/x/web-interface/archive/has/like";
+    public static final String HAS_ADD_COIN = "https://api.bilibili.com/x/web-interface/archive/coins";
+    public static final String HAS_FAVOUR = "https://api.bilibili.com/x/v2/fav/video/favoured";
+    public static final String ADD_LIKE = "https://api.bilibili.com/x/web-interface/archive/like";
+    public static final String ADD_COIN = "https://api.bilibili.com/x/web-interface/coin/add";
+    public static final String ADD_FAVOUR = "https://api.bilibili.com/medialist/gateway/coll/resource/deal";
+    public static final String ADD_TRIPLE = "https://api.bilibili.com/x/web-interface/archive/like/triple";
 }
