@@ -1,6 +1,7 @@
 package com.github.log2c.b1lib1li_tv.widget;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class IconButton extends AppCompatButton {
+    private static final String TAG = IconButton.class.getSimpleName();
 
     private static final String DELIMITERS = "\n";
     private static final int DRAWABLE_LEFT_POSITION = 0;
@@ -57,12 +60,12 @@ public class IconButton extends AppCompatButton {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         if (attrs != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.icon_button, defStyleAttr, 0);
-            mTintColor = typedArray.getColor(R.styleable.icon_button_drawableTint, Color.TRANSPARENT);
-            mDrawableSize = typedArray.getDimensionPixelSize(R.styleable.icon_button_drawableSize, -1);
+            @SuppressLint("CustomViewStyleable") TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IconButton, defStyleAttr, 0);
+            mTintColor = typedArray.getColor(R.styleable.IconButton_drawableTint, Color.TRANSPARENT);
+            mDrawableSize = typedArray.getDimensionPixelSize(R.styleable.IconButton_drawableSize, -1);
 
             float defaultDrawablePadding = getResources().getDimension(R.dimen.icon_button_default_drawable_padding);
-            int drawablePadding = (int) typedArray.getDimension(R.styleable.icon_button_android_drawablePadding, defaultDrawablePadding);
+            int drawablePadding = (int) typedArray.getDimension(R.styleable.IconButton_android_drawablePadding, defaultDrawablePadding);
             setCompoundDrawablePadding(drawablePadding);
 
             updateDrawables();
@@ -73,6 +76,7 @@ public class IconButton extends AppCompatButton {
     }
 
     private void updateDrawables() {
+        Log.i(TAG, "updateDrawables: " + mDrawableSize);
         if (mTintColor != Color.TRANSPARENT || mDrawableSize != -1) {
             Drawable[] drawables = getCompoundDrawables();
             if (drawables.length != DRAWABLES_LENGTH) return;
@@ -107,7 +111,10 @@ public class IconButton extends AppCompatButton {
 
     public void setIcon(@DrawableRes int drawable) {
         Drawable draw = ResourcesCompat.getDrawable(getResources(), drawable, null);
-        setCompoundDrawables(draw, null, null, null);
+//        setCompoundDrawables(draw, null, null, null);
+        Drawable[] drawables = getCompoundDrawables();
+        drawables[0] = draw;
+        updateDrawables();
     }
 
     @NonNull
@@ -119,6 +126,7 @@ public class IconButton extends AppCompatButton {
 
     @NonNull
     private Drawable updateDrawableBounds(@NonNull Drawable drawable) {
+        Log.i(TAG, "updateDrawableBounds: " + mDrawableSize);
         drawable.getBounds().set(0, 0, mDrawableSize, mDrawableSize);
         return drawable;
     }

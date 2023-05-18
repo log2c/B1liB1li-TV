@@ -42,7 +42,7 @@ public class VideoActionDialogFragment extends DialogFragment implements View.On
         Display display = window.getWindowManager().getDefaultDisplay();
         display.getSize(size);
 
-        window.setLayout((int) (Math.min(size.x, size.y) * 0.8f), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout((int) (Math.max(size.x, size.y) * 0.8f), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
     }
 
