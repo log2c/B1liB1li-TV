@@ -1,25 +1,30 @@
 package com.github.log2c.b1lib1li_tv.ui.fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.allen.library.SuperTextView;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.ui.player.PlayerViewModel;
-import com.google.android.material.button.MaterialButton;
 
 public class VideoActionDialogFragment extends DialogFragment implements View.OnClickListener {
     private PlayerViewModel mPlayerViewModel;
-    private MaterialButton mBtnLike;
-    private MaterialButton mBtnAddCoin;
-    private MaterialButton mBtnAddFavour;
+    private SuperTextView mBtnLike;
+    private SuperTextView mBtnAddCoin;
+    private SuperTextView mBtnAddFavour;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,10 +32,24 @@ public class VideoActionDialogFragment extends DialogFragment implements View.On
         mPlayerViewModel = new ViewModelProvider(requireActivity()).get(PlayerViewModel.class);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Window window = getDialog().getWindow();
+        Point size = new Point();
+        Display display = window.getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        int width = size.x;
+
+        window.setLayout((int) (width * 0.65), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);
+    }
+
     @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getContext().getTheme().applyStyle(com.google.android.material.R.style.Theme_MaterialComponents, true);
         View rootView = inflater.inflate(R.layout.dialog_action_video, container);
         mBtnLike = rootView.findViewById(R.id.btn_like);
         mBtnLike.setOnClickListener(this);
@@ -51,27 +70,27 @@ public class VideoActionDialogFragment extends DialogFragment implements View.On
             throw new IllegalArgumentException("参数错误.");
         }
         if (value[0]) {
-            mBtnLike.setText(R.string.is_liked);
-            mBtnLike.setIcon(requireContext().getDrawable(R.drawable.ic_like_pink));
+            mBtnLike.setCenterString(getString(R.string.is_liked));
+            mBtnLike.setLeftIcon(requireContext().getDrawable(R.drawable.ic_like_pink));
         } else {
-            mBtnLike.setText(R.string.add_like);
-            mBtnLike.setIcon(requireContext().getDrawable(R.drawable.ic_like_white));
+            mBtnLike.setCenterString(getString(R.string.add_like));
+            mBtnLike.setLeftIcon(requireContext().getDrawable(R.drawable.ic_like_white));
         }
 
         if (value[1]) {
-            mBtnAddCoin.setText(R.string.is_add_coin);
-            mBtnAddCoin.setIcon(requireContext().getDrawable(R.drawable.ic_coin_pink));
+            mBtnAddCoin.setCenterString(getString(R.string.is_add_coin));
+            mBtnAddCoin.setLeftIcon(requireContext().getDrawable(R.drawable.ic_coin_pink));
         } else {
-            mBtnAddCoin.setText(R.string.add_coin);
-            mBtnAddCoin.setIcon(requireContext().getDrawable(R.drawable.ic_coin_white));
+            mBtnAddCoin.setCenterString(getString(R.string.add_coin));
+            mBtnAddCoin.setLeftIcon(requireContext().getDrawable(R.drawable.ic_coin_white));
         }
 
         if (value[2]) {
-            mBtnAddFavour.setText(R.string.is_add_favour);
-            mBtnAddFavour.setIcon(requireContext().getDrawable(R.drawable.ic_favourite_pink));
+            mBtnAddFavour.setCenterString(getString(R.string.is_add_favour));
+            mBtnAddFavour.setLeftIcon(requireContext().getDrawable(R.drawable.ic_favourite_pink));
         } else {
-            mBtnAddFavour.setText(R.string.add_favour);
-            mBtnAddFavour.setIcon(requireContext().getDrawable(R.drawable.ic_favourite_white));
+            mBtnAddFavour.setCenterString(getString(R.string.add_favour));
+            mBtnAddFavour.setLeftIcon(requireContext().getDrawable(R.drawable.ic_favourite_white));
         }
     }
 

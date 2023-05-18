@@ -1,5 +1,6 @@
 package com.github.log2c.b1lib1li_tv.repository;
 
+import com.github.log2c.b1lib1li_tv.model.FavourListModel;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
@@ -22,4 +23,6 @@ public interface UserRepository {
     Observable<String> history();
 
     Observable<UpFeedModel> getUpFeed(String hostMid, int page, int pageSize);
+
+    Observable<FavourListModel> getFavourList(String up_mid);
 }

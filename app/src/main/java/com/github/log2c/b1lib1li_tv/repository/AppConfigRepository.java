@@ -186,4 +186,13 @@ public class AppConfigRepository {
         FileUtils.createOrExistsDir(dir);
         return FileUtils.getFileByPath(dir);
     }
+
+    public String fetchCsrf() {
+        for (Cookie cookie : fetchCookies()) {
+            if ("bili_jct".equals(cookie.name())) {
+                return cookie.value();
+            }
+        }
+        return null;
+    }
 }

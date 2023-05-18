@@ -6,11 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
+import com.github.log2c.b1lib1li_tv.model.FavourListModel;
 import com.github.log2c.b1lib1li_tv.model.PlayUrlModel;
 import com.github.log2c.b1lib1li_tv.network.BackendObserver;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
+import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoActionRepository;
 import com.github.log2c.b1lib1li_tv.repository.VideoRepository;
+import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoActionRepositoryImpl;
 import com.github.log2c.b1lib1li_tv.repository.impl.VideoRepositoryImpl;
 import com.github.log2c.b1lib1li_tv.utils.MPDUtil;
@@ -36,6 +39,7 @@ public class PlayerViewModel extends BaseCoreViewModel {
     private static final String TAG = PlayerViewModel.class.getSimpleName();
     private final VideoRepository videoRepository;
     private final VideoActionRepository videoActionRepository;
+    private final UserRepository mUserRepository;
     public final SingleLiveEvent<File> concatEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String[]> playUrlEvent = new SingleLiveEvent<>();
     public final SingleLiveEvent<String> historyReportEvent = new SingleLiveEvent<>();
@@ -50,11 +54,20 @@ public class PlayerViewModel extends BaseCoreViewModel {
     public String danmukuPath;
     private Disposable historyReportSubscribe;
     public PlayUrlModel mPlayUrlModel;
+    private FavourListModel mFavourModel;
 
     public PlayerViewModel() {
         videoRepository = new VideoRepositoryImpl();
         videoActionRepository = new VideoActionRepositoryImpl();
+        mUserRepository = new UserRepositoryImpl();
         videoActionEvent.setValue(new Boolean[]{false, false, false});
+        fetchUserFavour();
+    }
+
+    @SuppressLint("CheckResult")
+    private void fetchUserFavour() {
+        mUserRepository.getFavourList(AppConfigRepository.getInstance().fetchUserMid())
+                .subscribe(fav -> mFavourModel = fav, Throwable::printStackTrace);
     }
 
     @Override
@@ -89,7 +102,12 @@ public class PlayerViewModel extends BaseCoreViewModel {
                         (b0, b1, b2) -> new Boolean[]{b0, b1, b2})
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(videoActionEvent::postValue, Throwable::printStackTrace);
+                .subscribe(booleans -> {
+                    videoActionEvent.postValue(booleans);
+                }, e -> {
+                    e.printStackTrace();
+                    ToastUtils.error("点赞投币状态获取失败.");
+                });
     }
 
     private void parsePlayUrl() {
@@ -204,27 +222,43 @@ public class PlayerViewModel extends BaseCoreViewModel {
     public void actionLike() {
         videoActionRepository.like(aid, bvid, !Objects.requireNonNull(videoActionEvent.getValue())[0])
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("点赞失败."));
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> {
+                    e.printStackTrace();
+                    ToastUtils.error("点赞失败.");
+                });
     }
 
     @SuppressLint("CheckResult")
     public void addCoin(int multiply) {
         videoActionRepository.addCoin(aid, bvid, multiply)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("投币失败."));
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> {
+                    e.printStackTrace();
+                    ToastUtils.error("投币失败.");
+                });
     }
 
     @SuppressLint("CheckResult")
     public void addFavor() {
-        videoActionRepository.addFavor(aid, bvid)
+        if (mFavourModel == null || mFavourModel.getList() == null || mFavourModel.getList().size() == 0) {
+            ToastUtils.error("获取收藏夹信息失败.");
+            return;
+        }
+        videoActionRepository.addFavor(aid, bvid, mFavourModel.getList().get(0).getId())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("收藏失败."));
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> {
+                    e.printStackTrace();
+                    ToastUtils.error("收藏失败.");
+                });
     }
 
     @SuppressLint("CheckResult")
     public void triple() {
         videoActionRepository.triple(aid, bvid)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> ToastUtils.error("三连失败."));
+                .subscribe(aBoolean -> fetchVideoActionInfo(), e -> {
+                    e.printStackTrace();
+                    ToastUtils.error("三连失败.");
+                });
     }
 }

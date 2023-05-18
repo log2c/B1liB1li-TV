@@ -11,49 +11,73 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <com.allen.library.SuperTextView
             android:id="@+id/btn_like"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            android:text="@string/add_like"
-            app:icon="@drawable/ic_like_white"
             app:iconGravity="start"
-            app:iconSize="40dp" />
+            app:iconSize="10dp"
+            app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
+            app:sCenterTextColor="@color/white"
+            app:sCenterTextSize="20sp"
+            app:sCenterTextString="@string/add_like"
+            app:sLeftIconHeight="30dp"
+            app:sLeftIconRes="@drawable/ic_like_white"
+            app:sLeftIconWidth="30dp"
+            app:sUseRipple="true" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.allen.library.SuperTextView
             android:id="@+id/btn_add_coin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            android:text="@string/add_coin"
-            app:icon="@drawable/ic_coin_white"
             app:iconGravity="start"
-            app:iconSize="40dp" />
+            app:iconSize="10dp"
+            app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
+            app:sCenterTextColor="@color/white"
+            app:sCenterTextSize="20sp"
+            app:sCenterTextString="@string/add_coin"
+            app:sLeftIconHeight="30dp"
+            app:sLeftIconRes="@drawable/ic_coin_white"
+            app:sLeftIconWidth="30dp"
+            app:sUseRipple="true" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.allen.library.SuperTextView
             android:id="@+id/btn_add_favour"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            android:text="@string/add_favour"
-            app:icon="@drawable/ic_favourite_white"
             app:iconGravity="start"
-            app:iconSize="40dp" />
+            app:iconSize="10dp"
+            app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
+            app:sCenterTextColor="@color/white"
+            app:sCenterTextSize="20sp"
+            app:sCenterTextString="@string/add_favour"
+            app:sLeftIconHeight="30dp"
+            app:sLeftIconRes="@drawable/ic_favourite_white"
+            app:sLeftIconWidth="30dp"
+            app:sUseRipple="true" />
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <com.allen.library.SuperTextView
         android:id="@+id/btn_add_triple"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/dp_4"
-        android:minWidth="200dp"
-        android:text="@string/action_triple"
-        app:icon="@drawable/ic_heart_red"
+        android:maxWidth="150dp"
         app:iconGravity="start"
-        app:iconSize="40dp" />
+        app:iconSize="10dp"
+        app:sBackgroundDrawableRes="@drawable/bg_button_blue_stroke"
+        app:sCenterTextColor="@color/white"
+        app:sCenterTextSize="20sp"
+        app:sCenterTextString="@string/action_triple"
+        app:sLeftIconHeight="30dp"
+        app:sLeftIconRes="@drawable/ic_heart_red"
+        app:sLeftIconWidth="30dp"
+        app:sUseRipple="true" />
 </LinearLayout>

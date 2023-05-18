@@ -13,7 +13,7 @@ public interface VideoActionRepository {
 
     Observable<Boolean> addCoin(String aid, String bvid, int multiply);
 
-    Observable<Boolean> addFavor(String aid, String bvid);
+    Observable<Boolean> addFavor(String aid, String bvid, long media_id);
 
     Observable<Boolean> triple(String aid, String bvid);
 }
