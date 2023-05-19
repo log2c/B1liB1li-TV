@@ -6,6 +6,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/fontColorPrimary</item>
+
+        <item name="colorContainer">@color/btn_normal</item>
+        <item name="colorOnPrimary">@color/btn_normal</item>
+        <item name="xui_btn_view_touch_color">@color/btn_blue_dark</item>
+        <!--        <item name="xui_btn_view_normal_color">@color/btn_blue_dark</item>-->
+        <item name="xui_btn_view_normal_color">@color/btn_normal</item>
+        <item name="xui_btn_view_disable_color">@color/btn_normal_disabled</item>
+
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -49,30 +57,24 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppTheme.Button.Blue" parent="SuperButton.Blue">
-        <item name="sCornersRadius">6dp</item>
-        <item name="sGradientCenterColor">@android:color/white</item>
-        <item name="sSelectorNormalColor">@android:color/transparent</item>
-        <item name="sSelectorPressedColor">@color/btn_blue_light</item>
-        <item name="sShapeCornersRadius">10dp</item>
-        <item name="sUseSelector">true</item>
-        <item name="sUseShape">true</item>
-        <item name="sCenterTextGravity">center</item>
-    </style>
-
-    <style name="AppTheme.Button.Common" parent="Widget.AppCompat.Button.Borderless.Colored">
-
-    </style>
-
-    <style name="WD_Slider" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-
-    </style>
-
     <style name="AppTheme.LeanSetting" parent="AppTheme.Fullscreen">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
+    </style>
+
+    <style name="AppTheme.Button.Normal" parent="AppTheme.XUI">
+        <!--        <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>-->
+        <!--        <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>-->
+        <!--        <item name="colorButtonNormal">@color/xui_transparent</item>-->
+        <!--        <item name="android:colorPrimary">@color/xui_transparent</item>-->
+        <item name="colorContainer">@color/btn_normal</item>
+        <item name="colorOnPrimary">@color/btn_normal</item>
+        <item name="xui_btn_view_touch_color">@color/btn_blue_dark</item>
+        <!--        <item name="xui_btn_view_normal_color">@color/btn_blue_dark</item>-->
+        <item name="xui_btn_view_normal_color">@color/btn_normal</item>
+        <item name="xui_btn_view_disable_color">@color/btn_normal_disabled</item>
     </style>
 </resources>

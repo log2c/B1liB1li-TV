@@ -19,4 +19,6 @@
     <color name="btn_blue_light">#42b6e2</color>
 
     <color name="bg_dark0">#111111</color>
+    <color name="btn_normal">#61666d</color>
+    <color name="btn_normal_disabled">#4C4F53</color>
 </resources>

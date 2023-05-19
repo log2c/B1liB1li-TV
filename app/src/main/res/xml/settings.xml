@@ -26,6 +26,7 @@
 
         <SwitchPreference
             app:defaultValue="true"
+            app:isPreferenceVisible="false"
             app:iconSpaceReserved="false"
             app:key="@string/pre_key_hardware_decoding"
             app:title="@string/hardware_decoding" />

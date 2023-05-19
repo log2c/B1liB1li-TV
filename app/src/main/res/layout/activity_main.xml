@@ -43,7 +43,6 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/bg_button_normal"
             android:nextFocusLeft="@id/bt_login"
             android:nextFocusRight="@id/cv_dynamic"
             android:nextFocusDown="@id/cv_dynamic"
