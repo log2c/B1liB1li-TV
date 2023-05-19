@@ -1,6 +1,7 @@
 package com.github.log2c.b1lib1li_tv.repository.impl;
 
 import com.blankj.utilcode.util.StringUtils;
+import com.github.log2c.b1lib1li_tv.model.FavourDetailModel;
 import com.github.log2c.b1lib1li_tv.model.FavourListModel;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
@@ -62,6 +63,17 @@ public class UserRepositoryImpl implements UserRepository {
         return RxHttp.get(Urls.CREATED_FAVOUR_LIST)
                 .addQuery("up_mid", up_mid)
                 .toObservableResponse(FavourListModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<FavourDetailModel> getFavourDetailList(String mediaId, int ps, int pn) {
+        return RxHttp.get(Urls.FAVOUR_ALL_BY_ID)
+                .addQuery("media_id", mediaId)
+                .addQuery("ps", ps)
+                .addQuery("pn", pn)
+                .addQuery("type", 0)
+                .toObservableResponse(FavourDetailModel.class)
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

@@ -1,5 +1,6 @@
 package com.github.log2c.b1lib1li_tv.repository;
 
+import com.github.log2c.b1lib1li_tv.model.FavourDetailModel;
 import com.github.log2c.b1lib1li_tv.model.FavourListModel;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
@@ -25,4 +26,6 @@ public interface UserRepository {
     Observable<UpFeedModel> getUpFeed(String hostMid, int page, int pageSize);
 
     Observable<FavourListModel> getFavourList(String up_mid);
+
+    Observable<FavourDetailModel> getFavourDetailList(String mediaId, int ps, int pn);
 }

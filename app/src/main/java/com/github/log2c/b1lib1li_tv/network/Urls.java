@@ -31,4 +31,5 @@ public class Urls {
     public static final String ADD_FAVOUR = "https://api.bilibili.com/x/v3/fav/resource/deal";
     public static final String ADD_TRIPLE = "https://api.bilibili.com/x/web-interface/archive/like/triple";
     public static final String CREATED_FAVOUR_LIST = "https://api.bilibili.com/x/v3/fav/folder/created/list-all";
+    public static final String FAVOUR_ALL_BY_ID = "https://api.bilibili.com/x/v3/fav/resource/list";
 }
