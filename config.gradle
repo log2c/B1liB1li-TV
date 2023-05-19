@@ -17,7 +17,9 @@ ext {
             annotation       : '1.5.0',
             room             : '2.4.3',
             navigation       : '2.5.3',
-            exoplayer        : '2.18.6'
+            exoplayer        : '2.18.6',
+            leanback         : '1.2.0-alpha02',
+            leanback_tab     : '1.1.0-beta01'
     ]
 
     //androidx
@@ -32,12 +34,13 @@ ext {
 
             "navigation-fragment": "androidx.navigation:navigation-fragment:${versions['navigation']}",
             "navigation-ui"      : "androidx.navigation:navigation-ui:${versions['navigation']}",
-            annotation           : "androidx.annotation:annotation:${versions['annotation']}",
+            annotation           : "androidx.annotation:annotation:${versions['leanback']}",
             percentlayout        : 'androidx.percentlayout:percentlayout:1.0.0',
             multidex             : "androidx.multidex:multidex:2.0.1",
             palette              : "androidx.palette:palette:1.0.0",
-            leanback             : "androidx.leanback:leanback:1.2.0-alpha02",
-            leanback_pre         : "androidx.leanback:leanback-preference:1.2.0-alpha02"
+            leanback             : "androidx.leanback:leanback:${versions['leanback']}",
+            leanback_pre         : "androidx.leanback:leanback-preference:${versions['leanback']}",
+            leanback_tab         : "androidx.leanback:leanback-tab:${versions['leanback_tab']}"
     ]
 
     test = [
