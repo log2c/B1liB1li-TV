@@ -4,8 +4,12 @@ import com.github.log2c.b1lib1li_tv.model.FavourDetailModel;
 import com.github.log2c.b1lib1li_tv.model.FavourListModel;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
+import com.github.log2c.b1lib1li_tv.model.RelationDetailModel;
+import com.github.log2c.b1lib1li_tv.model.RelationTagModel;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -28,4 +32,8 @@ public interface UserRepository {
     Observable<FavourListModel> getFavourList(String up_mid);
 
     Observable<FavourDetailModel> getFavourDetailList(String mediaId, int ps, int pn);
+
+    Observable<List<RelationTagModel>> getRelationTags();
+
+    Observable<List<RelationDetailModel>> getRelationTagDetail(long tagId, String orderType, int pageSize, int pageNo);
 }

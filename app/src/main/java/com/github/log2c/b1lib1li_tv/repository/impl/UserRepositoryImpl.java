@@ -5,10 +5,14 @@ import com.github.log2c.b1lib1li_tv.model.FavourDetailModel;
 import com.github.log2c.b1lib1li_tv.model.FavourListModel;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.model.NavUserInfoModel;
+import com.github.log2c.b1lib1li_tv.model.RelationDetailModel;
+import com.github.log2c.b1lib1li_tv.model.RelationTagModel;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
 import com.github.log2c.b1lib1li_tv.model.UpFeedModel;
 import com.github.log2c.b1lib1li_tv.network.Urls;
 import com.github.log2c.b1lib1li_tv.repository.UserRepository;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -88,5 +92,23 @@ public class UserRepositoryImpl implements UserRepository {
     public Observable<String> history() {
         return RxHttp.get(Urls.HISTORY)
                 .toObservableResponse(String.class);
+    }
+
+    @Override
+    public Observable<List<RelationTagModel>> getRelationTags() {
+        return RxHttp.get(Urls.RELATION_TAGS)
+                .toObservableResponseList(RelationTagModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<RelationDetailModel>> getRelationTagDetail(long tagId, String orderType, int pageSize, int pageNo) {
+        return RxHttp.get(Urls.RELATION_TAG_DETAIL)
+                .addQuery("tagid", tagId)
+                .addQuery("order_type", orderType)
+                .addQuery("ps", pageSize)
+                .addQuery("pn", pageNo)
+                .toObservableResponseList(RelationDetailModel.class)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

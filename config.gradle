@@ -94,7 +94,7 @@ ext {
 
     danmuku = [
             DanmakuFlameMaster: 'com.github.ctiao:DanmakuFlameMaster:0.9.25',
-            ndkbitmap         : 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
+//            ndkbitmap         : 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
     ]
     exoplayer = [
             core : "com.google.android.exoplayer:exoplayer:${versions['exoplayer']}",
