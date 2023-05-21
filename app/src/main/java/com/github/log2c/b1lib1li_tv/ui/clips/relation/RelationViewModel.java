@@ -9,10 +9,13 @@ import com.github.log2c.b1lib1li_tv.repository.UserRepository;
 import com.github.log2c.b1lib1li_tv.repository.impl.UserRepositoryImpl;
 import com.github.log2c.base.base.BaseCoreViewModel;
 import com.github.log2c.base.toast.ToastUtils;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,7 +61,15 @@ public class RelationViewModel extends BaseCoreViewModel {
         mUserRepository.getRelationTags()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
-                    if (list != null) {
+                    if (list != null) { // 默认分组调整到第一项
+                        if (list.size() > 2) {
+                            Collection<RelationTagModel> defaultGroup = Collections2.filter(list, input -> input.getTagId() == 0);
+                            if (defaultGroup.size() == 1) {
+                                RelationTagModel defGroup = defaultGroup.iterator().next();
+                                list.remove(defGroup);
+                                list.add(0, defGroup);
+                            }
+                        }
                         mRelationTags.addAll(list);
                         relationTags.postValue(list);
                     }
