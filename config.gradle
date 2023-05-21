@@ -5,8 +5,8 @@ ext {
             applicationId    : "com.github.log2c.b1lib1li_tv",
             minSdk           : 21,
             targetSdk        : 24,
-            versionCode      : 1,
-            versionName      : "0.0.5",
+            versionCode      : 6,
+            versionName      : "0.0.6",
     ]
     //version配置
     versions = [
