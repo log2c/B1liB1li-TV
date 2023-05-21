@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/xui_config_color_75_pure_black"
-    tools:context=".ui.toview.ToviewActivity">
+    tools:context=".ui.clips.toview.ToViewFragment">
 
     <androidx.leanback.widget.VerticalGridView
         android:id="@+id/recyclerview"

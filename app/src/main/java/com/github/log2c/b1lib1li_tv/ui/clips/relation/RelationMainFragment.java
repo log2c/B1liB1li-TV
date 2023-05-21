@@ -38,13 +38,6 @@ public class RelationMainFragment extends BaseCoreFragment<RelationViewModel, Fr
         return R.layout.fragment_relation_main;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getContext().getTheme().applyStyle(androidx.leanback.R.style.Theme_Leanback, true);
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

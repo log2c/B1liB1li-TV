@@ -1,31 +1,35 @@
-package com.github.log2c.b1lib1li_tv.ui.favour;
+package com.github.log2c.b1lib1li_tv.ui.clips.favour;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
 
 import com.github.log2c.b1lib1li_tv.R;
-import com.github.log2c.b1lib1li_tv.databinding.ActivityFavourBinding;
-import com.github.log2c.base.base.BaseCoreActivity;
+import com.github.log2c.b1lib1li_tv.databinding.FragmentFavourMainBinding;
+import com.github.log2c.base.base.BaseCoreFragment;
 
-public class FavourActivity extends BaseCoreActivity<FavourViewModel, ActivityFavourBinding> {
+public class FavourMainFragment extends BaseCoreFragment<FavourViewModel, FragmentFavourMainBinding> {
     private FavourFragmentAdapter mFragmentAdapter;
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_favour;
+        return R.layout.fragment_favour_main;
     }
 
     @Override
-    public void initData() {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         viewModel.fetchFavourList();
     }
 
     @Override
     public void initView(@Nullable Bundle bundle) {
-        mFragmentAdapter = new FavourFragmentAdapter(getSupportFragmentManager());
+        FragmentFavourMainBinding mBinding = getMBinding();
+        mFragmentAdapter = new FavourFragmentAdapter(getChildFragmentManager());
         Palette.from(BitmapFactory.decodeResource(getResources(),
                         R.drawable.background_image))
                 .generate(palette -> {

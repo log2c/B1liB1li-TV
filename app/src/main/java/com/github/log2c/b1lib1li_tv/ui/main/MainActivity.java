@@ -13,11 +13,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityMainBinding;
-import com.github.log2c.b1lib1li_tv.ui.dynamic.DynamicActivity;
-import com.github.log2c.b1lib1li_tv.ui.favour.FavourActivity;
 import com.github.log2c.b1lib1li_tv.ui.login.LoginActivity;
+import com.github.log2c.b1lib1li_tv.ui.portal.PortalActivity;
 import com.github.log2c.b1lib1li_tv.ui.setting.SettingsActivity;
-import com.github.log2c.b1lib1li_tv.ui.toview.ToviewActivity;
+import com.github.log2c.b1lib1li_tv.ui.clips.toview.ToViewFragment;
 
 public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBinding> implements View.OnFocusChangeListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -45,9 +44,8 @@ public class MainActivity extends BaseVMActivity<MainViewModel, ActivityMainBind
 
         mBinding.btLogin.setOnClickListener(v -> navLogin());
         mBinding.btnSetting.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
-        mBinding.cvDynamic.setOnClickListener(v -> startActivity(new Intent(this, DynamicActivity.class)));
-        mBinding.cvToview.setOnClickListener(v -> startActivity(new Intent(this, ToviewActivity.class)));
-        mBinding.cvHistory.setOnClickListener(v -> startActivity(new Intent(this, FavourActivity.class)));
+        mBinding.cvDynamic.setOnClickListener(v -> startActivity(new Intent(this, PortalActivity.class)));
+        mBinding.cvToview.setOnClickListener(v -> startActivity(new Intent(this, ToViewFragment.class)));
 
         viewModel.navUserInfoEvent.observe(this, model -> {
             Glide.with(this).load(model.getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);

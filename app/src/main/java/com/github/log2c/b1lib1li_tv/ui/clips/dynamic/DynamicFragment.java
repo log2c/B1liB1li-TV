@@ -1,42 +1,36 @@
-package com.github.log2c.b1lib1li_tv.ui.dynamic;
+package com.github.log2c.b1lib1li_tv.ui.clips.dynamic;
 
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.FeedAdapter;
-import com.github.log2c.b1lib1li_tv.databinding.ActivityDynamicBinding;
+import com.github.log2c.b1lib1li_tv.databinding.FragmentDynamicBinding;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.detail.DetailActivity;
-import com.github.log2c.base.base.BaseCoreActivity;
+import com.github.log2c.base.base.BaseCoreFragment;
 
 import java.util.ArrayList;
 
-public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, ActivityDynamicBinding> implements OnItemClickListener {
+public class DynamicFragment extends BaseCoreFragment<DynamicViewModel, FragmentDynamicBinding> implements OnItemClickListener {
     private FeedAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_dynamic;
-    }
-
-    @Override
-    public void initData() {
-
+        return R.layout.fragment_dynamic;
     }
 
     @Override
     public void initView(@Nullable Bundle bundle) {
         mAdapter = new FeedAdapter();
-        mBinding.recyclerview.setNumColumns(AppConfigRepository.getInstance().getDynamicSpanCount());
-        mBinding.recyclerview.setAdapter(mAdapter);
+        getMBinding().recyclerview.setNumColumns(AppConfigRepository.getInstance().getDynamicSpanCount());
+        getMBinding().recyclerview.setAdapter(mAdapter);
         mAdapter.setNewInstance(new ArrayList<>());
         mAdapter.getLoadMoreModule().setAutoLoadMore(true);
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> viewModel.loadFeedInfo());
@@ -51,9 +45,7 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
             mAdapter.getLoadMoreModule().loadMoreComplete();
             mAdapter.getLoadMoreModule().setEnableLoadMore(feedModel.getHas_more());
         });
-        viewModel.refreshEvent.observe(this, s -> {
-            mAdapter.setNewInstance(new ArrayList<>());
-        });
+        viewModel.refreshEvent.observe(this, s -> mAdapter.setNewInstance(new ArrayList<>()));
 
         viewModel.loadFeedInfo();
     }
@@ -61,6 +53,6 @@ public class DynamicActivity extends BaseCoreActivity<DynamicViewModel, Activity
     @Override
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
         final FeedModel.ItemsBean model = mAdapter.getData().get(position);
-        DetailActivity.showActivity(this, model.getBvid(), model.getAid());
+        DetailActivity.showActivity(requireActivity(), model.getBvid(), model.getAid());
     }
 }

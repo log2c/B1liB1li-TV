@@ -1,4 +1,4 @@
-package com.github.log2c.b1lib1li_tv.ui.toview;
+package com.github.log2c.b1lib1li_tv.ui.clips.toview;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;

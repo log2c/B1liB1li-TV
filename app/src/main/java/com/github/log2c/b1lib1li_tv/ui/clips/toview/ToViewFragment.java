@@ -1,11 +1,10 @@
-package com.github.log2c.b1lib1li_tv.ui.toview;
+package com.github.log2c.b1lib1li_tv.ui.clips.toview;
 
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -15,11 +14,11 @@ import com.github.log2c.b1lib1li_tv.databinding.ActivityToviewBinding;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
 import com.github.log2c.b1lib1li_tv.ui.detail.DetailActivity;
-import com.github.log2c.base.base.BaseCoreActivity;
+import com.github.log2c.base.base.BaseCoreFragment;
 
 import java.util.ArrayList;
 
-public class ToviewActivity extends BaseCoreActivity<ToviewViewModel, ActivityToviewBinding> implements OnItemClickListener {
+public class ToViewFragment extends BaseCoreFragment<ToviewViewModel, ActivityToviewBinding> implements OnItemClickListener {
     private ToviewAdapter mAdapter;
 
     @Override
@@ -28,12 +27,14 @@ public class ToviewActivity extends BaseCoreActivity<ToviewViewModel, ActivityTo
     }
 
     @Override
-    public void initData() {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         viewModel.fetchToview();
     }
 
     @Override
     public void initView(@Nullable Bundle bundle) {
+        ActivityToviewBinding mBinding = getMBinding();
         mAdapter = new ToviewAdapter();
         mBinding.recyclerview.setNumColumns(AppConfigRepository.getInstance().getDynamicSpanCount());
         mBinding.recyclerview.setAdapter(mAdapter);
@@ -46,6 +47,6 @@ public class ToviewActivity extends BaseCoreActivity<ToviewViewModel, ActivityTo
     @Override
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
         final ToViewModel.ListModel model = mAdapter.getData().get(position);
-        DetailActivity.showActivity(this, model.getBvid(), model.getAid() + "");
+        DetailActivity.showActivity(requireActivity(), model.getBvid(), model.getAid() + "");
     }
 }

@@ -1,4 +1,4 @@
-package com.github.log2c.b1lib1li_tv.ui.dynamic;
+package com.github.log2c.b1lib1li_tv.ui.clips.dynamic;
 
 import com.aleyn.mvvm.event.SingleLiveEvent;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;

@@ -1,4 +1,4 @@
-package com.github.log2c.b1lib1li_tv.ui.favour;
+package com.github.log2c.b1lib1li_tv.ui.clips.favour;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

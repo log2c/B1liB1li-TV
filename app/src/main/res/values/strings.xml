@@ -49,6 +49,8 @@
     <string name="is_liked">已点赞</string>
     <string name="is_add_coin">已投币</string>
     <string name="is_add_favour">已收藏</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dynamic">动态</string>
+    <string name="relation_follow">关注</string>
+    <string name="favour">收藏</string>
+    <string name="to_view">待播</string>
 </resources>

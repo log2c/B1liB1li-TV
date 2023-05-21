@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.portal.PortalActivity">
+
+    <LinearLayout
+        android:id="@+id/left_panel"
+        android:layout_width="65dp"
+        android:layout_height="match_parent"
+        android:background="@color/xui_config_color_75_pure_black"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.xuexiang.xui.widget.tabbar.VerticalTabLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:ts_selected_color="@color/btn_blue_dark"
+            app:vtl_indicator_color="@color/btn_blue_dark"
+            app:vtl_tab_height="45dp"
+            app:vtl_tab_mode="scrollable" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/iv_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/dp_4"
+                tools:src="@drawable/ic_avatar_bilibili" />
+
+            <!--            <Button-->
+            <!--                android:id="@+id/bt_login"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:layout_marginStart="@dimen/dp_10"-->
+            <!--                android:background="@drawable/bg_button_normal"-->
+            <!--                android:minWidth="80dp"-->
+            <!--                android:nextFocusLeft="@id/cv_history"-->
+            <!--                android:nextFocusRight="@id/btn_setting"-->
+            <!--                android:nextFocusUp="@id/cv_history"-->
+            <!--                android:nextFocusDown="@id/btn_setting"-->
+            <!--                android:text="@string/un_login"-->
+            <!--                android:textStyle="bold" />-->
+
+            <ImageButton
+                android:id="@+id/btn_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_settings_white" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <androidx.leanback.tab.LeanbackViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/left_panel" />
+</androidx.constraintlayout.widget.ConstraintLayout>
