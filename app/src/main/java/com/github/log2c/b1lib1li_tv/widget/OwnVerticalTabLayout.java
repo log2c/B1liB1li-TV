@@ -42,12 +42,12 @@ public class OwnVerticalTabLayout extends VerticalTabLayout {
 
     @Override
     public boolean requestFocus(int direction, Rect previouslyFocusedRect) {
-        if (previouslyFocusedRect == null && direction == View.FOCUS_LEFT) {
+        if (previouslyFocusedRect == null && (direction == View.FOCUS_LEFT || direction == View.FOCUS_DOWN)) {
             Log.i(TAG, "requestFocus: set focus");
             getTabAt(getSelectedTabPosition()).requestFocus();
             return true;
         }
-        Log.i(TAG, "requestFocus");
+        Log.i(TAG, "requestFocus direction: " + direction);
         return super.requestFocus(direction, previouslyFocusedRect);
     }
 

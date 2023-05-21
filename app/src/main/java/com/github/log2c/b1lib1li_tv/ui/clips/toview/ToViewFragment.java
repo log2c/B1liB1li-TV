@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.ToviewAdapter;
+import com.github.log2c.b1lib1li_tv.contracts.KeyDownContract;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityToviewBinding;
 import com.github.log2c.b1lib1li_tv.model.ToViewModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
@@ -18,7 +19,7 @@ import com.github.log2c.base.base.BaseCoreFragment;
 
 import java.util.ArrayList;
 
-public class ToViewFragment extends BaseCoreFragment<ToviewViewModel, ActivityToviewBinding> implements OnItemClickListener {
+public class ToViewFragment extends BaseCoreFragment<ToviewViewModel, ActivityToviewBinding> implements OnItemClickListener, KeyDownContract {
     private ToviewAdapter mAdapter;
 
     @Override
@@ -48,5 +49,11 @@ public class ToViewFragment extends BaseCoreFragment<ToviewViewModel, ActivityTo
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
         final ToViewModel.ListModel model = mAdapter.getData().get(position);
         DetailActivity.showActivity(requireActivity(), model.getBvid(), model.getAid() + "");
+    }
+
+    @Override
+    public void onRefreshKeyDown() {
+        mAdapter.getLoadMoreModule().setEnableLoadMore(true);
+        viewModel.refreshData();
     }
 }

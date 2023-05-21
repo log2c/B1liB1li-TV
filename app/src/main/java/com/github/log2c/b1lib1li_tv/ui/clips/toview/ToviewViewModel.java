@@ -34,4 +34,8 @@ public class ToviewViewModel extends BaseCoreViewModel {
                     }
                 });
     }
+
+    public void refreshData() {
+        fetchToview();
+    }
 }

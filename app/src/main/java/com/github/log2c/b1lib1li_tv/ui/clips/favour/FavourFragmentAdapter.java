@@ -1,5 +1,7 @@
 package com.github.log2c.b1lib1li_tv.ui.clips.favour;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +16,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class FavourFragmentAdapter extends FragmentPagerAdapter {
     private List<ImmutablePair<String, Long>> mData;
+    private Fragment mCurrentFragment;
 
     public FavourFragmentAdapter(@NonNull FragmentManager fm) {
         this(fm, BEHAVIOR_SET_USER_VISIBLE_HINT);
@@ -32,6 +35,10 @@ public class FavourFragmentAdapter extends FragmentPagerAdapter {
         }
     }
 
+    public Fragment getCurrentFragment() {
+        return mCurrentFragment;
+    }
+
     @NonNull
     @Override
     public Fragment getItem(int position) {
@@ -47,5 +54,13 @@ public class FavourFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mData.get(position).getKey();
+    }
+
+    @Override
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        if (getCurrentFragment() != object) {
+            mCurrentFragment = ((Fragment) object);
+        }
+        super.setPrimaryItem(container, position, object);
     }
 }

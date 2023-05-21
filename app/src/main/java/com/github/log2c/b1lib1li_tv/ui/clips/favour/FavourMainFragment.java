@@ -7,10 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.contracts.KeyDownContract;
 import com.github.log2c.b1lib1li_tv.databinding.FragmentFavourMainBinding;
 import com.github.log2c.base.base.BaseCoreFragment;
 
-public class FavourMainFragment extends BaseCoreFragment<FavourViewModel, FragmentFavourMainBinding> {
+public class FavourMainFragment extends BaseCoreFragment<FavourViewModel, FragmentFavourMainBinding> implements KeyDownContract {
     private FavourFragmentAdapter mFragmentAdapter;
 
     @Override
@@ -32,5 +33,12 @@ public class FavourMainFragment extends BaseCoreFragment<FavourViewModel, Fragme
         mBinding.viewpager.setKeyEventsEnabled(true);
         mBinding.header.setupWithViewPager(mBinding.viewpager);
         viewModel.favourListEvent.observe(this, data -> mFragmentAdapter.setData(data));
+    }
+
+    @Override
+    public void onRefreshKeyDown() {
+        if (mFragmentAdapter.getCurrentFragment() instanceof KeyDownContract) {
+            ((KeyDownContract) mFragmentAdapter.getCurrentFragment()).onRefreshKeyDown();
+        }
     }
 }

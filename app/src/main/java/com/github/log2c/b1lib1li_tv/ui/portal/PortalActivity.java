@@ -2,6 +2,8 @@ package com.github.log2c.b1lib1li_tv.ui.portal;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.contracts.KeyDownContract;
 import com.github.log2c.b1lib1li_tv.databinding.ActivityPortalBinding;
 import com.github.log2c.b1lib1li_tv.ui.clips.dynamic.DynamicFragment;
 import com.github.log2c.b1lib1li_tv.ui.clips.favour.FavourMainFragment;
@@ -65,6 +68,17 @@ public class PortalActivity extends BaseCoreActivity<PortalViewModel, ActivityPo
         viewModel.unLoginEvent.observe(this, unused -> navLogin());
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            Fragment fragment = mFragmentAdapter.getCurrentFragment();
+            if (fragment instanceof KeyDownContract && fragment.isVisible()) {
+                ((KeyDownContract) fragment).onRefreshKeyDown();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     private void navLogin() {
         startActivity(new Intent(this, LoginActivity.class));
@@ -76,6 +90,7 @@ public class PortalActivity extends BaseCoreActivity<PortalViewModel, ActivityPo
         private final List<ImmutablePair<String, Class<? extends Fragment>>> mData;
         private VerticalTabLayout mTabLayout;
 
+        private Fragment mCurrentFragment;
 
         public FragmentAdapter(@NonNull FragmentManager fm, VerticalTabLayout tabLayout) {
             super(fm, BEHAVIOR_SET_USER_VISIBLE_HINT);
@@ -83,6 +98,9 @@ public class PortalActivity extends BaseCoreActivity<PortalViewModel, ActivityPo
             mData = new ArrayList<>();
         }
 
+        public Fragment getCurrentFragment() {
+            return mCurrentFragment;
+        }
 
         @NonNull
         @Override
@@ -104,14 +122,14 @@ public class PortalActivity extends BaseCoreActivity<PortalViewModel, ActivityPo
         public CharSequence getPageTitle(int position) {
             return mData.get(position).getKey();
         }
-//        @Override
-//        public void notifyDataSetChanged() {
-//            super.notifyDataSetChanged();
-//            for (int idx = 0; idx < mData.size(); idx++) {
-//                ImmutablePair<String, Class<? extends Fragment>> pair = mData.get(idx);
-//                mTabLayout.getTabAt(idx).setIcon(new ITabView.TabIcon.Builder().setIcon().build());
-//            }
-//        }
+
+        @Override
+        public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            if (getCurrentFragment() != object) {
+                mCurrentFragment = ((Fragment) object);
+            }
+            super.setPrimaryItem(container, position, object);
+        }
 
         public void setData(List<ImmutablePair<String, Class<? extends Fragment>>> data) {
             if (data != null) {

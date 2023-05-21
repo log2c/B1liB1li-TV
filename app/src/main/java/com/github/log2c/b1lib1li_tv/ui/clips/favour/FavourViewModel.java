@@ -79,4 +79,9 @@ public class FavourViewModel extends BaseCoreViewModel {
                     page--;
                 });
     }
+
+    public void refreshData() {
+        page = 1;
+        loadDetailData();
+    }
 }

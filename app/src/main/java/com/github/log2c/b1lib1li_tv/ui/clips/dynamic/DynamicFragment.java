@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.adapter.FeedAdapter;
+import com.github.log2c.b1lib1li_tv.contracts.KeyDownContract;
 import com.github.log2c.b1lib1li_tv.databinding.FragmentDynamicBinding;
 import com.github.log2c.b1lib1li_tv.model.FeedModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
@@ -18,7 +19,7 @@ import com.github.log2c.base.base.BaseCoreFragment;
 
 import java.util.ArrayList;
 
-public class DynamicFragment extends BaseCoreFragment<DynamicViewModel, FragmentDynamicBinding> implements OnItemClickListener {
+public class DynamicFragment extends BaseCoreFragment<DynamicViewModel, FragmentDynamicBinding> implements OnItemClickListener, KeyDownContract {
     private FeedAdapter mAdapter;
 
     @Override
@@ -54,5 +55,12 @@ public class DynamicFragment extends BaseCoreFragment<DynamicViewModel, Fragment
     public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
         final FeedModel.ItemsBean model = mAdapter.getData().get(position);
         DetailActivity.showActivity(requireActivity(), model.getBvid(), model.getAid());
+    }
+
+    @Override
+    public void onRefreshKeyDown() {
+        mAdapter.getLoadMoreModule().setEnableLoadMore(true);
+        mAdapter.setNewInstance(new ArrayList<>());
+        viewModel.refreshData();
     }
 }

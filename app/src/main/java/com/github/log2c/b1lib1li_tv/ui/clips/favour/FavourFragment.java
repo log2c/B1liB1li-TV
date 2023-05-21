@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.github.log2c.b1lib1li_tv.R;
+import com.github.log2c.b1lib1li_tv.contracts.KeyDownContract;
 import com.github.log2c.b1lib1li_tv.databinding.FragmentFavourBinding;
 import com.github.log2c.b1lib1li_tv.model.FavourDetailModel;
 import com.github.log2c.b1lib1li_tv.repository.AppConfigRepository;
@@ -17,7 +18,9 @@ import com.github.log2c.b1lib1li_tv.ui.detail.DetailActivity;
 import com.github.log2c.base.base.BaseCoreFragment;
 import com.github.log2c.base.toast.ToastUtils;
 
-public class FavourFragment extends BaseCoreFragment<FavourViewModel, FragmentFavourBinding> implements OnItemClickListener {
+import java.util.ArrayList;
+
+public class FavourFragment extends BaseCoreFragment<FavourViewModel, FragmentFavourBinding> implements OnItemClickListener, KeyDownContract {
     public static final String INTENT_ID = "id";
     private ItemAdapter mAdapter;
 
@@ -73,5 +76,12 @@ public class FavourFragment extends BaseCoreFragment<FavourViewModel, FragmentFa
             return;
         }
         DetailActivity.showActivity(requireActivity(), model.getBvid(), "");
+    }
+
+    @Override
+    public void onRefreshKeyDown() {
+        mAdapter.getLoadMoreModule().setEnableLoadMore(true);
+        mAdapter.setNewInstance(new ArrayList<>());
+        viewModel.refreshData();
     }
 }

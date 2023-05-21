@@ -19,6 +19,12 @@ public class DynamicViewModel extends BaseCoreViewModel {
         userRepository = new UserRepositoryImpl();
     }
 
+    public void refreshData() {
+        page = 1;
+        offset = "";
+        loadFeedInfo();
+    }
+
     public void loadFeedInfo() {
         getDefUI().getShowDialog().call();
         userRepository.getFeed(FEED_TYPE, page, offset)
