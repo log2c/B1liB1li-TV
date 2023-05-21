@@ -18,11 +18,9 @@ import com.github.log2c.b1lib1li_tv.ui.clips.favour.FavourMainFragment;
 import com.github.log2c.b1lib1li_tv.ui.clips.relation.RelationMainFragment;
 import com.github.log2c.b1lib1li_tv.ui.clips.toview.ToViewFragment;
 import com.github.log2c.b1lib1li_tv.ui.login.LoginActivity;
+import com.github.log2c.b1lib1li_tv.ui.setting.SettingsActivity;
 import com.github.log2c.base.base.BaseCoreActivity;
-import com.github.log2c.base.base.BaseCoreViewModel;
-import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.xui.widget.tabbar.VerticalTabLayout;
-import com.xuexiang.xui.widget.tabbar.vertical.ITabView;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -52,11 +50,13 @@ public class PortalActivity extends BaseCoreActivity<PortalViewModel, ActivityPo
     public void initView(@Nullable Bundle bundle) {
         Glide.with(this).load(R.drawable.ic_avatar_bilibili).transform(new CircleCrop()).into(mBinding.ivAvatar);
         mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), mBinding.header);
+        mBinding.viewPager.setVerticalTabLayout(mBinding.header);
         mBinding.viewPager.setAdapter(mFragmentAdapter);
         mBinding.viewPager.setKeyEventsEnabled(true);
         mBinding.viewPager.setOffscreenPageLimit(4);
         mBinding.header.setupWithViewPager(mBinding.viewPager);
         mBinding.ivAvatar.setOnClickListener(v -> navLogin());
+        mBinding.btnSetting.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
 
         viewModel.navUserInfoEvent.observe(this, model -> {
             Glide.with(this).load(model.getFace()).transform(new CircleCrop()).into(mBinding.ivAvatar);

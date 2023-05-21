@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.xuexiang.xui.widget.tabbar.VerticalTabLayout
+        <com.github.log2c.b1lib1li_tv.widget.OwnVerticalTabLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -39,6 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/dp_4"
+                android:background="@drawable/xui_config_bg_primary_btn"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:theme="@style/AppTheme.Button.Icon"
                 tools:src="@drawable/ic_avatar_bilibili" />
 
             <!--            <Button-->
@@ -61,12 +65,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_settings_white" />
+                android:background="@drawable/xui_config_bg_primary_btn"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/ic_settings_white"
+                android:theme="@style/AppTheme.Button.Icon" />
         </LinearLayout>
     </LinearLayout>
 
 
-    <androidx.leanback.tab.LeanbackViewPager
+    <com.github.log2c.b1lib1li_tv.widget.OwnLeanbackViewPager
         android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="match_parent"

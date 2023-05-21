@@ -85,4 +85,12 @@
     <style name="AppTheme.Leanback" parent="Theme.AppCompat.Leanback">
 
     </style>
+
+    <style name="AppTheme.Button.Icon" parent="AppTheme.Button.Header">
+        <item name="android:background">@drawable/xui_config_bg_primary_btn</item>
+        <item name="xui_btn_view_touch_color">@color/btn_blue_dark</item>
+        <item name="xui_btn_view_normal_color">@android:color/transparent</item>
+        <item name="xui_btn_view_disable_color">@color/btn_normal_disabled</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>
