@@ -18,8 +18,9 @@ public class PortalViewModel extends BaseCoreViewModel {
 
     public PortalViewModel() {
         userRepository = new UserRepositoryImpl();
-        if (AppConfigRepository.getInstance().isAutoCheckUpdate()) {
+        if (AppConfigRepository.getInstance().isAutoCheckUpdate() && !AppConfigRepository.getInstance().isTodayCheckedUpdate()) {
             UpdateManager.getInstance().checkUpdate();
+            AppConfigRepository.getInstance().storeCheckUpdateDate();
         }
     }
 

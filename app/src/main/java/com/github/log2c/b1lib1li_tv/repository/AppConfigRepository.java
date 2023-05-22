@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.PathUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.Utils;
 import com.github.log2c.b1lib1li_tv.R;
 import com.github.log2c.b1lib1li_tv.common.Constants;
@@ -15,6 +16,7 @@ import com.github.log2c.base.utils.Logging;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -194,5 +196,14 @@ public class AppConfigRepository {
             }
         }
         return null;
+    }
+
+    public void storeCheckUpdateDate() {
+        SPUtils.getInstance(SP_NAME_CONFIG).put(Utils.getApp().getString(R.string.pre_key_check_update_date), TimeUtils.date2Millis(new Date()));
+    }
+
+    public boolean isTodayCheckedUpdate() {
+        long time = SPUtils.getInstance(SP_NAME_CONFIG).getLong(Utils.getApp().getString(R.string.pre_key_check_update_date), 0);
+        return TimeUtils.isToday(time);
     }
 }
