@@ -43,7 +43,7 @@ public class ToviewAdapter extends BaseQuickAdapter<ToViewModel.ListModel, BaseV
 
             title.setText(itemsModel.getTitle());
             name.setText(itemsModel.getOwner().getName());
-            time.setText(TimeUtils.millis2String(itemsModel.getPubdate(), "MM-dd HH:mm"));
+            time.setText(TimeUtils.millis2String(1000 * itemsModel.getPubdate(), "MM-dd HH:mm"));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

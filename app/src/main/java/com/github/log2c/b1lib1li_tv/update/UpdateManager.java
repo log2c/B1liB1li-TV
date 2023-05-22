@@ -31,12 +31,16 @@ public class UpdateManager {
         return mInstance;
     }
 
+    public void checkUpdate() {
+        checkUpdate(true);
+    }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public void checkUpdate() {
-        check().subscribe(updateModel -> {
+    public void checkUpdate(boolean silent) {
+        check(silent).subscribe(updateModel -> {
             String downloadUrl = getApkDownloadUrl(updateModel);
-            if (TextUtils.isEmpty(downloadUrl)) {
+            if (TextUtils.isEmpty(downloadUrl) && !silent) {
                 Toast.makeText(Utils.getApp(), "下载地址错误.", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -50,7 +54,9 @@ public class UpdateManager {
             builder.build().download();
         }, e -> {
             e.printStackTrace();
-            Toast.makeText(Utils.getApp(), "检查更新时发生错误, 请检查网络连接或手动更新.", Toast.LENGTH_LONG).show();
+            if (!silent) {
+                Toast.makeText(Utils.getApp(), "检查更新时发生错误, 请检查网络连接或手动更新.", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -83,7 +89,7 @@ public class UpdateManager {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("CheckResult")
-    public Observable<UpdateModel> check() {
+    public Observable<UpdateModel> check(boolean silent) {
         return RxHttp.get(CHECK_URL)
                 .toObservable(UpdateModel.class)
                 .filter(updateModel -> {
@@ -96,7 +102,9 @@ public class UpdateManager {
                             return true;
                         }
                     }
-                    Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(e -> ToastUtils.success(R.string.no_upgrade_info));
+                    if (!silent) {
+                        Observable.just("").observeOn(AndroidSchedulers.mainThread()).subscribe(e -> ToastUtils.success(R.string.no_upgrade_info));
+                    }
                     return false;
                 })
                 .subscribeOn(Schedulers.newThread())

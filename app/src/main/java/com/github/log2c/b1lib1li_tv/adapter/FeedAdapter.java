@@ -42,7 +42,7 @@ public class FeedAdapter extends BaseQuickAdapter<FeedModel.ItemsBean, BaseViewH
 
             title.setText(itemsModel.getTitle());
             name.setText(itemsModel.getOwner().getName());
-            time.setText(TimeUtils.millis2String(itemsModel.getPubdate(), "MM-dd HH:mm"));
+            time.setText(TimeUtils.millis2String(1000 * itemsModel.getPubdate(), "MM-dd HH:mm"));
             duration.setText(CommonUtils.formatSeconds(itemsModel.getDuration()));
         } catch (NullPointerException e) {
             e.printStackTrace();

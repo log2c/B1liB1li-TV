@@ -93,7 +93,7 @@ public class SettingFragment extends LeanbackSettingsFragmentCompat {
             if (preference.getKey().equals(getString(R.string.pre_key_relaunch))) {
                 AppUtils.relaunchApp(true);
             } else if (preference.getKey().equals(getString(R.string.pre_key_check_update))) {
-                UpdateManager.getInstance().checkUpdate();
+                UpdateManager.getInstance().checkUpdate(false);
             }
             return super.onPreferenceTreeClick(preference);
         }

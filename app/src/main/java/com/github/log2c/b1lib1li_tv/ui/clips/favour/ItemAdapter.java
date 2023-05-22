@@ -42,7 +42,7 @@ public class ItemAdapter extends BaseQuickAdapter<FavourDetailModel.MediasModel,
 
             title.setText(itemsModel.getTitle());
             name.setText(itemsModel.getUpper().getName());
-            time.setText(TimeUtils.millis2String(itemsModel.getPubtime(), "MM-dd HH:mm"));
+            time.setText(TimeUtils.millis2String(1000 * itemsModel.getPubtime(), "MM-dd HH:mm"));
             duration.setText(CommonUtils.formatSeconds(itemsModel.getDuration()));
         } catch (NullPointerException e) {
             e.printStackTrace();
